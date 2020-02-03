@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import { LoggedInRoute } from "/Users/emilyhansen/Desktop/palette-app/src/auth/LoggedInRoute";
 import { LoggedOutRoute } from "/Users/emilyhansen/Desktop/palette-app/src/auth/LoggedOutRoute";
 import { Container } from "/Users/emilyhansen/Desktop/palette-app/src/App";
+import { T12 } from "/Users/emilyhansen/Desktop/palette-app/src/design/Text";
 
 export const RootRoutes = () => {
   return (
@@ -13,7 +14,7 @@ export const RootRoutes = () => {
       <LoggedOutRoute
         path="/about"
         exact={true}
-        component={() => <div>out</div>}
+        component={() => <T12>out</T12>}
       />
       <Route component={() => <div>nope</div>} />
     </Switch>

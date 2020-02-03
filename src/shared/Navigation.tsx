@@ -2,6 +2,7 @@ import React from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled from "styled-components";
+import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
 
 const NavigationBox = styled.div`
   //   width: 100%;
@@ -39,7 +40,7 @@ type Props = PassedProps & InjectedProps;
 export const Navigation = ({}: Props) => {
   return (
     <NavigationBox>
-      <i className="material-icons md-18">dehaze</i>
+      <Icon iconName="dehaze" />
       <MenuBox>
         {menuItems.map(item => (
           <MenuItemBox onClick={item.onClick}>{item.name}</MenuItemBox>
