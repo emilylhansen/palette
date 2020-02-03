@@ -4,6 +4,16 @@ import { createStore, Dispatch } from "redux";
 import { rootReducer } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.reducer";
 import { RootState } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
 import styled from "styled-components";
+import { Route, Router } from "react-router-dom";
+import { RootRoutes } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.routes";
+import { createBrowserHistory, Location } from "history";
+
+declare global {
+  interface Window {
+    dataLayer: any;
+  }
+}
+const history = createBrowserHistory();
 
 const ComponentBox = styled.div`
   width: 100%;
@@ -39,7 +49,10 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 const Container = connector(Component);
 
 export const App = () => (
-  <Provider store={store}>
-    <Container />
-  </Provider>
+  <Router history={history}>
+    <Provider store={store}>
+      <Container />
+      <Route component={RootRoutes} />
+    </Provider>
+  </Router>
 );
