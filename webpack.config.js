@@ -6,6 +6,7 @@ module.exports = {
   output: {
     filename: "bundle.[hash].js",
     path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -33,5 +34,10 @@ module.exports = {
         exclude: /node_modules/,
       },
     ],
+  },
+  devServer: {
+    historyApiFallback: true,
+    contentBase: "./",
+    hot: true,
   },
 };

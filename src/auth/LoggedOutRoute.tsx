@@ -8,14 +8,18 @@ type PassedProps = {};
 type InjectedProps = {};
 type Props = PassedProps & InjectedProps & RouteProps;
 
-export const LoggedOutRoute = ({ component: Component }: Props) => {
+export const LoggedOutRoute = ({
+  component: Component,
+  ...otherProps
+}: Props) => {
   return (
-    <LoggedOutRouteBox>
-      <Route
-        render={(routeProps: RouteComponentProps) => (
-          <Component {...routeProps} />
-        )}
-      />
-    </LoggedOutRouteBox>
+    // <LoggedOutRouteBox>
+    <Route
+      {...otherProps}
+      render={(routeProps: RouteComponentProps) => (
+        <Component {...routeProps} />
+      )}
+    />
+    // </LoggedOutRouteBox>
   );
 };

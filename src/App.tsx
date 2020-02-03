@@ -4,9 +4,10 @@ import { createStore, Dispatch } from "redux";
 import { rootReducer } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.reducer";
 import { RootState } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
 import styled from "styled-components";
-import { Route, Router } from "react-router-dom";
+import { Switch, Route, Router, BrowserRouter } from "react-router-dom";
 import { RootRoutes } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.routes";
 import { createBrowserHistory, Location } from "history";
+import { Header } from "/Users/emilyhansen/Desktop/palette-app/src/shared/Header";
 
 declare global {
   interface Window {
@@ -24,16 +25,10 @@ let store = createStore(rootReducer);
 
 type ComponentProps = PropsFromRedux;
 
-const Component = (props: ComponentProps) => (
-  <ComponentBox onClick={props.add}>
-    Helloworld React & Redux! {props.count}
-  </ComponentBox>
-);
+const Component = (props: ComponentProps) => <ComponentBox>hi</ComponentBox>;
 
 const mapState = (state: RootState) => {
-  return {
-    count: state.auth.count,
-  };
+  return {};
 };
 
 const mapDispatch = (dispatch: Dispatch) => {
@@ -46,13 +41,27 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const Container = connector(Component);
+export const Container = connector(Component);
 
 export const App = () => (
-  <Router history={history}>
-    <Provider store={store}>
-      <Container />
-      <Route component={RootRoutes} />
-    </Provider>
-  </Router>
+  <Provider store={store}>
+    {/* <Router history={history}> */}
+    <Header />
+    <BrowserRouter>
+      <RootRoutes />
+      {/* <Route path="/" exact component={Container} /> */}
+      {/* <Switch>
+        <Route exact path="/">
+          <div>home</div>
+        </Route>
+        <Route path="/about">
+          <div>about</div>
+        </Route>
+        <Route path="/dashboard">
+          <div>dash</div>
+        </Route>
+      </Switch> */}
+    </BrowserRouter>
+    {/* </Router> */}
+  </Provider>
 );
