@@ -11,7 +11,7 @@ const NavigationBox = styled.div`
 `;
 
 const MenuBox = styled.div`
-  width: 96px;
+  width: 120px;
   position: absolute;
   border: 1px solid;
   right: 16px;

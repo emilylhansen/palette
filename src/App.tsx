@@ -16,6 +16,12 @@ declare global {
 }
 const history = createBrowserHistory();
 
+const BodyBox = styled.div`
+  flex: 1;
+  overflow-y: scroll;
+  border: 1px solid;
+`;
+
 const ComponentBox = styled.div`
   width: 100%;
   height: 100%;
@@ -47,21 +53,10 @@ export const App = () => (
   <Provider store={store}>
     {/* <Router history={history}> */}
     <Header />
-    <BrowserRouter>
-      <RootRoutes />
-      {/* <Route path="/" exact component={Container} /> */}
-      {/* <Switch>
-        <Route exact path="/">
-          <div>home</div>
-        </Route>
-        <Route path="/about">
-          <div>about</div>
-        </Route>
-        <Route path="/dashboard">
-          <div>dash</div>
-        </Route>
-      </Switch> */}
-    </BrowserRouter>
-    {/* </Router> */}
+    <BodyBox>
+      <BrowserRouter>
+        <RootRoutes />
+      </BrowserRouter>
+    </BodyBox>
   </Provider>
 );

@@ -13,6 +13,7 @@ const PaletteCardBox = styled.div`
   width: 400px;
   height: 300px;
   padding: 16px;
+  border: 1px solid;
 `;
 
 const FeaturesBox = styled.div`

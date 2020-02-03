@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { Navigation } from "/Users/emilyhansen/Desktop/palette-app/src/shared/Navigation";
 
 const HeaderBox = styled.div`
-  flex: 1;
   height: 32px;
   border: 1px solid;
   display: flex;

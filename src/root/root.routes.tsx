@@ -5,12 +5,14 @@ import { LoggedInRoute } from "/Users/emilyhansen/Desktop/palette-app/src/auth/L
 import { LoggedOutRoute } from "/Users/emilyhansen/Desktop/palette-app/src/auth/LoggedOutRoute";
 import { Container } from "/Users/emilyhansen/Desktop/palette-app/src/App";
 import { T12 } from "/Users/emilyhansen/Desktop/palette-app/src/design/Text";
+import { Homepage } from "/Users/emilyhansen/Desktop/palette-app/src/homepage/Homepage";
 
 export const RootRoutes = () => {
   return (
     <Switch>
       {/* <IndexRedirect to="/" /> */}
       <LoggedInRoute path="/" exact={true} component={Container} />
+      <LoggedInRoute path="/home" exact={true} component={Homepage} />
       <LoggedOutRoute
         path="/about"
         exact={true}
