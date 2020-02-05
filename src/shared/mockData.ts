@@ -6,10 +6,12 @@ import {
 import faker from "faker";
 import { range } from "fp-ts/lib/Array";
 
-const makeMockColor = (): Color => ({
+const hexColors = ["ffb6b9", "fae3d9", "bbded6", "8ac6d1"];
+
+const makeMockColor = ({ hex }: { hex: string }): Color => ({
   name: faker.name.title(),
   description: faker.lorem.sentences(),
-  hex: faker.random.number.toString(),
+  hex,
   private: faker.random.boolean(),
   key: faker.random.uuid(),
 });
@@ -22,7 +24,7 @@ const makeMockTag = (): Tag => ({
 const makeMockPalette = (): Palette => ({
   name: faker.name.title(),
   description: faker.lorem.sentences(),
-  colors: range(0, 3).map(_ => makeMockColor()),
+  colors: hexColors.map(hex => makeMockColor({ hex })),
   private: faker.random.boolean(),
   authorId: faker.random.uuid(),
   key: faker.random.uuid(),

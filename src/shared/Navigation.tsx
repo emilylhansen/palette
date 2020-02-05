@@ -5,13 +5,11 @@ import styled from "styled-components";
 import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
 
 const NavigationBox = styled.div`
-  //   width: 100%;
-  //   height: 32px;
   border: 1px solid;
 `;
 
 const MenuBox = styled.div`
-  width: 120px;
+  width: 160px;
   position: absolute;
   border: 1px solid;
   right: 16px;
