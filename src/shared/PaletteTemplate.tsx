@@ -15,6 +15,7 @@ import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
 import convert from "color-convert";
 import { convertHexToRGBA } from "/Users/emilyhansen/Desktop/palette-app/src/shared/shared.helpers";
 import { isNull } from "/Users/emilyhansen/Desktop/palette-app/src/shared/shared.typeGuards";
+import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
 
 const PaletteTemplateBox = styled.div<{ css?: FlattenSimpleInterpolation }>`
   display: flex;
@@ -40,7 +41,7 @@ const ColorBlockBox = styled.div<{
 
           > div,
           i {
-            display: block;
+            display: flex;
           }
         }
       `}
@@ -61,6 +62,11 @@ const ColorBlockBox = styled.div<{
   > div {
     text-align: center;
   }
+`;
+
+const ActionsBox = styled.div`
+  display: flex;
+  margin-top: 8px;
 `;
 
 type PassedProps = {
@@ -84,7 +90,13 @@ export const PaletteTemplate = ({
             <>
               <T12>{color.name}</T12>
               <T10>{`#${color.hex}`}</T10>
-              <Icon iconName={true ? "favorite" : "favorite_border"} />
+              <ActionsBox>
+                <IconButton
+                  iconName={true ? "favorite" : "favorite_border"}
+                  size="small"
+                />
+                <IconButton iconName="file_copy" size="small" />
+              </ActionsBox>
             </>
           )}
         </ColorBlockBox>

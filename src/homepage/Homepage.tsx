@@ -6,7 +6,7 @@ import { PaletteOverviewCard } from "../shared/PaletteOverviewCard";
 import { PaletteTileCard } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTileCard";
 import { range } from "fp-ts/lib/Array";
 import { mockPalettes } from "/Users/emilyhansen/Desktop/palette-app/src/shared/mockData";
-import { Overlay } from "/Users/emilyhansen/Desktop/palette-app/src/shared/Overlay";
+import { Overlay } from "../design/Overlay";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
 import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
 

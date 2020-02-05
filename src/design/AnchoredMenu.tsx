@@ -1,13 +1,28 @@
 /** https://material-ui.com/components/menus/ */
-import React from "react";
+import React, { MouseEvent } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
 import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
+import styled from "styled-components";
+import { IconButtonProps as MaterialIconButtonProps } from "@material-ui/core/IconButton";
+
+const AnchoredMenuBox = styled.div``;
+
+export type MenuItem = {
+  icon: string;
+  label: string;
+  onClick: (e: MouseEvent<HTMLElement>) => void;
+};
+
+type Props = {
+  menuItems: Array<MenuItem>;
+  toggleIcon: string;
+  size?: MaterialIconButtonProps["size"];
+};
 
 const StyledMenu = withStyles({
   paper: {
@@ -40,7 +55,7 @@ const StyledMenuItem = withStyles(theme => ({
   },
 }))(MenuItem);
 
-export function AnchoredMenu() {
+export const AnchoredMenu = ({ menuItems, toggleIcon, size }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,24 +67,14 @@ export function AnchoredMenu() {
   };
 
   return (
-    <div>
+    <AnchoredMenuBox>
       <IconButton
         aria-controls="customized-menu"
         aria-haspopup="true"
-        // variant="contained"
-        // color="primary"
         onClick={handleClick}
-        iconName="dehaze"
+        iconName={toggleIcon}
+        size={size}
       />
-      {/* <Button
-        aria-controls="customized-menu"
-        aria-haspopup="true"
-        variant="contained"
-        color="primary"
-        onClick={handleClick}
-      >
-        Open Menu
-      </Button> */}
       <StyledMenu
         id="customized-menu"
         anchorEl={anchorEl}
@@ -77,25 +82,15 @@ export function AnchoredMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <StyledMenuItem>
-          <ListItemIcon>
-            <Icon iconName="draft" />
-          </ListItemIcon>
-          <ListItemText primary="Sent mail" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <ListItemIcon>
-            <Icon iconName="draft" />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <ListItemIcon>
-            <Icon iconName="draft" />
-          </ListItemIcon>
-          <ListItemText primary="Inbox" />
-        </StyledMenuItem>
+        {menuItems.map((item, idx) => (
+          <StyledMenuItem key={`${item.label}-${idx}`} onClick={item.onClick}>
+            <ListItemIcon>
+              <Icon iconName={item.icon} />
+            </ListItemIcon>
+            <ListItemText primary={item.label} />
+          </StyledMenuItem>
+        ))}
       </StyledMenu>
-    </div>
+    </AnchoredMenuBox>
   );
-}
+};

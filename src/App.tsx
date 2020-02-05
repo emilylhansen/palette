@@ -19,7 +19,6 @@ const history = createBrowserHistory();
 const BodyBox = styled.div`
   flex: 1;
   overflow-y: scroll;
-  border: 1px solid;
 `;
 
 const ComponentBox = styled.div`

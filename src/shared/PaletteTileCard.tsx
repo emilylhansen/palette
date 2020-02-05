@@ -11,7 +11,7 @@ import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
 import { PaletteTemplate } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTemplate";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import { Overlay } from "/Users/emilyhansen/Desktop/palette-app/src/shared/Overlay";
+import { Overlay } from "../design/Overlay";
 
 const overrides = {
   paletteTemplate: css`
