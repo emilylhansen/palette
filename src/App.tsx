@@ -14,11 +14,12 @@ declare global {
     dataLayer: any;
   }
 }
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
 
 const BodyBox = styled.div`
   flex: 1;
   overflow-y: scroll;
+  display: flex;
 `;
 
 const ComponentBox = styled.div`
@@ -50,12 +51,11 @@ export const Container = connector(Component);
 
 export const App = () => (
   <Provider store={store}>
-    {/* <Router history={history}> */}
-    <Header />
-    <BodyBox>
-      <BrowserRouter>
+    <Router history={history}>
+      <Header />
+      <BodyBox>
         <RootRoutes />
-      </BrowserRouter>
-    </BodyBox>
+      </BodyBox>
+    </Router>
   </Provider>
 );

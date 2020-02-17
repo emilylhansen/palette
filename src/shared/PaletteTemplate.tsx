@@ -14,7 +14,7 @@ import {
 import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
 import convert from "color-convert";
 import { convertHexToRGBA } from "/Users/emilyhansen/Desktop/palette-app/src/shared/shared.helpers";
-import { isNull } from "/Users/emilyhansen/Desktop/palette-app/src/shared/shared.typeGuards";
+import { isNil } from "/Users/emilyhansen/Desktop/palette-app/src/shared/shared.typeGuards";
 import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
 
 const PaletteTemplateBox = styled.div<{ css?: FlattenSimpleInterpolation }>`
@@ -34,7 +34,7 @@ const ColorBlockBox = styled.div<{
   ${({ hex, enableColorDetails }) => css`
     background: #${hex};
 
-    ${!isNull(enableColorDetails) &&
+    ${!isNil(enableColorDetails) &&
       css`
         :hover {
           background: ${convertHexToRGBA({ hex, opacity: 0.3 })};
@@ -69,18 +69,31 @@ const ActionsBox = styled.div`
   margin-top: 8px;
 `;
 
+export type ColorAction = {
+  iconName: string;
+  onClick: () => void;
+};
+
 type PassedProps = {
   palette: Palette;
   enableColorDetails?: boolean;
   css?: FlattenSimpleInterpolation;
+  actions?: Array<ColorAction>;
 };
 type InjectedProps = {};
 type Props = PassedProps & InjectedProps;
-
+{
+  /* <IconButton
+                  iconName={true ? "favorite" : "favorite_border"}
+                  size="small"
+                />
+                <IconButton iconName="file_copy" size="small" /> */
+}
 export const PaletteTemplate = ({
   palette,
   enableColorDetails,
   css: css_,
+  actions,
 }: Props) => {
   return (
     <PaletteTemplateBox css={css_}>
@@ -90,14 +103,19 @@ export const PaletteTemplate = ({
             <>
               <T12>{color.name}</T12>
               <T10>{`#${color.hex}`}</T10>
-              <ActionsBox>
+            </>
+          )}
+          {!isNil(actions) && (
+            <ActionsBox>
+              {actions.map((action, i) => (
                 <IconButton
-                  iconName={true ? "favorite" : "favorite_border"}
+                  key={i}
+                  iconName={action.iconName}
+                  onClick={action.onClick}
                   size="small"
                 />
-                <IconButton iconName="file_copy" size="small" />
-              </ActionsBox>
-            </>
+              ))}
+            </ActionsBox>
           )}
         </ColorBlockBox>
       ))}

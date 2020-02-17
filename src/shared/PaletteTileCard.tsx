@@ -1,17 +1,9 @@
 import React from "react";
-import { connect, ConnectedProps, Provider } from "react-redux";
-import { createStore, Dispatch } from "redux";
 import styled, { css } from "styled-components";
-import {
-  T12,
-  T24,
-} from "/Users/emilyhansen/Desktop/palette-app/src/design/Text";
+import { T24 } from "/Users/emilyhansen/Desktop/palette-app/src/design/Text";
 import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
-import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
 import { PaletteTemplate } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTemplate";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import { Overlay } from "../design/Overlay";
+import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
 
 const overrides = {
   paletteTemplate: css`
@@ -29,18 +21,24 @@ const overrides = {
   `,
 };
 
-const NameBox = styled.div`
+const DetailsBox = styled.div`
   position: relative;
   justify-content: center;
-  display: flex;
   height: 100%;
   align-items: center;
+  display: flex;
+  flex-direction: column;
+`;
+
+const FeaturesBox = styled.div`
+  display: flex;
+  margin-top: 8px;
 `;
 
 const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
   width: 300px;
   height: 200px;
-  padding: 24px;
+  padding: 32px;
   position: relative;
   cursor: pointer;
 
@@ -50,12 +48,12 @@ const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
     left: -24px;
   }
 
-  ${NameBox}, button {
+  ${DetailsBox}, button {
     display: none;
   }
 
   :hover {
-    ${NameBox}, button {
+    ${DetailsBox}, button {
       display: inline-flex;
     }
   }
@@ -69,12 +67,13 @@ export const PaletteTileCard = ({ palette, onClick }: Props) => {
   return (
     <PaletteTileCardBox onClick={onClick}>
       <PaletteTemplate palette={palette} css={overrides.paletteTemplate} />
-      <NameBox>
+      <DetailsBox>
         <T24 css={overrides.name}>{palette.name}</T24>
-      </NameBox>
-      <IconButton color="secondary">
-        <Icon iconName={true ? "favorite" : "favorite_border"} />
-      </IconButton>
+        <FeaturesBox>
+          <IconButton iconName={true ? "favorite" : "favorite_border"} />
+          <IconButton iconName={"file_copy"} />
+        </FeaturesBox>
+      </DetailsBox>
     </PaletteTileCardBox>
   );
 };

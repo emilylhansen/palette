@@ -2,7 +2,7 @@
 import React from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,57 +13,87 @@ import {
   AnchoredMenu,
   MenuItem,
 } from "/Users/emilyhansen/Desktop/palette-app/src/design/AnchoredMenu";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
+import {
+  makeHomeRoute,
+  makeAboutRoute,
+  makeCreateRoute,
+  makeEditRoute,
+  makeSettingsRoute,
+} from "/Users/emilyhansen/Desktop/palette-app/src/root/root.routes";
+import { history } from "/Users/emilyhansen/Desktop/palette-app/src/App";
+
+const ToolbarBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  align-items: center;
+`;
 
 type PassedProps = {};
 type InjectedProps = {};
 type Props = PassedProps & InjectedProps;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    title: {
-      flexGrow: 1,
-    },
-  })
-);
-
 const menuItems: Array<MenuItem> = [
   {
     icon: "add",
     label: "create",
-    onClick: () => null,
+    onClick: (e, cb) => {
+      history.push(makeCreateRoute());
+      cb();
+    },
   },
   {
     icon: "person",
     label: "profile",
-    onClick: () => null,
+    onClick: (e, cb) => {
+      history.push(makeCreateRoute());
+      cb();
+    },
   },
   {
     icon: "menu_book",
     label: "about",
-    onClick: () => null,
+    onClick: (e, cb) => {
+      history.push(makeAboutRoute());
+      cb();
+    },
   },
   {
     icon: "settings",
     label: "settings",
-    onClick: () => null,
+    onClick: (e, cb) => {
+      history.push(makeSettingsRoute());
+      cb();
+    },
   },
   {
     icon: "power_settings_new",
     label: "logout",
-    onClick: () => null,
+    onClick: (e, cb) => {
+      history.push(makeCreateRoute());
+      cb();
+    },
   },
 ];
 
 export const Header = ({}: Props) => {
-  const classes = useStyles();
-
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-          News
-        </Typography>
-        <AnchoredMenu toggleIcon="dehaze" menuItems={menuItems} />
+        <ToolbarBox>
+          <Link to={makeHomeRoute()}>
+            <Typography variant="h6">Palette App</Typography>
+          </Link>
+          <AnchoredMenu toggleIcon="dehaze" menuItems={menuItems} />
+        </ToolbarBox>
       </Toolbar>
     </AppBar>
   );

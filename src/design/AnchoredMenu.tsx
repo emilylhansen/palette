@@ -15,7 +15,7 @@ const AnchoredMenuBox = styled.div``;
 export type MenuItem = {
   icon: string;
   label: string;
-  onClick: (e: MouseEvent<HTMLElement>) => void;
+  onClick: (e: MouseEvent<HTMLElement>, cb: () => void) => void;
 };
 
 type Props = {
@@ -46,12 +46,12 @@ const StyledMenu = withStyles({
 
 const StyledMenuItem = withStyles(theme => ({
   root: {
-    "&:focus": {
-      backgroundColor: theme.palette.primary.main,
-      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-        color: theme.palette.common.white,
-      },
-    },
+    // "&:focus": {
+    //   backgroundColor: theme.palette.primary.main,
+    //   "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+    //     color: theme.palette.common.white,
+    //   },
+    // },
   },
 }))(MenuItem);
 
@@ -83,7 +83,10 @@ export const AnchoredMenu = ({ menuItems, toggleIcon, size }: Props) => {
         onClose={handleClose}
       >
         {menuItems.map((item, idx) => (
-          <StyledMenuItem key={`${item.label}-${idx}`} onClick={item.onClick}>
+          <StyledMenuItem
+            key={`${item.label}-${idx}`}
+            onClick={e => item.onClick(e, () => handleClick(e))}
+          >
             <ListItemIcon>
               <Icon iconName={item.icon} />
             </ListItemIcon>

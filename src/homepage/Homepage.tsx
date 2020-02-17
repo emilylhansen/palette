@@ -9,6 +9,8 @@ import { mockPalettes } from "/Users/emilyhansen/Desktop/palette-app/src/shared/
 import { Overlay } from "../design/Overlay";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
 import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
+import { Login } from "/Users/emilyhansen/Desktop/palette-app/src/auth/Login";
+import { Modal } from "/Users/emilyhansen/Desktop/palette-app/src/design/Modal";
 
 const HomepageBox = styled.div`
   flex: 1;
@@ -39,14 +41,15 @@ export const Homepage = ({}: Props) => {
           onClick={() => setSelectedPalette(some(palette))}
         />
       ))}
-      <Overlay
+      <Modal
         isOpen={isSome(selectedPalette)}
         onClose={() => setSelectedPalette(none)}
       >
         {isSome(selectedPalette) && (
           <PaletteOverviewCard palette={selectedPalette.value} />
         )}
-      </Overlay>
+      </Modal>
+      {/* <Login /> */}
     </HomepageBox>
   );
 };

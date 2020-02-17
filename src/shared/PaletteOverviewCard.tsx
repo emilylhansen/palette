@@ -8,13 +8,24 @@ import {
 } from "/Users/emilyhansen/Desktop/palette-app/src/design/Text";
 import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
 import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
-import { PaletteTemplate } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTemplate";
+import {
+  PaletteTemplate,
+  ColorAction,
+} from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTemplate";
 import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
 import Chip from "@material-ui/core/Chip";
 import {
   AnchoredMenu,
   MenuItem,
 } from "/Users/emilyhansen/Desktop/palette-app/src/design/AnchoredMenu";
+import {
+  makeHomeRoute,
+  makeAboutRoute,
+  makeCreateRoute,
+  makeEditRoute,
+  makeSettingsRoute,
+} from "/Users/emilyhansen/Desktop/palette-app/src/root/root.routes";
+import { history } from "/Users/emilyhansen/Desktop/palette-app/src/App";
 
 const overrides = {
   favorite: css`
@@ -23,14 +34,10 @@ const overrides = {
 };
 
 const PaletteOverviewCardBox = styled.div`
-  width: 700px;
-  height: 400px;
-  padding: 24px;
-  border-radius: 3px;
-  background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 10px;
+  padding: 0 24px 24px;
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 const FeaturesBox = styled.div`
@@ -41,11 +48,6 @@ const FeaturesBox = styled.div`
   > div:not(:last-child) {
     margin-right: 16px;
   }
-`;
-
-const IconButtonBox = styled.div`
-  display: flex;
-  justify-content: flex-end;
 `;
 
 const TagsBox = styled.div`
@@ -108,7 +110,7 @@ const menuItems: Array<MenuItem> = [
   {
     icon: "edit",
     label: "edit",
-    onClick: () => null,
+    onClick: () => history.push(makeEditRoute()),
   },
   {
     icon: "trash",
@@ -124,9 +126,6 @@ type Props = PassedProps & InjectedProps;
 export const PaletteOverviewCard = ({ palette }: Props) => {
   return (
     <PaletteOverviewCardBox>
-      <IconButtonBox>
-        <IconButton color="secondary" size="small" iconName="close" />
-      </IconButtonBox>
       <T24>{palette.name}</T24>
       <T12>
         <a>{palette.authorId}</a>

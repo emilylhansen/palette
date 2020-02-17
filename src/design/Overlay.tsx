@@ -17,7 +17,7 @@ const OverlayBox = styled.div`
 type PassedProps = {
   children: ReactNode;
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 type InjectedProps = {};
 type Props = PassedProps & InjectedProps;
