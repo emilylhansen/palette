@@ -1,9 +1,6 @@
 import React from "react";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
-import {
-  Icon,
-  Props as IconProps,
-} from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
+import { Icon, Props as IconProps } from "src/design/Icon";
 import {
   default as MaterialIconButton,
   IconButtonProps as MaterialIconButtonProps,

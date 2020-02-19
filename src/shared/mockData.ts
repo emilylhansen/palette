@@ -1,8 +1,4 @@
-import {
-  Palette,
-  Color,
-  Tag,
-} from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
+import { Palette, Color, Tag, User } from "src/root/root.types";
 import faker from "faker";
 import { range } from "fp-ts/lib/Array";
 
@@ -31,4 +27,17 @@ const makeMockPalette = (): Palette => ({
   tags: range(0, 3).map(_ => makeMockTag()),
 });
 
+const makeMockUser = (): User => ({
+  name: faker.name.findName(),
+  description: faker.lorem.paragraph(),
+  avatar: faker.image.avatar(),
+  key: faker.random.uuid(),
+  email: faker.internet.email(),
+  createOn: faker.date.past(),
+});
+
 export const mockPalettes = range(0, 40).map(_ => makeMockPalette());
+
+export const mockCurrentUser = makeMockUser();
+
+// export const mockPalettesById = () =>

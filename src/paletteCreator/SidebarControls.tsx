@@ -2,16 +2,13 @@ import React, { useState } from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled from "styled-components";
-import { PaletteOverviewCard } from "../shared/PaletteOverviewCard";
-import { PaletteTileCard } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTileCard";
+import { PaletteOverviewCard } from "src/shared/PaletteOverviewCard";
+import { PaletteTileCard } from "src/shared/PaletteTileCard";
 import { range } from "fp-ts/lib/Array";
-import { mockPalettes } from "/Users/emilyhansen/Desktop/palette-app/src/shared/mockData";
-import { Overlay } from "../design/Overlay";
+import { mockPalettes } from "src/shared/mockData";
+import { Overlay } from "src/design/Overlay";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
-import {
-  Palette,
-  RootState,
-} from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
+import { Palette, RootState } from "src/root/root.types";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -19,11 +16,11 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
-import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
+import { IconButton } from "src/design/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
-import { PaletteTemplate } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTemplate";
+import { PaletteTemplate } from "src/shared/PaletteTemplate";
 import Chip from "@material-ui/core/Chip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";

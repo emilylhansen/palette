@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled, { keyframes } from "styled-components";
-import { PaletteOverviewCard } from "../shared/PaletteOverviewCard";
-import { PaletteTileCard } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTileCard";
+import { PaletteOverviewCard } from "src/shared/PaletteOverviewCard";
+import { PaletteTileCard } from "src/shared/PaletteTileCard";
 import { range } from "fp-ts/lib/Array";
-import { mockPalettes } from "/Users/emilyhansen/Desktop/palette-app/src/shared/mockData";
-import { Overlay } from "../design/Overlay";
-import { Icon } from "../design/Icon";
+import { mockPalettes } from "src/shared/mockData";
+import { Overlay } from "src/design/Overlay";
+import { Icon } from "src/design/Icon";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
-import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
-import { T12, T24 } from "../design/Text";
+import { Palette } from "src/root/root.types";
+import { T12, T24 } from "src/design/Text";
 import Button from "@material-ui/core/Button";
-import { Modal } from "/Users/emilyhansen/Desktop/palette-app/src/design/Modal";
+import { Modal } from "src/design/Modal";
 
 const LoginBox = styled.div`
   padding: 24px;

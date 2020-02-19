@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled from "styled-components";
-import { PaletteOverviewCard } from "../shared/PaletteOverviewCard";
-import { PaletteTileCard } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTileCard";
+import { PaletteOverviewCard } from "src/shared/PaletteOverviewCard";
+import { PaletteTileCard } from "src/shared/PaletteTileCard";
 import { range } from "fp-ts/lib/Array";
-import { mockPalettes } from "/Users/emilyhansen/Desktop/palette-app/src/shared/mockData";
-import { Overlay } from "../design/Overlay";
+import { mockPalettes } from "src/shared/mockData";
+import { Overlay } from "src/design/Overlay";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
-import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
-import { Login } from "/Users/emilyhansen/Desktop/palette-app/src/auth/Login";
-import { Modal } from "/Users/emilyhansen/Desktop/palette-app/src/design/Modal";
+import { Palette } from "src/root/root.types";
+import { Login } from "src/auth/Login";
+import { Modal } from "src/design/Modal";
 
 const HomepageBox = styled.div`
   flex: 1;

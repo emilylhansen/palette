@@ -1,13 +1,13 @@
 import React from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
-import { rootReducer } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.reducer";
-import { RootState } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
+import { rootReducer } from "src/root/root.reducer";
+import { RootState } from "src/root/root.types";
 import styled from "styled-components";
 import { Switch, Route, Router, BrowserRouter } from "react-router-dom";
-import { RootRoutes } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.routes";
+import { RootRoutes } from "src/root/root.routes";
 import { createBrowserHistory, Location } from "history";
-import { Header } from "/Users/emilyhansen/Desktop/palette-app/src/shared/Header";
+import { Header } from "src/shared/Header";
 
 declare global {
   interface Window {
@@ -50,12 +50,14 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export const Container = connector(Component);
 
 export const App = () => (
-  <Provider store={store}>
-    <Router history={history}>
-      <Header />
-      <BodyBox>
-        <RootRoutes />
-      </BodyBox>
-    </Router>
-  </Provider>
+  <BrowserRouter>
+    <Provider store={store}>
+      <Router history={history}>
+        <Header />
+        <BodyBox>
+          <RootRoutes />
+        </BodyBox>
+      </Router>
+    </Provider>
+  </BrowserRouter>
 );

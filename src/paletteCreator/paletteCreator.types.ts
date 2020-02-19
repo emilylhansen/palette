@@ -1,5 +1,5 @@
 import { Option, none } from "fp-ts/lib/Option";
-import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
+import { Palette } from "src/root/root.types";
 
 export type State = {
   palette: Pick<

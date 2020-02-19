@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { T24 } from "/Users/emilyhansen/Desktop/palette-app/src/design/Text";
-import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
-import { PaletteTemplate } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTemplate";
-import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
+import { T24 } from "src/design/Text";
+import { Palette } from "src/root/root.types";
+import { PaletteTemplate } from "src/shared/PaletteTemplate";
+import { IconButton } from "src/design/IconButton";
 
 const overrides = {
   paletteTemplate: css`

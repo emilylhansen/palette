@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled from "styled-components";
-import { PaletteOverviewCard } from "../shared/PaletteOverviewCard";
-import { PaletteTileCard } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTileCard";
+import { PaletteOverviewCard } from "src/shared/PaletteOverviewCard";
+import { PaletteTileCard } from "src/shared/PaletteTileCard";
 import { range } from "fp-ts/lib/Array";
-import { mockPalettes } from "/Users/emilyhansen/Desktop/palette-app/src/shared/mockData";
-import { Overlay } from "../design/Overlay";
+import { mockPalettes } from "src/shared/mockData";
+import { Overlay } from "src/design/Overlay";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
-import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
-import { PaletteCreatorSidebar } from "/Users/emilyhansen/Desktop/palette-app/src/paletteCreator/PaletteCreatorSidebar";
+import { Palette } from "src/root/root.types";
+import { PaletteCreatorSidebar } from "src/paletteCreator/PaletteCreatorSidebar";
 import Button from "@material-ui/core/Button";
-import { PaletteTemplate } from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTemplate";
-import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
+import { PaletteTemplate } from "src/shared/PaletteTemplate";
+import { IconButton } from "src/design/IconButton";
 
 const PaletteCreatorBox = styled.div`
   display: flex;

@@ -1,10 +1,11 @@
 {
-    "editor.formatOnSave": true,
-    "javascript.format.semicolons": "remove",
-    "typescript.format.semicolons": "remove",
-    "prettier.trailingComma": "es5",
-    "javascript.preferences.importModuleSpecifier": "relative",
-    "javascript.preferences.quoteStyle": "double",
-    "typescript.preferences.importModuleSpecifier": "relative",
-    "typescript.preferences.quoteStyle": "double"
+  "editor.formatOnSave": true,
+  "javascript.format.semicolons": "remove",
+  "typescript.format.semicolons": "remove",
+  "prettier.trailingComma": "es5",
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.quoteStyle": "double",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.quoteStyle": "double",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

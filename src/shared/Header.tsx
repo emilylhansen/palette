@@ -9,10 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import {
-  AnchoredMenu,
-  MenuItem,
-} from "/Users/emilyhansen/Desktop/palette-app/src/design/AnchoredMenu";
+import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
 import {
   BrowserRouter as Router,
   Switch,
@@ -27,8 +24,8 @@ import {
   makeCreateRoute,
   makeEditRoute,
   makeSettingsRoute,
-} from "/Users/emilyhansen/Desktop/palette-app/src/root/root.routes";
-import { history } from "/Users/emilyhansen/Desktop/palette-app/src/App";
+} from "src/root/root.routes";
+import { history } from "src/App";
 
 const ToolbarBox = styled.div`
   display: flex;

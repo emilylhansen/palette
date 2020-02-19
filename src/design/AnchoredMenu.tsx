@@ -5,8 +5,8 @@ import Menu, { MenuProps } from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
-import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
+import { IconButton } from "src/design/IconButton";
+import { Icon } from "src/design/Icon";
 import styled from "styled-components";
 import { IconButtonProps as MaterialIconButtonProps } from "@material-ui/core/IconButton";
 

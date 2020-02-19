@@ -1,11 +1,10 @@
 import { Option, none } from "fp-ts/lib/Option";
+import { User } from "src/root/root.types";
 
 export type AuthReducerState = {
-  isAuthenticated: boolean;
-  uuid: Option<string>;
+  currentUser: Option<User>;
 };
 
 export const initialState: AuthReducerState = {
-  isAuthenticated: false,
-  uuid: none,
+  currentUser: none,
 };

@@ -2,30 +2,21 @@ import React from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled, { css } from "styled-components";
-import {
-  T12,
-  T24,
-} from "/Users/emilyhansen/Desktop/palette-app/src/design/Text";
-import { Palette } from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
-import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
-import {
-  PaletteTemplate,
-  ColorAction,
-} from "/Users/emilyhansen/Desktop/palette-app/src/shared/PaletteTemplate";
-import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
+import { T12, T24 } from "src/design/Text";
+import { Palette } from "src/root/root.types";
+import { Icon } from "src/design/Icon";
+import { PaletteTemplate, ColorAction } from "src/shared/PaletteTemplate";
+import { IconButton } from "src/design/IconButton";
 import Chip from "@material-ui/core/Chip";
-import {
-  AnchoredMenu,
-  MenuItem,
-} from "/Users/emilyhansen/Desktop/palette-app/src/design/AnchoredMenu";
+import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
 import {
   makeHomeRoute,
   makeAboutRoute,
   makeCreateRoute,
   makeEditRoute,
   makeSettingsRoute,
-} from "/Users/emilyhansen/Desktop/palette-app/src/root/root.routes";
-import { history } from "/Users/emilyhansen/Desktop/palette-app/src/App";
+} from "src/root/root.routes";
+import { history } from "src/App";
 
 const overrides = {
   favorite: css`

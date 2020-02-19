@@ -2,20 +2,13 @@ import React from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
-import {
-  T10,
-  T12,
-  T24,
-} from "/Users/emilyhansen/Desktop/palette-app/src/design/Text";
-import {
-  Palette,
-  Color,
-} from "/Users/emilyhansen/Desktop/palette-app/src/root/root.types";
-import { Icon } from "/Users/emilyhansen/Desktop/palette-app/src/design/Icon";
+import { T10, T12, T24 } from "src/design/Text";
+import { Palette, Color } from "src/root/root.types";
+import { Icon } from "src/design/Icon";
 import convert from "color-convert";
-import { convertHexToRGBA } from "/Users/emilyhansen/Desktop/palette-app/src/shared/shared.helpers";
-import { isNil } from "/Users/emilyhansen/Desktop/palette-app/src/shared/shared.typeGuards";
-import { IconButton } from "/Users/emilyhansen/Desktop/palette-app/src/design/IconButton";
+import { convertHexToRGBA } from "src/shared/shared.helpers";
+import { isNil } from "src/shared/shared.typeGuards";
+import { IconButton } from "src/design/IconButton";
 
 const PaletteTemplateBox = styled.div<{ css?: FlattenSimpleInterpolation }>`
   display: flex;
