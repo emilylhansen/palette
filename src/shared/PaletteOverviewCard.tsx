@@ -1,9 +1,15 @@
 import React from "react";
-import { connect, ConnectedProps, Provider } from "react-redux";
+import {
+  connect,
+  ConnectedProps,
+  Provider,
+  useDispatch,
+  useSelector,
+} from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled, { css } from "styled-components";
 import { T12, T24 } from "src/design/Text";
-import { Palette } from "src/root/root.types";
+import { Palette } from "src/shared/shared.types";
 import { Icon } from "src/design/Icon";
 import { PaletteTemplate, ColorAction } from "src/shared/PaletteTemplate";
 import { IconButton } from "src/design/IconButton";
@@ -17,6 +23,14 @@ import {
   makeSettingsRoute,
 } from "src/root/root.routes";
 import { history } from "src/App";
+import {
+  getPalettesById,
+  getColorsById,
+  getUsersById,
+} from "src/shared/shared.selectors";
+import { lookup } from "fp-ts/lib/Record";
+import { pipe } from "fp-ts/lib/pipeable";
+import { fold, map, getOrElse } from "fp-ts/lib/Option";
 
 const overrides = {
   favorite: css`
@@ -115,11 +129,18 @@ type InjectedProps = {};
 type Props = PassedProps & InjectedProps;
 
 export const PaletteOverviewCard = ({ palette }: Props) => {
+  const usersById = useSelector(getUsersById);
+  const author = lookup(palette.authorId, usersById);
+
   return (
     <PaletteOverviewCardBox>
       <T24>{palette.name}</T24>
       <T12>
-        <a>{palette.authorId}</a>
+        {pipe(
+          author,
+          map(author_ => author_.name),
+          getOrElse(() => "N/A")
+        )}
       </T12>
       <FeaturesBox>
         <FeaturesBoxLeft>

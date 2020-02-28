@@ -3,7 +3,7 @@ import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import { T10, T12, T24 } from "src/design/Text";
-import { Palette, Color } from "src/root/root.types";
+import { Palette, Color } from "src/shared/shared.types";
 import { Icon } from "src/design/Icon";
 import convert from "color-convert";
 import { convertHexToRGBA } from "src/shared/shared.helpers";

@@ -8,7 +8,7 @@ import { range } from "fp-ts/lib/Array";
 import { mockPalettes } from "src/shared/mockData";
 import { Overlay } from "src/design/Overlay";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
-import { Palette, RootState } from "src/root/root.types";
+import { RootState } from "src/root/root.types";
 
 const Box = styled.div``;
 

@@ -9,7 +9,7 @@ import { mockPalettes } from "src/shared/mockData";
 import { Overlay } from "src/design/Overlay";
 import { Icon } from "src/design/Icon";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
-import { Palette } from "src/root/root.types";
+import { Palette } from "src/shared/shared.types";
 import { T12, T24 } from "src/design/Text";
 import Button from "@material-ui/core/Button";
 import { IconButton } from "./IconButton";

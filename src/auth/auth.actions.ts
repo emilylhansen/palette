@@ -1,6 +1,6 @@
 import { ThunkDispatch as Dispatch } from "redux-thunk";
 import { AUTHENTICATE, UNAUTHENTICATE } from "src/auth/auth.constants";
-import { AuthReducerState } from "src/auth/auth.types";
+import { AuthState } from "src/auth/auth.types";
 import { Action } from "redux";
 
 export type Authenticate = {

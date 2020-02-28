@@ -1,6 +1,6 @@
 import React from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
-import { createStore, Dispatch } from "redux";
+import { createStore, Dispatch, applyMiddleware } from "redux";
 import { rootReducer } from "src/root/root.reducer";
 import { RootState } from "src/root/root.types";
 import styled from "styled-components";
@@ -8,6 +8,8 @@ import { Switch, Route, Router, BrowserRouter } from "react-router-dom";
 import { RootRoutes } from "src/root/root.routes";
 import { createBrowserHistory, Location } from "history";
 import { Header } from "src/shared/Header";
+import { createLogger } from "redux-logger";
+import thunk from "redux-thunk";
 
 declare global {
   interface Window {
@@ -15,6 +17,7 @@ declare global {
   }
 }
 export const history = createBrowserHistory();
+const logger = createLogger();
 
 const BodyBox = styled.div`
   flex: 1;
@@ -27,7 +30,7 @@ const ComponentBox = styled.div`
   height: 100%;
 `;
 
-let store = createStore(rootReducer);
+let store = createStore(rootReducer, undefined, applyMiddleware(logger, thunk));
 
 type ComponentProps = PropsFromRedux;
 

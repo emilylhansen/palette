@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { T24 } from "src/design/Text";
-import { Palette } from "src/root/root.types";
+import { Palette } from "src/shared/shared.types";
 import { PaletteTemplate } from "src/shared/PaletteTemplate";
 import { IconButton } from "src/design/IconButton";
 

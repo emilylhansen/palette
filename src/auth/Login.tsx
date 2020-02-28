@@ -1,15 +1,6 @@
-import React, { useState } from "react";
-import { connect, ConnectedProps, Provider } from "react-redux";
-import { createStore, Dispatch } from "redux";
-import styled, { keyframes } from "styled-components";
-import { PaletteOverviewCard } from "src/shared/PaletteOverviewCard";
-import { PaletteTileCard } from "src/shared/PaletteTileCard";
-import { range } from "fp-ts/lib/Array";
-import { mockPalettes } from "src/shared/mockData";
-import { Overlay } from "src/design/Overlay";
+import React from "react";
+import styled from "styled-components";
 import { Icon } from "src/design/Icon";
-import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
-import { Palette } from "src/root/root.types";
 import { T12, T24 } from "src/design/Text";
 import Button from "@material-ui/core/Button";
 import { Modal } from "src/design/Modal";
