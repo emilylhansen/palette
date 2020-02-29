@@ -16,9 +16,7 @@ export const initialState: SharedState = {
 
 export type Color = {
   name: string;
-  description: string;
   hex: string;
-  private: boolean;
   key: string;
 };
 

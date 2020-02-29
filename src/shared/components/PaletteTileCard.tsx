@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { T24 } from "src/design/Text";
 import { Palette } from "src/shared/shared.types";
-import { PaletteTemplate } from "src/shared/PaletteTemplate";
+import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
 import { IconButton } from "src/design/IconButton";
 
 const overrides = {
@@ -66,7 +66,10 @@ type Props = PassedProps & InjectedProps;
 export const PaletteTileCard = ({ palette, onClick }: Props) => {
   return (
     <PaletteTileCardBox onClick={onClick}>
-      <PaletteTemplate palette={palette} css={overrides.paletteTemplate} />
+      <PaletteTemplate
+        colors={palette.colors}
+        css={overrides.paletteTemplate}
+      />
       <DetailsBox>
         <T24 css={overrides.name}>{palette.name}</T24>
         <FeaturesBox>

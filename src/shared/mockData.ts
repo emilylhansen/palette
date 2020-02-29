@@ -13,9 +13,7 @@ import { pipe } from "fp-ts/lib/pipeable";
 
 const makeMockColor = ({ hex, key }: { hex: string; key: string }): Color => ({
   name: faker.name.title(),
-  description: faker.lorem.sentences(),
   hex,
-  private: faker.random.boolean(),
   key,
 });
 

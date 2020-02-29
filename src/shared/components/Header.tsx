@@ -47,30 +47,30 @@ const menuItems: Array<MenuItem> = [
       cb();
     },
   },
-  {
-    icon: "person",
-    label: "profile",
-    onClick: (e, cb) => {
-      history.push(makeCreateRoute());
-      cb();
-    },
-  },
-  {
-    icon: "menu_book",
-    label: "about",
-    onClick: (e, cb) => {
-      history.push(makeAboutRoute());
-      cb();
-    },
-  },
-  {
-    icon: "settings",
-    label: "settings",
-    onClick: (e, cb) => {
-      history.push(makeSettingsRoute());
-      cb();
-    },
-  },
+  // {
+  //   icon: "person",
+  //   label: "profile",
+  //   onClick: (e, cb) => {
+  //     history.push(makeCreateRoute());
+  //     cb();
+  //   },
+  // },
+  // {
+  //   icon: "menu_book",
+  //   label: "about",
+  //   onClick: (e, cb) => {
+  //     history.push(makeAboutRoute());
+  //     cb();
+  //   },
+  // },
+  // {
+  //   icon: "settings",
+  //   label: "settings",
+  //   onClick: (e, cb) => {
+  //     history.push(makeSettingsRoute());
+  //     cb();
+  //   },
+  // },
   {
     icon: "power_settings_new",
     label: "logout",

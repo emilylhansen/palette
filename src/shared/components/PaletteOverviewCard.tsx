@@ -11,7 +11,10 @@ import styled, { css } from "styled-components";
 import { T12, T24 } from "src/design/Text";
 import { Palette } from "src/shared/shared.types";
 import { Icon } from "src/design/Icon";
-import { PaletteTemplate, ColorAction } from "src/shared/PaletteTemplate";
+import {
+  PaletteTemplate,
+  ColorAction,
+} from "src/shared/components/PaletteTemplate";
 import { IconButton } from "src/design/IconButton";
 import Chip from "@material-ui/core/Chip";
 import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
@@ -164,7 +167,7 @@ export const PaletteOverviewCard = ({ palette }: Props) => {
           <Chip key={tag.key} label={tag.name} size="small" color="secondary" />
         ))}
       </TagsBox>
-      <PaletteTemplate palette={palette} enableColorDetails />
+      <PaletteTemplate colors={palette.colors} enableColorDetails />
     </PaletteOverviewCardBox>
   );
 };

@@ -12,7 +12,7 @@ export const authReducer = (
     case AuthActionType.Authenticate:
       const { key } = action.payload;
 
-      return { ...state, currentUser: some(mockUsersById[0]) };
+      return { ...state, currentUser: some(Object.values(mockUsersById)[0]) };
     case AuthActionType.Unauthenticate:
       return { ...state, currentUser: none };
     default:

@@ -68,7 +68,7 @@ export type ColorAction = {
 };
 
 type PassedProps = {
-  palette: Palette;
+  colors: Array<Color>;
   enableColorDetails?: boolean;
   css?: FlattenSimpleInterpolation;
   actions?: Array<ColorAction>;
@@ -83,14 +83,14 @@ type Props = PassedProps & InjectedProps;
                 <IconButton iconName="file_copy" size="small" /> */
 }
 export const PaletteTemplate = ({
-  palette,
+  colors,
   enableColorDetails,
   css: css_,
   actions,
 }: Props) => {
   return (
     <PaletteTemplateBox css={css_}>
-      {palette.colors.map((color: Color) => (
+      {colors.map((color: Color) => (
         <ColorBlockBox hex={color.hex} enableColorDetails={enableColorDetails}>
           {enableColorDetails && (
             <>
