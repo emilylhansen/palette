@@ -1,46 +1,32 @@
-import React, { useState } from "react";
-import {
-  connect,
-  ConnectedProps,
-  Provider,
-  useSelector,
-  useDispatch,
-} from "react-redux";
-import { createStore, Dispatch } from "redux";
-import styled from "styled-components";
-import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
-import { PaletteTileCard } from "src/shared/components/PaletteTileCard";
-import { range } from "fp-ts/lib/Array";
-import { mockPalettes } from "src/shared/mockData";
-import { Overlay } from "src/design/Overlay";
-import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
-import { Palette } from "src/shared/shared.types";
 import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
-import Avatar from "@material-ui/core/Avatar";
-import { IconButton } from "src/design/IconButton";
-import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import TextField from "@material-ui/core/TextField";
-import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
-import Chip from "@material-ui/core/Chip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { SidebarTags } from "src/paletteCreator/SidebarTags";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  getName,
-  getDescription,
-  getPrivate,
-} from "src/paletteCreator/paletteCreator.selectors";
-import {
-  setName,
   setDescription,
+  setName,
   setPrivate,
 } from "src/paletteCreator/paletteCreator.actions";
+import {
+  getDescription,
+  getName,
+  getPrivate,
+} from "src/paletteCreator/paletteCreator.selectors";
+import { SidebarTags } from "src/paletteCreator/SidebarTags";
+import styled, { css } from "styled-components";
+import { IconButton } from "src/design/IconButton";
+import { Text } from "src/design/Text";
+
+const overrides = {
+  privateButton: css`
+    margin-right: 16px;
+  `,
+};
 
 const PaletteCreatorSidebarBox = styled.div`
   width: 300px;
@@ -51,6 +37,15 @@ const PaletteCreatorSidebarBox = styled.div`
     overflow: auto;
     width: 100%;
   }
+`;
+
+const PrivateBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SectionBox = styled.div`
+  margin-bottom: 8px;
 `;
 
 type PassedProps = {};
@@ -65,6 +60,7 @@ const usePaletteCreatorSidebar = ({}: Props) => {
   const isPrivate = useSelector(getPrivate);
 
   const privateLabel = isPrivate ? "Private" : "Public";
+  const privateIcon = isPrivate ? "lock" : "lock_open";
 
   const onChangeName = (value: string) => dispatch(setName(value));
 
@@ -78,6 +74,7 @@ const usePaletteCreatorSidebar = ({}: Props) => {
     description,
     isPrivate,
     privateLabel,
+    privateIcon,
     onChangeName,
     onChangeDescription,
     onTogglePrivate,
@@ -91,36 +88,42 @@ export const PaletteCreatorSidebar = (props: Props) => {
     <PaletteCreatorSidebarBox>
       <Card>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Text fontSize={16} gutterBottom>
             Details
-          </Typography>
-          <TextField
-            label="Name"
-            id="standard-size-normal"
-            value={state.name}
-            onChange={e => state.onChangeName(e.target.value)}
-          />
-          <TextField
-            id="standard-multiline-static"
-            label="Description"
-            multiline
-            rows="4"
-            value={state.description}
-            onChange={e => state.onChangeDescription(e.target.value)}
-          />
-          <FormControlLabel
-            control={
-              <Switch
-                checked={state.isPrivate}
-                onChange={state.onTogglePrivate}
+          </Text>
+          <SectionBox>
+            <TextField
+              label="Name"
+              variant="outlined"
+              value={state.name}
+              onChange={e => state.onChangeName(e.target.value)}
+              size="small"
+            />
+          </SectionBox>
+          <SectionBox>
+            <TextField
+              label="Description"
+              variant="outlined"
+              multiline
+              rows="3"
+              value={state.description}
+              onChange={e => state.onChangeDescription(e.target.value)}
+              size="small"
+            />
+          </SectionBox>
+          <SectionBox>
+            <PrivateBox>
+              <IconButton
+                iconName={state.privateIcon}
+                onClick={state.onTogglePrivate}
+                css={overrides.privateButton}
               />
-            }
-            label={state.privateLabel}
-          />
+              <Text fontSize={14}>{state.privateLabel}</Text>
+            </PrivateBox>
+          </SectionBox>
         </CardContent>
         <Divider variant="middle" />
         <SidebarTags />
-        <Divider variant="middle" />
       </Card>
     </PaletteCreatorSidebarBox>
   );

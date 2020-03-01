@@ -34,9 +34,7 @@ const ToolbarBox = styled.div`
   align-items: center;
 `;
 
-type PassedProps = {};
-type InjectedProps = {};
-type Props = PassedProps & InjectedProps;
+type Props = {};
 
 const menuItems: Array<MenuItem> = [
   {

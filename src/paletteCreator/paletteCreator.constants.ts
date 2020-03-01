@@ -4,6 +4,9 @@ export type ADD_COLOR = typeof ADD_COLOR;
 export const REMOVE_COLOR = "REMOVE_COLOR";
 export type REMOVE_COLOR = typeof REMOVE_COLOR;
 
+export const SET_COLOR = "SET_COLOR";
+export type SET_COLOR = typeof SET_COLOR;
+
 export const ADD_TAG = "ADD_TAG";
 export type ADD_TAG = typeof ADD_TAG;
 

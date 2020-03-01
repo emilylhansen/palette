@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import {
@@ -16,14 +16,9 @@ import { ChromePicker, ColorResult } from "react-color";
 import faker from "faker";
 import { pipe } from "fp-ts/lib/pipeable";
 
-const PaletteCreatorColorPickerBox = styled.div`
+const ColorPickerBox = styled.div`
   display: flex;
-`;
-
-const AddBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 16px;
+  height: 100%;
 `;
 
 const PopOver = styled.div`
@@ -40,14 +35,22 @@ const Cover = styled.div`
   left: 0px;
 `;
 
-type Props = {
+export type Props = {
   color?: string;
+  toggle: ({
+    onToggle,
+    isOpen,
+  }: {
+    onToggle: () => void;
+    isOpen: boolean;
+  }) => ReactNode;
+  handleColor: (hex: string) => void;
 };
 
-export const PaletteCreatorColorPicker = ({ color }: Props) => {
+const useColorPicker = (props: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedColor, setColor] = useState<Option<string>>(
-    fromNullable(color)
+    fromNullable(props.color)
   );
 
   const dispatch = useDispatch();
@@ -57,36 +60,33 @@ export const PaletteCreatorColorPicker = ({ color }: Props) => {
     pipe(
       selectedColor,
       map((c: string) => {
-        dispatch(
-          addColor({
-            hex: c.replace(/#/g, ""),
-            key: faker.random.uuid(),
-            name: faker.name.title(),
-          })
-        );
+        props.handleColor(c.replace(/#/g, ""));
       }),
       getOrElse(() => null)
     );
   };
 
+  return { isOpen, setIsOpen, selectedColor, setColor, handleOnClose };
+};
+
+export const ColorPicker = (props: Props) => {
+  const state = useColorPicker(props);
+
   return (
-    <PaletteCreatorColorPickerBox>
-      <AddBox>
-        <IconButton
-          color="secondary"
-          iconName={"add"}
-          onClick={() => setIsOpen(!isOpen)}
-        />
-      </AddBox>
-      {isOpen && (
+    <ColorPickerBox>
+      {props.toggle({
+        onToggle: () => state.setIsOpen(!state.isOpen),
+        isOpen: state.isOpen,
+      })}
+      {state.isOpen && (
         <PopOver>
-          <Cover onClick={handleOnClose} />
+          <Cover onClick={state.handleOnClose} />
           <ChromePicker
-            color={toUndefined(selectedColor)}
-            onChange={c => setColor(some(c.hex))}
+            color={toUndefined(state.selectedColor)}
+            onChange={c => state.setColor(some(c.hex))}
           />
         </PopOver>
       )}
-    </PaletteCreatorColorPickerBox>
+    </ColorPickerBox>
   );
 };

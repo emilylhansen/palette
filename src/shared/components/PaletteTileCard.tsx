@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { T24 } from "src/design/Text";
+import { Text } from "src/design/Text";
 import { Palette } from "src/shared/shared.types";
 import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
 import { IconButton } from "src/design/IconButton";
@@ -59,9 +59,7 @@ const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
   }
 `;
 
-type PassedProps = { palette: Palette; onClick: () => void };
-type InjectedProps = {};
-type Props = PassedProps & InjectedProps;
+type Props = { palette: Palette; onClick: () => void };
 
 export const PaletteTileCard = ({ palette, onClick }: Props) => {
   return (
@@ -71,7 +69,9 @@ export const PaletteTileCard = ({ palette, onClick }: Props) => {
         css={overrides.paletteTemplate}
       />
       <DetailsBox>
-        <T24 css={overrides.name}>{palette.name}</T24>
+        <Text fontSize={24} css={overrides.name}>
+          {palette.name}
+        </Text>
         <FeaturesBox>
           <IconButton iconName={true ? "favorite" : "favorite_border"} />
           <IconButton iconName={"file_copy"} />

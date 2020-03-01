@@ -1,18 +1,16 @@
 import React from "react";
-import { connect, ConnectedProps, Provider } from "react-redux";
-import { createStore, Dispatch } from "redux";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
-import { T10, T12, T24 } from "src/design/Text";
-import { Palette, Color } from "src/shared/shared.types";
-import { Icon } from "src/design/Icon";
-import convert from "color-convert";
+import { Text } from "src/design/Text";
+import { Color } from "src/shared/shared.types";
 import { convertHexToRGBA } from "src/shared/shared.helpers";
 import { isNil } from "src/shared/shared.typeGuards";
 import { IconButton } from "src/design/IconButton";
+import { ColorPicker } from "src/shared/components/ColorPicker";
 
 const PaletteTemplateBox = styled.div<{ css?: FlattenSimpleInterpolation }>`
   display: flex;
   flex: 1;
+  height: 100%;
 
   ${({ css: css_ }) =>
     css`
@@ -62,56 +60,95 @@ const ActionsBox = styled.div`
   margin-top: 8px;
 `;
 
+const ColorPickerBox = styled.div`
+  flex: 1;
+`;
+
+const ColorBlock = ({
+  color,
+  enableColorDetails,
+  actions,
+  onClick,
+}: {
+  color: Color;
+  enableColorDetails: boolean;
+  actions?: Array<ColorAction>;
+  onClick?: () => void;
+}) => (
+  <ColorBlockBox
+    hex={color.hex}
+    enableColorDetails={enableColorDetails}
+    onClick={onClick}
+  >
+    {enableColorDetails && (
+      <>
+        <Text fontSize={12}>{color.name}</Text>
+        <Text fontSize={10}>{`#${color.hex}`}</Text>
+      </>
+    )}
+    {!isNil(actions) && (
+      <ActionsBox>
+        {actions.map((action, i) => (
+          <IconButton
+            key={i}
+            iconName={action.iconName}
+            onClick={() => action.onClick(color)}
+            size="small"
+          />
+        ))}
+      </ActionsBox>
+    )}
+  </ColorBlockBox>
+);
+
 export type ColorAction = {
   iconName: string;
-  onClick: () => void;
+  onClick: (color: Color) => void;
 };
 
-type PassedProps = {
+type Props = {
   colors: Array<Color>;
   enableColorDetails?: boolean;
   css?: FlattenSimpleInterpolation;
   actions?: Array<ColorAction>;
+  handleColor?: ({ key, hex }: { key: string; hex: string }) => void;
 };
-type InjectedProps = {};
-type Props = PassedProps & InjectedProps;
-{
-  /* <IconButton
-                  iconName={true ? "favorite" : "favorite_border"}
-                  size="small"
-                />
-                <IconButton iconName="file_copy" size="small" /> */
-}
-export const PaletteTemplate = ({
-  colors,
-  enableColorDetails,
-  css: css_,
-  actions,
-}: Props) => {
+
+const usePaletteTemplate = (props: Props) => {
+  const isColorPickerEnabled = !isNil(props.handleColor);
+
+  return { isColorPickerEnabled };
+};
+
+export const PaletteTemplate = (props: Props) => {
+  const state = usePaletteTemplate(props);
+
   return (
-    <PaletteTemplateBox css={css_}>
-      {colors.map((color: Color) => (
-        <ColorBlockBox hex={color.hex} enableColorDetails={enableColorDetails}>
-          {enableColorDetails && (
-            <>
-              <T12>{color.name}</T12>
-              <T10>{`#${color.hex}`}</T10>
-            </>
-          )}
-          {!isNil(actions) && (
-            <ActionsBox>
-              {actions.map((action, i) => (
-                <IconButton
-                  key={i}
-                  iconName={action.iconName}
-                  onClick={action.onClick}
-                  size="small"
+    <PaletteTemplateBox css={props.css}>
+      {props.colors.map((color: Color) =>
+        state.isColorPickerEnabled ? (
+          <ColorPickerBox>
+            <ColorPicker
+              color={color.hex}
+              toggle={({ onToggle, isOpen }) => (
+                <ColorBlock
+                  color={color}
+                  enableColorDetails={props.enableColorDetails}
+                  actions={props.actions}
+                  onClick={onToggle}
                 />
-              ))}
-            </ActionsBox>
-          )}
-        </ColorBlockBox>
-      ))}
+              )}
+              handleColor={hex => props.handleColor({ key: color.key, hex })}
+            />
+          </ColorPickerBox>
+        ) : (
+          <ColorBlock
+            color={color}
+            enableColorDetails={props.enableColorDetails}
+            actions={props.actions}
+          />
+        )
+      )}
     </PaletteTemplateBox>
   );
 };

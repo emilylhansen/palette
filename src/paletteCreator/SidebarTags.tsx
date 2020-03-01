@@ -1,36 +1,12 @@
 import React, { useState } from "react";
-import {
-  connect,
-  ConnectedProps,
-  Provider,
-  useSelector,
-  useDispatch,
-} from "react-redux";
-import { createStore, Dispatch } from "redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
-import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
-import { PaletteTileCard } from "src/shared/components/PaletteTileCard";
-import { range } from "fp-ts/lib/Array";
-import { mockPalettes } from "src/shared/mockData";
-import { Overlay } from "src/design/Overlay";
-import { Option, none, some, isSome, map, getOrElse } from "fp-ts/lib/Option";
-import { Palette } from "src/shared/shared.types";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
+import { Option, none, some, map, getOrElse } from "fp-ts/lib/Option";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
-import Avatar from "@material-ui/core/Avatar";
 import { IconButton } from "src/design/IconButton";
-import { Icon } from "src/design/Icon";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
-import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
 import Chip from "@material-ui/core/Chip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import { getTags } from "src/paletteCreator/paletteCreator.selectors";
 import { removeTag, addTag } from "src/paletteCreator/paletteCreator.actions";
 import { pipe } from "fp-ts/lib/pipeable";
@@ -74,6 +50,7 @@ const TagInputFormBox = styled.form<{ width: number }>`
 
   input {
     font-size: 0.8125rem;
+    color: #fff;
   }
 
   > div {
@@ -176,10 +153,8 @@ export const SidebarTags = (props: Props) => {
           <Chip
             key={t.key}
             label={t.value}
-            clickable
             color="primary"
             onDelete={() => state.handleOnRemoveTag(t.key)}
-            deleteIcon={<Icon iconName="cancel" />}
           />
         ))}
         {pipe(
@@ -195,7 +170,6 @@ export const SidebarTags = (props: Props) => {
             <IconButton
               key={"add-button"}
               color="secondary"
-              size="small"
               iconName={"add"}
               onClick={state.initializeNewTag}
             />

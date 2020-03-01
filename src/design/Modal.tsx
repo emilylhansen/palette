@@ -10,7 +10,7 @@ import { Overlay } from "src/design/Overlay";
 import { Icon } from "src/design/Icon";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
 import { Palette } from "src/shared/shared.types";
-import { T12, T24 } from "src/design/Text";
+import { Text } from "src/design/Text";
 import Button from "@material-ui/core/Button";
 import { IconButton } from "./IconButton";
 import { isNil } from "src/shared/shared.typeGuards";

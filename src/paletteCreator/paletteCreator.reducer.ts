@@ -22,6 +22,7 @@ import {
   paletteNameLens,
   palettePrivateLens,
   paletteTagsLens,
+  colorHexLens,
 } from "src/shared/shared.lenses";
 import { makeNewTag } from "src/paletteCreator/paletteCreator.helpers";
 
@@ -43,6 +44,16 @@ export const paletteCreatorReducer = (
       )(paletteLens.get(state));
 
       return { ...state, palette: newPaletteRemoveColor };
+    case PaletteCreatorActionType.SetColor:
+      const newPaletteSetColor = paletteColorsLens.set(
+        [...colorsLens.get(state)].map(c =>
+          c.key === action.payload.key
+            ? colorHexLens.set(action.payload.hex)(c)
+            : c
+        )
+      )(paletteLens.get(state));
+
+      return { ...state, palette: newPaletteSetColor };
     case PaletteCreatorActionType.AddTag:
       const newPaletteAddTag = paletteTagsLens.set([
         ...tagsLens.get(state),

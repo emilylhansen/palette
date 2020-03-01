@@ -6,6 +6,7 @@ import {
   SET_DESCRIPTION,
   SET_NAME,
   SET_PRIVATE,
+  SET_COLOR,
 } from "src/paletteCreator/paletteCreator.constants";
 import { Palette, Color, Tag } from "src/shared/shared.types";
 
@@ -30,6 +31,24 @@ export const removeColor = (key: string): RemoveColor => {
   return {
     type: REMOVE_COLOR,
     payload: { key },
+  };
+};
+
+export type SetColor = {
+  type: SET_COLOR;
+  payload: { key: string; hex: string };
+};
+
+export const setColor = ({
+  key,
+  hex,
+}: {
+  key: string;
+  hex: string;
+}): SetColor => {
+  return {
+    type: SET_COLOR,
+    payload: { key, hex },
   };
 };
 
@@ -101,6 +120,7 @@ export enum PaletteCreatorActionType {
   SetName = "SET_NAME",
   SetDescription = "SET_DESCRIPTION",
   SetPrivate = "SET_PRIVATE",
+  SetColor = "SET_COLOR",
 }
 
 export type PaletteCreatorAction =
@@ -110,4 +130,5 @@ export type PaletteCreatorAction =
   | RemoveTag
   | SetName
   | SetDescription
-  | SetPrivate;
+  | SetPrivate
+  | SetColor;

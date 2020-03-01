@@ -8,7 +8,7 @@ import {
 } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled, { css } from "styled-components";
-import { T12, T24 } from "src/design/Text";
+import { Text } from "src/design/Text";
 import { Palette } from "src/shared/shared.types";
 import { Icon } from "src/design/Icon";
 import {
@@ -100,7 +100,7 @@ const Favorite = ({
       iconName={isFavorited ? "favorite" : "favorite_border"}
       css={overrides.favorite}
     />
-    <T12>{count}</T12>
+    <Text fontSize={12}>{count}</Text>
   </FavoriteBox>
 );
 
@@ -127,9 +127,7 @@ const menuItems: Array<MenuItem> = [
   },
 ];
 
-type PassedProps = { palette: Palette };
-type InjectedProps = {};
-type Props = PassedProps & InjectedProps;
+type Props = { palette: Palette };
 
 export const PaletteOverviewCard = ({ palette }: Props) => {
   const usersById = useSelector(getUsersById);
@@ -137,14 +135,14 @@ export const PaletteOverviewCard = ({ palette }: Props) => {
 
   return (
     <PaletteOverviewCardBox>
-      <T24>{palette.name}</T24>
-      <T12>
+      <Text fontSize={24}>{palette.name}</Text>
+      <Text fontSize={12}>
         {pipe(
           author,
           map(author_ => author_.name),
           getOrElse(() => "N/A")
         )}
-      </T12>
+      </Text>
       <FeaturesBox>
         <FeaturesBoxLeft>
           <Favorite isFavorited={false} count={12} />

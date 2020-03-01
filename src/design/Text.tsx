@@ -1,56 +1,60 @@
 import React, { ReactNode } from "react";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
+import { isNil } from "src/shared/shared.typeGuards";
 
-const TextBox = styled.div<{
-  fontSize: number;
-  margin?: string;
-  css?: FlattenSimpleInterpolation;
-}>`
-  ${({ fontSize, css: css_, margin }) => css`
+const GUTTER_SIZE = 16;
+
+const TextBox = styled.div<Omit<TextProps, "children">>`
+  ${({
+    fontSize,
+    fontWeight,
+    css: css_,
+    gutterTop,
+    gutterBottom,
+    gutterRight,
+    gutterLeft,
+  }) => css`
     font-size: ${fontSize}px;
-    margin: ${margin};
+    font-weight: ${isNil(fontWeight) ? 400 : fontWeight};
+    margin: ${`${isNil(gutterTop) ? 0 : GUTTER_SIZE}px ${
+      isNil(gutterRight) ? 0 : GUTTER_SIZE
+    }px ${isNil(gutterBottom) ? 0 : GUTTER_SIZE}px ${
+      isNil(gutterLeft) ? 0 : GUTTER_SIZE
+    }px `};
     ${css_}
   `}
 `;
 
 type TextProps = {
   children: ReactNode;
+  fontSize: number;
+  fontWeight?: number;
   css?: FlattenSimpleInterpolation;
-  margin?: string;
+  gutterTop?: boolean;
+  gutterRight?: boolean;
+  gutterBottom?: boolean;
+  gutterLeft?: boolean;
 };
 
-export const T10 = ({ children, css: css_, margin }: TextProps) => (
-  <TextBox fontSize={10} css={css_} margin={margin}>
-    {children}
-  </TextBox>
-);
-
-export const T12 = ({ children, css: css_, margin }: TextProps) => (
-  <TextBox fontSize={12} css={css_} margin={margin}>
-    {children}
-  </TextBox>
-);
-
-export const T16 = ({ children, css: css_, margin }: TextProps) => (
-  <TextBox fontSize={16} css={css_} margin={margin}>
-    {children}
-  </TextBox>
-);
-
-export const T20 = ({ children, css: css_, margin }: TextProps) => (
-  <TextBox fontSize={20} css={css_} margin={margin}>
-    {children}
-  </TextBox>
-);
-
-export const T24 = ({ children, css: css_, margin }: TextProps) => (
-  <TextBox fontSize={24} css={css_} margin={margin}>
-    {children}
-  </TextBox>
-);
-
-export const T28 = ({ children, css: css_, margin }: TextProps) => (
-  <TextBox fontSize={28} css={css_} margin={margin}>
+export const Text = ({
+  children,
+  fontSize,
+  fontWeight,
+  css: css_,
+  gutterTop,
+  gutterBottom,
+  gutterRight,
+  gutterLeft,
+}: TextProps) => (
+  <TextBox
+    fontSize={fontSize}
+    fontWeight={fontWeight}
+    css={css_}
+    gutterTop={gutterTop}
+    gutterRight={gutterRight}
+    gutterBottom={gutterBottom}
+    gutterLeft={gutterLeft}
+  >
     {children}
   </TextBox>
 );
