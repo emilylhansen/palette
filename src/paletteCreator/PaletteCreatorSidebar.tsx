@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { connect, ConnectedProps, Provider } from "react-redux";
+import {
+  connect,
+  ConnectedProps,
+  Provider,
+  useSelector,
+  useDispatch,
+} from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled from "styled-components";
 import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
@@ -24,8 +30,17 @@ import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
 import Chip from "@material-ui/core/Chip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { SidebarControls } from "src/paletteCreator/SidebarControls";
 import { SidebarTags } from "src/paletteCreator/SidebarTags";
+import {
+  getName,
+  getDescription,
+  getPrivate,
+} from "src/paletteCreator/paletteCreator.selectors";
+import {
+  setName,
+  setDescription,
+  setPrivate,
+} from "src/paletteCreator/paletteCreator.actions";
 
 const PaletteCreatorSidebarBox = styled.div`
   width: 300px;
@@ -38,28 +53,36 @@ const PaletteCreatorSidebarBox = styled.div`
   }
 `;
 
-const TemplateBox = styled.div`
-  flex: 1;
-  display: grid;
-  justify-items: center;
-  grid-template-columns: auto auto;
-  grid-template-rows: 48px 48px;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-`;
-
-const TagsBox = styled.div`
-  > div,
-  button {
-    margin: 0 8px 8px 0;
-  }
-`;
-
 type PassedProps = {};
 type InjectedProps = {};
 type Props = PassedProps & InjectedProps;
 
-const usePaletteCreatorSidebar = ({}: Props) => {};
+const usePaletteCreatorSidebar = ({}: Props) => {
+  const dispatch = useDispatch();
+
+  const name = useSelector(getName);
+  const description = useSelector(getDescription);
+  const isPrivate = useSelector(getPrivate);
+
+  const privateLabel = isPrivate ? "Private" : "Public";
+
+  const onChangeName = (value: string) => dispatch(setName(value));
+
+  const onChangeDescription = (value: string) =>
+    dispatch(setDescription(value));
+
+  const onTogglePrivate = () => dispatch(setPrivate(!isPrivate));
+
+  return {
+    name,
+    description,
+    isPrivate,
+    privateLabel,
+    onChangeName,
+    onChangeDescription,
+    onTogglePrivate,
+  };
+};
 
 export const PaletteCreatorSidebar = (props: Props) => {
   const state = usePaletteCreatorSidebar(props);
@@ -68,41 +91,36 @@ export const PaletteCreatorSidebar = (props: Props) => {
     <PaletteCreatorSidebarBox>
       <Card>
         <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            Details
+          </Typography>
           <TextField
             label="Name"
             id="standard-size-normal"
-            defaultValue="Normal"
+            value={state.name}
+            onChange={e => state.onChangeName(e.target.value)}
           />
           <TextField
             id="standard-multiline-static"
             label="Description"
             multiline
             rows="4"
-            defaultValue="Default Value"
+            value={state.description}
+            onChange={e => state.onChangeDescription(e.target.value)}
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={state.isPrivate}
+                onChange={state.onTogglePrivate}
+              />
+            }
+            label={state.privateLabel}
           />
         </CardContent>
         <Divider variant="middle" />
-        {/* <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Template
-          </Typography>
-          <TemplateBox>
-            <PaletteTemplate palette={mockPalettes[0]} />
-            <PaletteTemplate palette={mockPalettes[0]} />
-            <PaletteTemplate palette={mockPalettes[0]} />
-            <PaletteTemplate palette={mockPalettes[0]} />
-          </TemplateBox>
-        </CardContent>
-        <Divider variant="middle" /> */}
-        {/* <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Colors
-          </Typography>
-        </CardContent>
-        <Divider variant="middle" /> */}
         <SidebarTags />
         <Divider variant="middle" />
-        <SidebarControls />
       </Card>
     </PaletteCreatorSidebarBox>
   );

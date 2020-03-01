@@ -6,7 +6,7 @@ export type PaletteCreatorState = {
 
 export const initialState: PaletteCreatorState = {
   palette: {
-    name: "New Palette",
+    name: "",
     colors: [],
     description: "",
     private: true,

@@ -56,6 +56,24 @@ export const paletteCreatorReducer = (
       )(paletteLens.get(state));
 
       return { ...state, palette: newPaletteRemoveTag };
+    case PaletteCreatorActionType.SetName:
+      const newPaletteSetName = paletteNameLens.set(action.payload.value)(
+        paletteLens.get(state)
+      );
+
+      return { ...state, palette: newPaletteSetName };
+    case PaletteCreatorActionType.SetDescription:
+      const newPaletteSetDescription = paletteDescriptionLens.set(
+        action.payload.value
+      )(paletteLens.get(state));
+
+      return { ...state, palette: newPaletteSetDescription };
+    case PaletteCreatorActionType.SetPrivate:
+      const newPaletteSetPrivate = palettePrivateLens.set(
+        action.payload.private
+      )(paletteLens.get(state));
+
+      return { ...state, palette: newPaletteSetPrivate };
     default:
       return state;
   }

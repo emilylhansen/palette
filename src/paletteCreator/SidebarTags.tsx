@@ -31,7 +31,6 @@ import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
 import Chip from "@material-ui/core/Chip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { SidebarControls } from "src/paletteCreator/SidebarControls";
 import { getTags } from "src/paletteCreator/paletteCreator.selectors";
 import { removeTag, addTag } from "src/paletteCreator/paletteCreator.actions";
 import { pipe } from "fp-ts/lib/pipeable";

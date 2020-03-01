@@ -3,6 +3,9 @@ import {
   ADD_TAG,
   REMOVE_COLOR,
   REMOVE_TAG,
+  SET_DESCRIPTION,
+  SET_NAME,
+  SET_PRIVATE,
 } from "src/paletteCreator/paletteCreator.constants";
 import { Palette, Color, Tag } from "src/shared/shared.types";
 
@@ -54,11 +57,57 @@ export const removeTag = (key: string): RemoveTag => {
   };
 };
 
+export type SetName = {
+  type: SET_NAME;
+  payload: { value: string };
+};
+
+export const setName = (value: string): SetName => {
+  return {
+    type: SET_NAME,
+    payload: { value },
+  };
+};
+
+export type SetDescription = {
+  type: SET_DESCRIPTION;
+  payload: { value: string };
+};
+
+export const setDescription = (value: string): SetDescription => {
+  return {
+    type: SET_DESCRIPTION,
+    payload: { value },
+  };
+};
+
+export type SetPrivate = {
+  type: SET_PRIVATE;
+  payload: { private: boolean };
+};
+
+export const setPrivate = (isPrivate: boolean): SetPrivate => {
+  return {
+    type: SET_PRIVATE,
+    payload: { private: isPrivate },
+  };
+};
+
 export enum PaletteCreatorActionType {
   AddColor = "ADD_COLOR",
   AddTag = "ADD_TAG",
   RemoveColor = "REMOVE_COLOR",
   RemoveTag = "REMOVE_TAG",
+  SetName = "SET_NAME",
+  SetDescription = "SET_DESCRIPTION",
+  SetPrivate = "SET_PRIVATE",
 }
 
-export type PaletteCreatorAction = AddColor | AddTag | RemoveColor | RemoveTag;
+export type PaletteCreatorAction =
+  | AddColor
+  | AddTag
+  | RemoveColor
+  | RemoveTag
+  | SetName
+  | SetDescription
+  | SetPrivate;

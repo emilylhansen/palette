@@ -5,6 +5,8 @@ import {
   colorsLens,
   nameLens,
   tagsLens,
+  descriptionLens,
+  privateLens,
 } from "src/paletteCreator/paletteCreator.lenses";
 
 export const getPaletteCreator = (state: RootState) => state.paletteCreator;
@@ -19,4 +21,17 @@ export const getColors = createSelector(getPaletteCreator, paletteCreator =>
 
 export const getTags = createSelector(getPaletteCreator, paletteCreator =>
   tagsLens.get(paletteCreator)
+);
+
+export const getName = createSelector(getPaletteCreator, paletteCreator =>
+  nameLens.get(paletteCreator)
+);
+
+export const getDescription = createSelector(
+  getPaletteCreator,
+  paletteCreator => descriptionLens.get(paletteCreator)
+);
+
+export const getPrivate = createSelector(getPaletteCreator, paletteCreator =>
+  privateLens.get(paletteCreator)
 );
