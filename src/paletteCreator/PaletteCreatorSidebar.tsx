@@ -18,6 +18,7 @@ import {
   getPrivate,
 } from "src/paletteCreator/paletteCreator.selectors";
 import { SidebarTags } from "src/paletteCreator/SidebarTags";
+import { SidebarFavorites } from "src/paletteCreator/SidebarFavorites";
 import styled, { css } from "styled-components";
 import { IconButton } from "src/design/IconButton";
 import { Text } from "src/design/Text";
@@ -48,11 +49,9 @@ const SectionBox = styled.div`
   margin-bottom: 8px;
 `;
 
-type PassedProps = {};
-type InjectedProps = {};
-type Props = PassedProps & InjectedProps;
+type Props = { handleOnAddColor: (hex: string) => void };
 
-const usePaletteCreatorSidebar = ({}: Props) => {
+const usePaletteCreatorSidebar = (props: Props) => {
   const dispatch = useDispatch();
 
   const name = useSelector(getName);
@@ -124,6 +123,8 @@ export const PaletteCreatorSidebar = (props: Props) => {
         </CardContent>
         <Divider variant="middle" />
         <SidebarTags />
+        <Divider variant="middle" />
+        <SidebarFavorites handleOnAddColor={props.handleOnAddColor} />
       </Card>
     </PaletteCreatorSidebarBox>
   );

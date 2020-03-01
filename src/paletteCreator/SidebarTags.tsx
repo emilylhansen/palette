@@ -26,6 +26,10 @@ const useStyles = makeStyles({
 });
 
 const TagsBox = styled.div`
+  display: flex;
+  max-width: ${MAX_WIDTH}px;
+  flex-flow: row wrap;
+
   > div {
     margin: 0 8px 8px 0;
     max-width: ${MAX_WIDTH}px;
@@ -171,6 +175,7 @@ export const SidebarTags = (props: Props) => {
               key={"add-button"}
               color="secondary"
               iconName={"add"}
+              size="small"
               onClick={state.initializeNewTag}
             />
           ))

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Color } from "src/shared/shared.types";
@@ -8,7 +8,7 @@ import {
   PaletteTemplate,
   ColorAction,
 } from "src/shared/components/PaletteTemplate";
-import { getColors } from "src/paletteCreator/paletteCreator.selectors";
+import { getColors as getColorsSelector } from "src/paletteCreator/paletteCreator.selectors";
 import {
   removeColor,
   addColor,
@@ -17,6 +17,12 @@ import {
 import { ColorPicker } from "src/shared/components/ColorPicker";
 import { IconButton } from "src/design/IconButton";
 import faker from "faker";
+import {
+  getColors as getColorsAction,
+  getPalettes,
+  getUsers,
+  getFavoriteColorIds,
+} from "src/shared/shared.actions";
 
 const PaletteCreatorBox = styled.div`
   display: flex;
@@ -59,7 +65,15 @@ type Props = {};
 const usePaletteCreator = (props: Props) => {
   const dispatch = useDispatch();
 
-  const colors = useSelector(getColors);
+  useEffect(() => {
+    dispatch(getPalettes());
+    dispatch(getColorsAction());
+    dispatch(getUsers());
+    dispatch(getFavoriteColorIds());
+    // dispatch(authenticate({ key: "" }));
+  }, []);
+
+  const colors = useSelector(getColorsSelector);
 
   const handleOnRemoveColor = (color: Color) =>
     dispatch(removeColor(color.key));
@@ -95,7 +109,7 @@ export const PaletteCreator = (props: Props) => {
 
   return (
     <PaletteCreatorBox>
-      <PaletteCreatorSidebar />
+      <PaletteCreatorSidebar handleOnAddColor={state.handleOnAddColor} />
       <ContentBox>
         <ContentTopBox>
           <PaletteTemplateBox>

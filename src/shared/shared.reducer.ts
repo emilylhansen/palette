@@ -4,6 +4,7 @@ import {
   mockColorsById,
   mockPalettesById,
   mockUsersById,
+  mockFavoriteColorIds,
 } from "src/shared/mockData";
 
 export const sharedReducer = (
@@ -17,6 +18,8 @@ export const sharedReducer = (
       return { ...state, palettesById: mockPalettesById };
     case RootActionType.GetUsers:
       return { ...state, usersById: mockUsersById };
+    case RootActionType.GetFavoriteColorIds:
+      return { ...state, favoriteColorIds: mockFavoriteColorIds };
     default:
       return state;
   }

@@ -1,5 +1,5 @@
 import { Lens } from "monocle-ts";
-import { Palette, Color } from "src/shared/shared.types";
+import { Palette, Color, SharedState } from "src/shared/shared.types";
 
 export const paletteKeyLens = Lens.fromProp<Palette>()("key");
 
@@ -16,3 +16,17 @@ export const palettePrivateLens = Lens.fromProp<Palette>()("private");
 export const paletteTagsLens = Lens.fromProp<Palette>()("tags");
 
 export const colorHexLens = Lens.fromProp<Color>()("hex");
+
+export const palettesByIdLens = Lens.fromProp<SharedState>()("palettesById");
+
+export const colorsByIdLens = Lens.fromProp<SharedState>()("colorsById");
+
+export const usersByIdLens = Lens.fromProp<SharedState>()("usersById");
+
+export const favoritePaletteIdsLens = Lens.fromProp<SharedState>()(
+  "favoritePaletteIds"
+);
+
+export const favoriteColorIdsLens = Lens.fromProp<SharedState>()(
+  "favoriteColorIds"
+);

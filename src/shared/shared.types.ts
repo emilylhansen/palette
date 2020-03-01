@@ -2,16 +2,16 @@ export type SharedState = {
   palettesById: Record<string, Palette>;
   colorsById: Record<string, Color>;
   usersById: Record<string, User>;
-  favoritedPaletteIds: Record<string, boolean>;
-  favoritedColorIds: Record<string, boolean>;
+  favoritePaletteIds: Array<string>;
+  favoriteColorIds: Array<string>;
 };
 
 export const initialState: SharedState = {
   palettesById: {},
   colorsById: {},
   usersById: {},
-  favoritedPaletteIds: {},
-  favoritedColorIds: {},
+  favoritePaletteIds: [],
+  favoriteColorIds: [],
 };
 
 export type Color = {

@@ -16,7 +16,12 @@ import { Overlay } from "src/design/Overlay";
 import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
 import { Login } from "src/auth/Login";
 import { Modal } from "src/design/Modal";
-import { getColors, getPalettes, getUsers } from "src/shared/shared.actions";
+import {
+  getColors,
+  getPalettes,
+  getUsers,
+  getFavoriteColorIds,
+} from "src/shared/shared.actions";
 import { authenticate } from "src/auth/auth.actions";
 import { Palette } from "src/shared/shared.types";
 import { RootState } from "src/root/root.types";
@@ -50,6 +55,7 @@ export const Homepage = ({}: Props) => {
     dispatch(getPalettes());
     dispatch(getColors());
     dispatch(getUsers());
+    dispatch(getFavoriteColorIds());
     // dispatch(authenticate({ key: "" }));
   }, []);
 
