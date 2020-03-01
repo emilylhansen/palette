@@ -22,7 +22,7 @@ import { SidebarFavorites } from "src/paletteCreator/SidebarFavorites";
 import styled, { css } from "styled-components";
 import { IconButton } from "src/design/IconButton";
 import { Text } from "src/design/Text";
-import { Form, Field, useField } from "react-final-form";
+import { Form, Field, useField, FormSpy } from "react-final-form";
 import { fieldNames } from "src/paletteCreator/paletteCreator.constants";
 
 const overrides = {
@@ -95,10 +95,8 @@ export const PaletteCreatorSidebar = (props: Props) => {
             Details
           </Text>
           <SectionBox>
-            <Field<string>
-              name={fieldNames.name}
-              key={fieldNames.name}
-              component={({ input, meta }) => {
+            <Field<string> name={fieldNames.name} key={fieldNames.name}>
+              {({ input, meta }) => {
                 return (
                   <TextField
                     label="Name"
@@ -111,20 +109,19 @@ export const PaletteCreatorSidebar = (props: Props) => {
                   />
                 );
               }}
-            />
+            </Field>
           </SectionBox>
           <SectionBox>
             <Field<string>
               name={fieldNames.description}
               key={fieldNames.description}
-              component={({ input, meta }) => (
+            >
+              {({ input, meta }) => (
                 <TextField
                   label="Description"
                   variant="outlined"
                   multiline
                   rows="3"
-                  // value={state.description}
-                  // onChange={e => state.onChangeDescription(e.target.value)}
                   value={input.value}
                   onChange={e => input.onChange(e.target.value)}
                   size="small"
@@ -132,7 +129,7 @@ export const PaletteCreatorSidebar = (props: Props) => {
                   error={meta.error !== ""}
                 />
               )}
-            />
+            </Field>
           </SectionBox>
           <SectionBox>
             <PrivateBox>
