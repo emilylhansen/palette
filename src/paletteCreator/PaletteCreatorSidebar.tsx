@@ -22,6 +22,8 @@ import { SidebarFavorites } from "src/paletteCreator/SidebarFavorites";
 import styled, { css } from "styled-components";
 import { IconButton } from "src/design/IconButton";
 import { Text } from "src/design/Text";
+import { Form, Field, useField } from "react-final-form";
+import { fieldNames } from "src/paletteCreator/paletteCreator.constants";
 
 const overrides = {
   privateButton: css`
@@ -68,6 +70,8 @@ const usePaletteCreatorSidebar = (props: Props) => {
 
   const onTogglePrivate = () => dispatch(setPrivate(!isPrivate));
 
+  const nameField = useField(fieldNames.name);
+
   return {
     name,
     description,
@@ -91,23 +95,43 @@ export const PaletteCreatorSidebar = (props: Props) => {
             Details
           </Text>
           <SectionBox>
-            <TextField
-              label="Name"
-              variant="outlined"
-              value={state.name}
-              onChange={e => state.onChangeName(e.target.value)}
-              size="small"
+            <Field<string>
+              name={fieldNames.name}
+              key={fieldNames.name}
+              component={({ input, meta }) => {
+                return (
+                  <TextField
+                    label="Name"
+                    variant="outlined"
+                    value={input.value}
+                    onChange={e => input.onChange(e.target.value)}
+                    size="small"
+                    helperText={meta.touched ? meta.error : ""}
+                    error={meta.error !== ""}
+                  />
+                );
+              }}
             />
           </SectionBox>
           <SectionBox>
-            <TextField
-              label="Description"
-              variant="outlined"
-              multiline
-              rows="3"
-              value={state.description}
-              onChange={e => state.onChangeDescription(e.target.value)}
-              size="small"
+            <Field<string>
+              name={fieldNames.description}
+              key={fieldNames.description}
+              component={({ input, meta }) => (
+                <TextField
+                  label="Description"
+                  variant="outlined"
+                  multiline
+                  rows="3"
+                  // value={state.description}
+                  // onChange={e => state.onChangeDescription(e.target.value)}
+                  value={input.value}
+                  onChange={e => input.onChange(e.target.value)}
+                  size="small"
+                  helperText={meta.touched ? meta.error : ""}
+                  error={meta.error !== ""}
+                />
+              )}
             />
           </SectionBox>
           <SectionBox>

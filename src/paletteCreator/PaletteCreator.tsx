@@ -23,6 +23,12 @@ import {
   getUsers,
   getFavoriteColorIds,
 } from "src/shared/shared.actions";
+import { Field, withTypes } from "react-final-form";
+import { Option, none, some } from "fp-ts/lib/Option";
+import { isEmpty } from "fp-ts/lib/Array";
+import { isEmptyOrBlankString } from "src/paletteCreator/paletteCreator.helpers";
+import { Lens } from "monocle-ts";
+import { initialState } from "src/paletteCreator/paletteCreator.types";
 
 const PaletteCreatorBox = styled.div`
   display: flex;
@@ -60,7 +66,17 @@ const PaletteTemplateBox = styled.div`
   border-radius: 6px;
 `;
 
+type Values = {
+  name: string;
+  description: string;
+  colors: Array<Color>;
+};
+
+type Errors = Record<keyof Values, string>;
+
 type Props = {};
+
+const { Form } = withTypes<Values>();
 
 const usePaletteCreator = (props: Props) => {
   const dispatch = useDispatch();
@@ -101,43 +117,94 @@ const usePaletteCreator = (props: Props) => {
     );
   };
 
-  return { colors, actions, handleOnAddColor, handleOnSetColor };
+  const handleOnSubmit = (values: Values) => {
+    debugger;
+    console.log("submitted", values);
+  };
+
+  const validate = (values: Values) => {
+    debugger;
+    let errors: Errors = {
+      name: "",
+      description: "",
+      colors: "",
+    };
+
+    if (isEmptyOrBlankString(values.name)) {
+      errors = Lens.fromProp<Errors>()("name").modify(_ => "Required")(errors);
+    }
+
+    if (isEmptyOrBlankString(values.description)) {
+      errors = Lens.fromProp<Errors>()("description").modify(_ => "Required")(
+        errors
+      );
+    }
+
+    if (isEmpty(values.colors)) {
+      errors = Lens.fromProp<Errors>()("colors").modify(
+        _ => "Must contain at least one color"
+      )(errors);
+    }
+    console.log({ errors, values });
+    return errors;
+  };
+
+  const initialValues: Values = { name: "", description: "", colors: [] };
+
+  return {
+    colors,
+    actions,
+    handleOnAddColor,
+    handleOnSetColor,
+    handleOnSubmit,
+    validate,
+    initialValues,
+  };
 };
 
 export const PaletteCreator = (props: Props) => {
   const state = usePaletteCreator(props);
 
   return (
-    <PaletteCreatorBox>
-      <PaletteCreatorSidebar handleOnAddColor={state.handleOnAddColor} />
-      <ContentBox>
-        <ContentTopBox>
-          <PaletteTemplateBox>
-            <PaletteTemplate
-              colors={state.colors}
-              enableColorDetails
-              actions={state.actions}
-              handleColor={state.handleOnSetColor}
-            />
-          </PaletteTemplateBox>
-          <ColorPicker
-            toggle={({ onToggle, isOpen }) => (
-              <AddBox>
-                <IconButton
-                  color="secondary"
-                  iconName={"add"}
-                  onClick={onToggle}
+    <Form
+      onSubmit={state.handleOnSubmit}
+      validate={state.validate}
+      initialValues={state.initialValues}
+      render={({ handleSubmit, form }) => (
+        <form onSubmit={handleSubmit}>
+          <PaletteCreatorBox>
+            <PaletteCreatorSidebar handleOnAddColor={state.handleOnAddColor} />
+            <ContentBox>
+              <ContentTopBox>
+                <PaletteTemplateBox>
+                  <PaletteTemplate
+                    colors={state.colors}
+                    enableColorDetails
+                    actions={state.actions}
+                    handleColor={state.handleOnSetColor}
+                  />
+                </PaletteTemplateBox>
+                <ColorPicker
+                  toggle={({ onToggle, isOpen }) => (
+                    <AddBox>
+                      <IconButton
+                        color="secondary"
+                        iconName={"add"}
+                        onClick={onToggle}
+                      />
+                    </AddBox>
+                  )}
+                  handleColor={state.handleOnAddColor}
                 />
-              </AddBox>
-            )}
-            handleColor={state.handleOnAddColor}
-          />
-        </ContentTopBox>
-        <FooterBox>
-          <Button>cancel</Button>
-          <Button>create</Button>
-        </FooterBox>
-      </ContentBox>
-    </PaletteCreatorBox>
+              </ContentTopBox>
+              <FooterBox>
+                <Button>cancel</Button>
+                <Button type="submit">create</Button>
+              </FooterBox>
+            </ContentBox>
+          </PaletteCreatorBox>
+        </form>
+      )}
+    ></Form>
   );
 };

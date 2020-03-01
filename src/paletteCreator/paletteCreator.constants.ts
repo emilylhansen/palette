@@ -21,3 +21,10 @@ export type SET_DESCRIPTION = typeof SET_DESCRIPTION;
 
 export const SET_PRIVATE = "SET_PRIVATE";
 export type SET_PRIVATE = typeof SET_PRIVATE;
+
+export const fieldNames = {
+  name: "name",
+  description: "decription",
+  private: "private",
+  palette: "palette",
+};
