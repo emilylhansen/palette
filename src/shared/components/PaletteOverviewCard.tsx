@@ -164,7 +164,12 @@ export const PaletteOverviewCard = ({ palette }: Props) => {
       </FeaturesBox>
       <TagsBox>
         {palette.tags.map(tag => (
-          <Chip key={tag.key} label={tag.name} size="small" color="secondary" />
+          <Chip
+            key={tag.key}
+            label={tag.value}
+            size="small"
+            color="secondary"
+          />
         ))}
       </TagsBox>
       <PaletteTemplate colors={palette.colors} enableColorDetails />

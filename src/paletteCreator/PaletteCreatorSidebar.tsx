@@ -25,6 +25,7 @@ import Chip from "@material-ui/core/Chip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { SidebarControls } from "src/paletteCreator/SidebarControls";
+import { SidebarTags } from "src/paletteCreator/SidebarTags";
 
 const PaletteCreatorSidebarBox = styled.div`
   width: 300px;
@@ -58,7 +59,11 @@ type PassedProps = {};
 type InjectedProps = {};
 type Props = PassedProps & InjectedProps;
 
-export const PaletteCreatorSidebar = ({}: Props) => {
+const usePaletteCreatorSidebar = ({}: Props) => {};
+
+export const PaletteCreatorSidebar = (props: Props) => {
+  const state = usePaletteCreatorSidebar(props);
+
   return (
     <PaletteCreatorSidebarBox>
       <Card>
@@ -95,29 +100,7 @@ export const PaletteCreatorSidebar = ({}: Props) => {
           </Typography>
         </CardContent>
         <Divider variant="middle" /> */}
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Tags
-          </Typography>
-          <TagsBox>
-            {range(0, 10).map(t => (
-              <Chip
-                key={t}
-                label="Primary clickable"
-                clickable
-                color="primary"
-                // onDelete={handleDelete}
-                //   deleteIcon={<DoneIcon />}
-              />
-            ))}
-            <IconButton
-              key={"add-button"}
-              color="secondary"
-              size="small"
-              iconName={"add"}
-            />
-          </TagsBox>
-        </CardContent>
+        <SidebarTags />
         <Divider variant="middle" />
         <SidebarControls />
       </Card>

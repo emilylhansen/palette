@@ -21,7 +21,7 @@ export type Color = {
 };
 
 export type Tag = {
-  name: string;
+  value: string;
   key: string;
 };
 

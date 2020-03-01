@@ -18,7 +18,7 @@ const makeMockColor = ({ hex, key }: { hex: string; key: string }): Color => ({
 });
 
 const makeMockTag = (key: string): Tag => ({
-  name: faker.lorem.word(),
+  value: faker.lorem.word(),
   key,
 });
 

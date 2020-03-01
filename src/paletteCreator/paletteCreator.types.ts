@@ -1,10 +1,7 @@
 import { Palette } from "src/shared/shared.types";
 
 export type PaletteCreatorState = {
-  palette: Pick<
-    Palette,
-    "name" | "colors" | "description" | "private" | "tags"
-  >;
+  palette: Palette;
 };
 
 export const initialState: PaletteCreatorState = {
@@ -14,5 +11,7 @@ export const initialState: PaletteCreatorState = {
     description: "",
     private: true,
     tags: [],
+    authorId: "",
+    key: "",
   },
 };
