@@ -1,28 +1,14 @@
-import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setDescription,
-  setName,
-  setPrivate,
-} from "src/paletteCreator/paletteCreator.actions";
-import {
-  getDescription,
-  getName,
-  getPrivate,
-  getFavoriteColorsById,
-} from "src/paletteCreator/paletteCreator.selectors";
-import { SidebarTags } from "src/paletteCreator/SidebarTags";
-import styled, { css } from "styled-components";
+import { Field, useField } from "react-final-form";
+import { useSelector } from "react-redux";
 import { IconButton } from "src/design/IconButton";
-import { Text } from "src/design/Text";
-import { getFavoriteColorIds } from "src/shared/shared.selectors";
+import { fieldNames } from "src/paletteCreator/paletteCreator.constants";
+import { addColorFormField } from "src/paletteCreator/paletteCreator.helpers";
+import { getFavoriteColorsById } from "src/paletteCreator/paletteCreator.selectors";
+import { Color } from "src/shared/shared.types";
+import styled, { css } from "styled-components";
 
 const overrides = {
   add: css`
@@ -55,12 +41,15 @@ const ColorBox = styled.div<{ hex: string }>`
   `}
 `;
 
-type Props = { handleOnAddColor: (hex: string) => void };
+type Props = {};
 
 const useSidebarFavorites = (props: Props) => {
   const favoriteColorsByIds = useSelector(getFavoriteColorsById);
 
-  return { favoriteColorsByIds };
+  const colorsField = useField(fieldNames.colors);
+  const colors = colorsField.input.value;
+
+  return { favoriteColorsByIds, colors, colorsField };
 };
 
 export const SidebarFavorites = (props: Props) => {
@@ -73,15 +62,26 @@ export const SidebarFavorites = (props: Props) => {
       </Typography>
       <FavoritesBox>
         {Object.values(state.favoriteColorsByIds).map(f => (
-          <ColorBox hex={f.hex} key={f.key}>
-            <IconButton
-              iconName="add"
-              css={overrides.add}
-              size="small"
-              color="default"
-              onClick={() => props.handleOnAddColor(f.hex)}
-            />
-          </ColorBox>
+          <Field<Array<Color>>
+            name={`${fieldNames.favorites}-${f.key}`}
+            key={`${fieldNames.favorites}-${f.key}`}
+          >
+            {({ input, meta }) => (
+              <ColorBox hex={f.hex}>
+                <IconButton
+                  iconName="add"
+                  css={overrides.add}
+                  size="small"
+                  color="default"
+                  onClick={() =>
+                    state.colorsField.input.onChange(
+                      addColorFormField({ colors: state.colors, hex: f.hex })
+                    )
+                  }
+                />
+              </ColorBox>
+            )}
+          </Field>
         ))}
       </FavoritesBox>
     </CardContent>

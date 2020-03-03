@@ -1,20 +1,15 @@
-import React, { useState, ReactNode } from "react";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
 import {
-  Option,
-  none,
-  some,
-  map,
-  getOrElse,
   fromNullable,
+  getOrElse,
+  map,
+  Option,
+  some,
   toUndefined,
 } from "fp-ts/lib/Option";
-import { IconButton } from "src/design/IconButton";
-import { addColor } from "src/paletteCreator/paletteCreator.actions";
-import { ChromePicker, ColorResult } from "react-color";
-import faker from "faker";
 import { pipe } from "fp-ts/lib/pipeable";
+import React, { ReactNode, useState } from "react";
+import { ChromePicker } from "react-color";
+import styled from "styled-components";
 
 const ColorPickerBox = styled.div`
   display: flex;
@@ -52,8 +47,6 @@ const useColorPicker = (props: Props) => {
   const [selectedColor, setColor] = useState<Option<string>>(
     fromNullable(props.color)
   );
-
-  const dispatch = useDispatch();
 
   const handleOnClose = () => {
     setIsOpen(false);

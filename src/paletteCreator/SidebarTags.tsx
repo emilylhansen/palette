@@ -1,18 +1,26 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import styled, { css } from "styled-components";
-import { Option, none, some, map, getOrElse } from "fp-ts/lib/Option";
 import CardContent from "@material-ui/core/CardContent";
-import { IconButton } from "src/design/IconButton";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 import Chip from "@material-ui/core/Chip";
-import { getTags } from "src/paletteCreator/paletteCreator.selectors";
-import { removeTag, addTag } from "src/paletteCreator/paletteCreator.actions";
-import { pipe } from "fp-ts/lib/pipeable";
 import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import { getOrElse, map, none, Option, some } from "fp-ts/lib/Option";
+import { pipe } from "fp-ts/lib/pipeable";
+import React from "react";
+import { Field, useForm } from "react-final-form";
+import { IconButton } from "src/design/IconButton";
+import { fieldNames } from "src/paletteCreator/paletteCreator.constants";
+import { makeNewTag } from "src/paletteCreator/paletteCreator.helpers";
+import { Values } from "src/paletteCreator/paletteCreator.types";
+import { Tag } from "src/shared/shared.types";
+import styled, { css } from "styled-components";
 
 const MAX_WIDTH = 268;
+
+const CHIP_MIN_WIDTH = 40;
+
+const CHAR_MIN = 3;
+
+const PX_PER_CHAR = 6;
 
 const useStyles = makeStyles({
   underline: {
@@ -85,11 +93,14 @@ const TagInput = ({
 }: {
   value: string;
   onAddTag: (e: React.FormEvent<HTMLFormElement>) => void;
-  setTagValue: (value: Option<string>) => void;
+  setTagValue: (value: string) => void;
 }) => {
   const classes = useStyles();
 
-  const width = value.length > 3 ? (value.length - 3) * 6 + 40 : 40;
+  const width =
+    value.length > CHAR_MIN
+      ? (value.length - CHAR_MIN) * PX_PER_CHAR + CHIP_MIN_WIDTH
+      : CHIP_MIN_WIDTH;
 
   return (
     <TagInputBox>
@@ -99,8 +110,9 @@ const TagInput = ({
             id="standard-size-small"
             size="small"
             value={value}
-            onChange={e => setTagValue(some(e.target.value))}
+            onChange={e => setTagValue(e.target.value)}
             InputProps={{ classes }}
+            autoFocus
           />
         </TagInputFormBox>
       </ChipBox>
@@ -111,36 +123,29 @@ const TagInput = ({
 type Props = {};
 
 const useSidebarTags = ({}: Props) => {
-  const [tagValue, setTagValue] = useState<Option<string>>(none);
+  const form = useForm();
+  const formState = form.getState().values as Values;
+  const tags = formState["tags"];
 
-  const dispatch = useDispatch();
-
-  const tags = useSelector(getTags);
-
-  const handleOnAddTag = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    pipe(
-      tagValue,
-      map(t => {
-        dispatch(addTag(t));
-        setTagValue(none);
-      }),
-      getOrElse(() => null)
-    );
+  const onAddTag = (value: string) => {
+    form.change(fieldNames.tags, [...tags, makeNewTag(value)]);
+    form.change(fieldNames.newTag, none);
   };
 
-  const handleOnRemoveTag = (key: string) => dispatch(removeTag(key));
+  const onDeleteTag = (key: string) =>
+    form.change(
+      fieldNames.tags,
+      tags.filter(t_ => t_.key !== key)
+    );
 
-  const initializeNewTag = () => setTagValue(some(""));
+  const initializeNewTag = () => some("");
 
   return {
     tags,
-    handleOnRemoveTag,
-    handleOnAddTag,
+    form,
+    onAddTag,
+    onDeleteTag,
     initializeNewTag,
-    tagValue,
-    setTagValue,
   };
 };
 
@@ -154,32 +159,45 @@ export const SidebarTags = (props: Props) => {
       </Typography>
       <TagsBox>
         {state.tags.map(t => (
-          <Chip
-            key={t.key}
-            label={t.value}
-            color="primary"
-            onDelete={() => state.handleOnRemoveTag(t.key)}
-          />
+          <Field<Tag>
+            name={`${fieldNames.tags}-${t.key}`}
+            key={`${fieldNames.tags}-${t.key}`}
+          >
+            {({ input, meta }) => (
+              <Chip
+                label={t.value}
+                color="primary"
+                onDelete={() => state.onDeleteTag(t.key)}
+              />
+            )}
+          </Field>
         ))}
-        {pipe(
-          state.tagValue,
-          map(tagValue_ => (
-            <TagInput
-              value={tagValue_}
-              onAddTag={state.handleOnAddTag}
-              setTagValue={state.setTagValue}
-            />
-          )),
-          getOrElse(() => (
-            <IconButton
-              key={"add-button"}
-              color="secondary"
-              iconName={"add"}
-              size="small"
-              onClick={state.initializeNewTag}
-            />
-          ))
-        )}
+
+        <Field<Option<string>> name={fieldNames.newTag} key={fieldNames.newTag}>
+          {({ input, meta }) => {
+            return pipe(
+              input.value,
+              map(value => {
+                return (
+                  <TagInput
+                    value={value}
+                    onAddTag={e => state.onAddTag(value)}
+                    setTagValue={v => input.onChange(some(v))}
+                  />
+                );
+              }),
+              getOrElse(() => (
+                <IconButton
+                  key={"add-button"}
+                  color="secondary"
+                  iconName={"add"}
+                  size="small"
+                  onClick={() => input.onChange(state.initializeNewTag())}
+                />
+              ))
+            );
+          }}
+        </Field>
       </TagsBox>
     </CardContent>
   );

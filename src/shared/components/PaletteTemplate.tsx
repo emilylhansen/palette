@@ -92,7 +92,7 @@ const ColorBlock = ({
           <IconButton
             key={i}
             iconName={action.iconName}
-            onClick={() => action.onClick(color)}
+            onClick={e => action.onClick(e, color)}
             size="small"
           />
         ))}
@@ -103,7 +103,10 @@ const ColorBlock = ({
 
 export type ColorAction = {
   iconName: string;
-  onClick: (color: Color) => void;
+  onClick: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    color: Color
+  ) => void;
 };
 
 type Props = {
@@ -127,7 +130,7 @@ export const PaletteTemplate = (props: Props) => {
     <PaletteTemplateBox css={props.css}>
       {props.colors.map((color: Color) =>
         state.isColorPickerEnabled ? (
-          <ColorPickerBox>
+          <ColorPickerBox key={color.key}>
             <ColorPicker
               color={color.hex}
               toggle={({ onToggle, isOpen }) => (
@@ -143,6 +146,7 @@ export const PaletteTemplate = (props: Props) => {
           </ColorPickerBox>
         ) : (
           <ColorBlock
+            key={color.key}
             color={color}
             enableColorDetails={props.enableColorDetails}
             actions={props.actions}
