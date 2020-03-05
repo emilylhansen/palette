@@ -53,7 +53,7 @@ export const Homepage = ({}: Props) => {
 
   useEffect(() => {
     dispatch(getPalettes());
-    dispatch(getColors());
+    // dispatch(getColors());
     dispatch(getUsers());
     dispatch(getFavoriteColorIds());
     // dispatch(authenticate({ key: "" }));
@@ -61,7 +61,7 @@ export const Homepage = ({}: Props) => {
 
   const dispatch = useDispatch();
   const palettesById = useSelector(getPalettesById);
-  const colorsById = useSelector(getColorsById);
+  // const colorsById = useSelector(getColorsById);
   const usersById = useSelector(getUsersById);
 
   return (
@@ -84,17 +84,3 @@ export const Homepage = ({}: Props) => {
     </HomepageBox>
   );
 };
-
-const mapState = (state: RootState) => {
-  return {
-    palettesById: getPalettesById(state),
-    colorsById: getColorsById(state),
-  };
-};
-
-const mapDispatch = (dispatch: Dispatch) => {
-  return {};
-};
-
-const connector = connect(mapState, mapDispatch)(Homepage);
-// export { connector as Homepage };

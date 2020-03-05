@@ -21,9 +21,10 @@ import {
 import {
   makeHomeRoute,
   makeAboutRoute,
-  makeCreateRoute,
   makeEditRoute,
   makeSettingsRoute,
+  composeRoutes,
+  makePaletteCreatorRoute,
 } from "src/root/root.routes";
 import { history } from "src/App";
 
@@ -41,7 +42,7 @@ const menuItems: Array<MenuItem> = [
     icon: "add",
     label: "create",
     onClick: (e, cb) => {
-      history.push(makeCreateRoute());
+      history.push(makePaletteCreatorRoute());
       cb();
     },
   },
@@ -69,14 +70,14 @@ const menuItems: Array<MenuItem> = [
   //     cb();
   //   },
   // },
-  {
-    icon: "power_settings_new",
-    label: "logout",
-    onClick: (e, cb) => {
-      history.push(makeCreateRoute());
-      cb();
-    },
-  },
+  // {
+  //   icon: "power_settings_new",
+  //   label: "logout",
+  //   onClick: (e, cb) => {
+  //     history.push(makeCreateRoute());
+  //     cb();
+  //   },
+  // },
 ];
 
 export const Header = ({}: Props) => {

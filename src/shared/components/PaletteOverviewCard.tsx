@@ -21,7 +21,6 @@ import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
 import {
   makeHomeRoute,
   makeAboutRoute,
-  makeCreateRoute,
   makeEditRoute,
   makeSettingsRoute,
 } from "src/root/root.routes";

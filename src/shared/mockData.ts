@@ -107,7 +107,7 @@ const makeMockUser = (key: string): User => ({
 const generateRandomColor = () =>
   Math.floor(Math.random() * 16777215).toString(16);
 
-const mockPaletteIds = range(0, 100).map(faker.random.uuid);
+export const mockPaletteIds = range(0, 100).map(faker.random.uuid);
 const mockColorIds = range(0, 100).map(faker.random.uuid);
 const mockHexColors = range(0, mockColorIds.length).map(generateRandomColor);
 const mockUserIds = range(0, 100).map(faker.random.uuid);

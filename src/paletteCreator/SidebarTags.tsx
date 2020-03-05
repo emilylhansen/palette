@@ -158,10 +158,10 @@ export const SidebarTags = (props: Props) => {
         Tags
       </Typography>
       <TagsBox>
-        {state.tags.map(t => (
+        {state.tags.map((t, idx) => (
           <Field<Tag>
-            name={`${fieldNames.tags}-${t.key}`}
-            key={`${fieldNames.tags}-${t.key}`}
+            name={`${fieldNames.tags}-${t.key}-${idx}`}
+            key={`${fieldNames.tags}-${t.key}-${idx}`}
           >
             {({ input, meta }) => (
               <Chip

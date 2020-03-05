@@ -49,7 +49,10 @@ const useSidebarFavorites = (props: Props) => {
   const colorsField = useField(fieldNames.colors);
   const colors = colorsField.input.value;
 
-  return { favoriteColorsByIds, colors, colorsField };
+  const onAddColor = (hex: string) =>
+    colorsField.input.onChange(addColorFormField({ colors, hex }));
+
+  return { favoriteColorsByIds, onAddColor };
 };
 
 export const SidebarFavorites = (props: Props) => {
@@ -61,10 +64,10 @@ export const SidebarFavorites = (props: Props) => {
         Favorites
       </Typography>
       <FavoritesBox>
-        {Object.values(state.favoriteColorsByIds).map(f => (
-          <Field<Array<Color>>
-            name={`${fieldNames.favorites}-${f.key}`}
-            key={`${fieldNames.favorites}-${f.key}`}
+        {Object.values(state.favoriteColorsByIds).map((f, idx) => (
+          <Field<Color>
+            name={`${fieldNames.favorites}-${f.key}-${idx}`}
+            key={`${fieldNames.favorites}-${f.key}-${idx}`}
           >
             {({ input, meta }) => (
               <ColorBox hex={f.hex}>
@@ -73,11 +76,7 @@ export const SidebarFavorites = (props: Props) => {
                   css={overrides.add}
                   size="small"
                   color="default"
-                  onClick={() =>
-                    state.colorsField.input.onChange(
-                      addColorFormField({ colors: state.colors, hex: f.hex })
-                    )
-                  }
+                  onClick={() => state.onAddColor(f.hex)}
                 />
               </ColorBox>
             )}

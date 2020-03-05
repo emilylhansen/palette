@@ -128,9 +128,9 @@ export const PaletteTemplate = (props: Props) => {
 
   return (
     <PaletteTemplateBox css={props.css}>
-      {props.colors.map((color: Color) =>
+      {props.colors.map((color: Color, idx: number) =>
         state.isColorPickerEnabled ? (
-          <ColorPickerBox key={color.key}>
+          <ColorPickerBox key={`${color.key}-${idx}`}>
             <ColorPicker
               color={color.hex}
               toggle={({ onToggle, isOpen }) => (
@@ -146,7 +146,7 @@ export const PaletteTemplate = (props: Props) => {
           </ColorPickerBox>
         ) : (
           <ColorBlock
-            key={color.key}
+            key={`${color.key}-${idx}`}
             color={color}
             enableColorDetails={props.enableColorDetails}
             actions={props.actions}

@@ -23,7 +23,7 @@ export const Protected = ({
   ...otherProps
 }: Props) => {
   const isAuthenticated = useSelector(isAuthenticatedSelector);
-  console.log({ isAuthenticated });
+
   return isAuthenticated ? (
     <Route
       {...otherProps}
@@ -35,16 +35,3 @@ export const Protected = ({
     <Redirect to={makeHomeRoute()} />
   );
 };
-
-// const mapState = (state: RootState) => {
-//   return {
-//     isAuthenticated: isAuthenticatedSelector(state),
-//   };
-// };
-
-// const mapDispatch = (dispatch: Dispatch) => {
-//   return {};
-// };
-
-// const connector = connect(mapState, mapDispatch)(Protected);
-// export { connector as Protected };

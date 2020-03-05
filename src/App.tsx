@@ -19,6 +19,8 @@ declare global {
 export const history = createBrowserHistory();
 const logger = createLogger();
 
+export const localStorage = window.localStorage;
+
 const BodyBox = styled.div`
   flex: 1;
   overflow-y: scroll;

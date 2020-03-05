@@ -13,12 +13,20 @@ export type Values = {
   newTag: Option<string>;
 };
 
-export const initialValues: Values = {
+export const makeInitialValuesCreate = (): Values => ({
   name: "",
   description: "",
   colors: [],
   tags: [],
   newTag: none,
-};
+});
+
+export const makeInitialValuesEdit = (palette: Palette): Values => ({
+  name: palette.name,
+  description: palette.description,
+  colors: palette.colors,
+  tags: palette.tags,
+  newTag: none,
+});
 
 export type Errors = Record<keyof Values, string>;

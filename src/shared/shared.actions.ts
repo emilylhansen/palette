@@ -7,6 +7,8 @@ import {
   GET_USERS,
   GET_COLORS,
   GET_PALETTES,
+  FAVORITE_COLOR,
+  FAVORITE_PALETTE,
 } from "src/shared/shared.constants";
 
 export type GetColor = {
@@ -83,6 +85,28 @@ export const getUsers = (): GetUsers => {
   return {
     type: GET_USERS,
     payload: {},
+  };
+};
+
+export type FavoriteColor = {
+  type: FAVORITE_COLOR;
+  payload: { key: string };
+};
+export const favoriteColor = (key: string): FavoriteColor => {
+  return {
+    type: FAVORITE_COLOR,
+    payload: { key },
+  };
+};
+
+export type FavoritePalette = {
+  type: FAVORITE_PALETTE;
+  payload: { key: string };
+};
+export const favoritePalette = (key: string): FavoritePalette => {
+  return {
+    type: FAVORITE_PALETTE,
+    payload: { key },
   };
 };
 
