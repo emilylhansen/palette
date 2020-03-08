@@ -3,12 +3,14 @@ import {
   failure,
   success,
   RemoteData,
+  initial,
 } from "@devexperts/remote-data-ts";
 import {
   Object,
   Error,
   GetRandomObjectResponse,
-  ObjectColor
+  ObjectColor,
+  ColorPaletteColor,
 } from "src/root/root.api.types";
 import { AxiosError } from "axios";
 
@@ -19,7 +21,12 @@ export type SharedState = {
   favoritePaletteIds: Array<string>;
   favoriteColorIds: Array<string>;
   objectsById: Record<string, RemoteData<string, Object>>;
-  colorsByObjectId: Record<string, RemoteData<string, Array<ObjectColor> >
+  colorsByObjectId: Record<string, RemoteData<string, Array<ObjectColor>>>;
+  availablePalettes: RemoteData<string, Record<string, string>>;
+  colorsByPaletteId: Record<
+    string,
+    RemoteData<string, Record<string, ColorPaletteColor>>
+  >;
 };
 
 export const initialState: SharedState = {
@@ -29,7 +36,9 @@ export const initialState: SharedState = {
   favoritePaletteIds: [],
   favoriteColorIds: [],
   objectsById: {},
-  colorsByObjectId: {}
+  colorsByObjectId: {},
+  availablePalettes: initial,
+  colorsByPaletteId: {},
 };
 
 export type Color = {
