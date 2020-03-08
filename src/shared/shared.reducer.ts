@@ -1,4 +1,4 @@
-import { RootAction, RootActionType } from "src/shared/shared.actions";
+import { SharedAction, SharedActionType } from "src/shared/shared.actions";
 import { initialState, SharedState } from "src/shared/shared.types";
 import {
   mockColorsById,
@@ -6,20 +6,23 @@ import {
   mockUsersById,
   mockFavoriteColorIds,
 } from "src/shared/mockData";
+import { GetRandomObjectHandlers } from "src/shared/handlers/GetRandomObjectHandlers";
 
 export const sharedReducer = (
   state = initialState,
-  action: RootAction
+  action: SharedAction
 ): SharedState => {
   switch (action.type) {
-    case RootActionType.GetColors:
+    case SharedActionType.GetColors:
       return { ...state, colorsById: mockColorsById };
-    case RootActionType.GetPalettes:
+    case SharedActionType.GetPalettes:
       return { ...state, palettesById: mockPalettesById };
-    case RootActionType.GetUsers:
+    case SharedActionType.GetUsers:
       return { ...state, usersById: mockUsersById };
-    case RootActionType.GetFavoriteColorIds:
+    case SharedActionType.GetFavoriteColorIds:
       return { ...state, favoriteColorIds: mockFavoriteColorIds };
+    case SharedActionType.GetRandomObject:
+      return GetRandomObjectHandlers({ state, action });
     default:
       return state;
   }

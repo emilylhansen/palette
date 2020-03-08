@@ -10,6 +10,7 @@ import { createBrowserHistory, Location } from "history";
 import { Header } from "src/shared/components/Header";
 import { createLogger } from "redux-logger";
 import thunk from "redux-thunk";
+import { middleware as reduxPackMiddleware } from "redux-pack";
 
 declare global {
   interface Window {
@@ -32,7 +33,11 @@ const ComponentBox = styled.div`
   height: 100%;
 `;
 
-let store = createStore(rootReducer, undefined, applyMiddleware(logger, thunk));
+let store = createStore(
+  rootReducer,
+  undefined,
+  applyMiddleware(logger, thunk, reduxPackMiddleware)
+);
 
 const connector = connect();
 

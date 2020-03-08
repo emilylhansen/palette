@@ -1,9 +1,25 @@
+import {
+  pending,
+  failure,
+  success,
+  RemoteData,
+} from "@devexperts/remote-data-ts";
+import {
+  Object,
+  Error,
+  GetRandomObjectResponse,
+  ObjectColor
+} from "src/root/root.api.types";
+import { AxiosError } from "axios";
+
 export type SharedState = {
   palettesById: Record<string, Palette>;
   colorsById: Record<string, Color>;
   usersById: Record<string, User>;
   favoritePaletteIds: Array<string>;
   favoriteColorIds: Array<string>;
+  objectsById: Record<string, RemoteData<string, Object>>;
+  colorsByObjectId: Record<string, RemoteData<string, Array<ObjectColor> >
 };
 
 export const initialState: SharedState = {
@@ -12,6 +28,8 @@ export const initialState: SharedState = {
   usersById: {},
   favoritePaletteIds: [],
   favoriteColorIds: [],
+  objectsById: {},
+  colorsByObjectId: {}
 };
 
 export type Color = {

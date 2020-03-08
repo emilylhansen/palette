@@ -21,6 +21,7 @@ import {
   getPalettes,
   getUsers,
   getFavoriteColorIds,
+  getRandomObject,
 } from "src/shared/shared.actions";
 import { authenticate } from "src/auth/auth.actions";
 import { Palette } from "src/shared/shared.types";
@@ -57,6 +58,14 @@ export const Homepage = ({}: Props) => {
     dispatch(getUsers());
     dispatch(getFavoriteColorIds());
     // dispatch(authenticate({ key: "" }));
+    dispatch(getRandomObject());
+    /**
+     * - cooperhewitt.objects.getColors for random object
+     * - look up colors in cooperhewitt.colors.palettes.getInfo for name
+     * - cooperhewitt.colors.palettes.getList
+     * - cooperhewitt.colors.palettes.getInfo for each palette in list
+     * -
+     */
   }, []);
 
   const dispatch = useDispatch();
