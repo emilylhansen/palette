@@ -7,6 +7,7 @@ import {
   mockFavoriteColorIds,
 } from "src/shared/mockData";
 import { GetRandomObjectHandlers } from "src/shared/handlers/GetRandomObjectHandlers";
+import { isNil } from "src/shared/shared.typeGuards";
 
 export const sharedReducer = (
   state = initialState,

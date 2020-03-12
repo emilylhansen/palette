@@ -11,6 +11,8 @@ import { lookup as lookupRecord } from "fp-ts/lib/Record";
 import { fold, map, getOrElse } from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
 
+export const COUNT = 50;
+
 const makeMockColor = ({ hex, key }: { hex: string; key: string }): Color => ({
   name: faker.name.title(),
   hex,
@@ -49,6 +51,24 @@ const pickNHexIdPairs = (n: number): Array<Record<string, string>> =>
     );
   }, []);
 
+export const makeTags = (): Array<Tag> =>
+  range(0, faker.random.number(5)).reduce<Array<Tag>>((acc, cur) => {
+    const g = pipe(
+      getRandomItemInList(mockTagIds),
+      map(tagId => {
+        return pipe(
+          lookupRecord(tagId, tagsById),
+          map(tag => {
+            return [...acc, tag];
+          }),
+          getOrElse(() => acc)
+        );
+      }),
+      getOrElse(() => acc)
+    );
+    return g;
+  }, []);
+
 const makeMockPalette = ({
   key,
   authorId,
@@ -64,24 +84,6 @@ const makeMockPalette = ({
           makeMockColor({ hex: val, key })
         ),
       ];
-    }, []);
-
-  const makeTags = () =>
-    range(0, faker.random.number(5)).reduce<Array<Tag>>((acc, cur) => {
-      const g = pipe(
-        getRandomItemInList(mockTagIds),
-        map(tagId => {
-          return pipe(
-            lookupRecord(tagId, tagsById),
-            map(tag => {
-              return [...acc, tag];
-            }),
-            getOrElse(() => acc)
-          );
-        }),
-        getOrElse(() => acc)
-      );
-      return g;
     }, []);
 
   return {

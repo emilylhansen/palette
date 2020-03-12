@@ -1,4 +1,5 @@
 /** https://material-ui.com/components/app-bar/ */
+import { history } from "src/root/App";
 import React from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
@@ -26,7 +27,6 @@ import {
   composeRoutes,
   makePaletteCreatorRoute,
 } from "src/root/root.routes";
-import { history } from "src/App";
 
 const ToolbarBox = styled.div`
   display: flex;
@@ -35,7 +35,13 @@ const ToolbarBox = styled.div`
   align-items: center;
 `;
 
-type Props = {};
+const StyledLink = styled(Link)`
+  text-decoration: none;
+
+  ${props => css`
+    color: ${props.theme.palette.secondary.main};
+  `}
+`;
 
 const menuItems: Array<MenuItem> = [
   {
@@ -80,14 +86,16 @@ const menuItems: Array<MenuItem> = [
   // },
 ];
 
+type Props = {};
+
 export const Header = ({}: Props) => {
   return (
     <AppBar position="static">
       <Toolbar>
         <ToolbarBox>
-          <Link to={makeHomeRoute()}>
+          <StyledLink to={makeHomeRoute()}>
             <Typography variant="h6">Palette App</Typography>
-          </Link>
+          </StyledLink>
           <AnchoredMenu toggleIcon="dehaze" menuItems={menuItems} />
         </ToolbarBox>
       </Toolbar>

@@ -22,6 +22,9 @@ import {
   getUsers,
   getFavoriteColorIds,
   getRandomObject,
+  getObjectColors,
+  getColorPalettesList,
+  getColorPaletteInfo,
 } from "src/shared/shared.actions";
 import { authenticate } from "src/auth/auth.actions";
 import { Palette } from "src/shared/shared.types";
@@ -31,11 +34,12 @@ import {
   getColorsById,
   getUsersById,
 } from "src/shared/shared.selectors";
+import { ScrollToTop } from "src/design/ScrollToTop";
 
 const HomepageBox = styled.div`
   flex: 1;
   padding: 48px;
-  overflow: auto;
+  // overflow: auto;
   display: grid;
   grid-column-gap: 32px;
   grid-row-gap: 32px;
@@ -53,12 +57,6 @@ export const Homepage = ({}: Props) => {
   const [selectedPalette, setSelectedPalette] = useState<Option<Palette>>(none);
 
   useEffect(() => {
-    dispatch(getPalettes());
-    // dispatch(getColors());
-    dispatch(getUsers());
-    dispatch(getFavoriteColorIds());
-    // dispatch(authenticate({ key: "" }));
-    dispatch(getRandomObject());
     /**
      * - cooperhewitt.objects.getColors for random object
      * - look up colors in cooperhewitt.colors.palettes.getInfo for name
@@ -66,6 +64,11 @@ export const Homepage = ({}: Props) => {
      * - cooperhewitt.colors.palettes.getInfo for each palette in list
      * -
      */
+
+    // dispatch(getPalettes());
+    dispatch(getUsers());
+    dispatch(getFavoriteColorIds());
+    dispatch(getPalettes());
   }, []);
 
   const dispatch = useDispatch();
@@ -74,22 +77,24 @@ export const Homepage = ({}: Props) => {
   const usersById = useSelector(getUsersById);
 
   return (
-    <HomepageBox>
-      {Object.values(palettesById).map(palette => (
-        <PaletteTileCard
-          key={palette.key}
-          palette={palette}
-          onClick={() => setSelectedPalette(some(palette))}
-        />
-      ))}
-      <Modal
-        isOpen={isSome(selectedPalette)}
-        onClose={() => setSelectedPalette(none)}
-      >
-        {isSome(selectedPalette) && (
-          <PaletteOverviewCard palette={selectedPalette.value} />
-        )}
-      </Modal>
-    </HomepageBox>
+    <ScrollToTop>
+      <HomepageBox>
+        {Object.values(palettesById).map(palette => (
+          <PaletteTileCard
+            key={palette.key}
+            palette={palette}
+            onClick={() => setSelectedPalette(some(palette))}
+          />
+        ))}
+        <Modal
+          isOpen={isSome(selectedPalette)}
+          onClose={() => setSelectedPalette(none)}
+        >
+          {isSome(selectedPalette) && (
+            <PaletteOverviewCard palette={selectedPalette.value} />
+          )}
+        </Modal>
+      </HomepageBox>
+    </ScrollToTop>
   );
 };

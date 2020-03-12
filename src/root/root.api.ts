@@ -9,7 +9,7 @@ import {
 } from "src/root/root.api.types";
 import { RemoteData, success, failure } from "@devexperts/remote-data-ts";
 
-const ACCESS_TOKEN = "786356ec968c593e990f5d5eb14cd4ff";
+const ACCESS_TOKEN = "e9eb4e1e47b9410361316e611216c1ee";
 
 export const apiClient = axios.create({
   baseURL: "https://api.collection.cooperhewitt.org/rest/",

@@ -77,3 +77,8 @@ export type Activity = {
   date: Date;
   activity: "favorite" | "share";
 };
+
+export type PayloadAction<A extends { promise: unknown }, B> = Omit<
+  A,
+  "promise"
+> & { payload: B };

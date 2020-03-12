@@ -5,6 +5,10 @@ import {
   colorsByIdLens,
   palettesByIdLens,
   usersByIdLens,
+  objectsByIdLens,
+  colorsByObjectIdLens,
+  availablePalettesLens,
+  colorsByPaletteIdLens,
 } from "src/shared/shared.lenses";
 import { sharedStateLens } from "src/root/root.lenses";
 
@@ -24,3 +28,15 @@ export const getFavoriteColorIds = (state: RootState) =>
 
 export const getFavoritePaletteIds = (state: RootState) =>
   favoritePaletteIdsLens.get(sharedStateLens.get(state));
+
+export const getObjectsById = (state: RootState) =>
+  objectsByIdLens.get(sharedStateLens.get(state));
+
+export const getColorsByObjectId = (state: RootState) =>
+  colorsByObjectIdLens.get(sharedStateLens.get(state));
+
+export const getAvailablePalettes = (state: RootState) =>
+  availablePalettesLens.get(sharedStateLens.get(state));
+
+export const getColorsByPaletteId = (state: RootState) =>
+  colorsByPaletteIdLens.get(sharedStateLens.get(state));

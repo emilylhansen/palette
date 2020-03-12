@@ -30,3 +30,17 @@ export const favoritePaletteIdsLens = Lens.fromProp<SharedState>()(
 export const favoriteColorIdsLens = Lens.fromProp<SharedState>()(
   "favoriteColorIds"
 );
+
+export const objectsByIdLens = Lens.fromProp<SharedState>()("objectsById");
+
+export const colorsByObjectIdLens = Lens.fromProp<SharedState>()(
+  "colorsByObjectId"
+);
+
+export const availablePalettesLens = Lens.fromProp<SharedState>()(
+  "availablePalettes"
+);
+
+export const colorsByPaletteIdLens = Lens.fromProp<SharedState>()(
+  "colorsByPaletteId"
+);

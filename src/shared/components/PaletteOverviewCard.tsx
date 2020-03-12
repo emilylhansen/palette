@@ -24,7 +24,7 @@ import {
   makeEditRoute,
   makeSettingsRoute,
 } from "src/root/root.routes";
-import { history } from "src/App";
+import { history } from "src/root/App";
 import {
   getPalettesById,
   getColorsById,

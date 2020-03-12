@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router";
 import { Route, Switch } from "react-router-dom";
 import { Protected } from "src/auth/Protected";
-import { Container } from "src/App";
+import { Container } from "src/root/App";
 import { Homepage } from "src/homepage/Homepage";
 import { PaletteCreator } from "src/paletteCreator/PaletteCreator";
 import { PaletteCreatorLoader } from "src/paletteCreator/PaletteCreatorLoader";
