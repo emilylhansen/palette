@@ -9,6 +9,7 @@ import { addColorFormField } from "src/paletteCreator/paletteCreator.helpers";
 import { getFavoriteColorsById } from "src/paletteCreator/paletteCreator.selectors";
 import { Color } from "src/shared/shared.types";
 import styled, { css } from "styled-components";
+import { Text } from "src/design/Text";
 
 const overrides = {
   add: css`
@@ -60,9 +61,9 @@ export const SidebarFavorites = (props: Props) => {
 
   return (
     <CardContent>
-      <Typography gutterBottom variant="h5" component="h2">
+      <Text gutterBottom="small" variant="h5">
         Favorites
-      </Typography>
+      </Text>
       <FavoritesBox>
         {Object.values(state.favoriteColorsByIds).map((f, idx) => (
           <Field<Color>
@@ -73,7 +74,7 @@ export const SidebarFavorites = (props: Props) => {
               <ColorBox hex={f.hex}>
                 <IconButton
                   iconName="add"
-                  css={overrides.add}
+                  cssOverrides={overrides.add}
                   size="small"
                   color="default"
                   onClick={() => state.onAddColor(f.hex)}

@@ -13,6 +13,7 @@ import { makeNewTag } from "src/paletteCreator/paletteCreator.helpers";
 import { Values } from "src/paletteCreator/paletteCreator.types";
 import { Tag } from "src/shared/shared.types";
 import styled, { css } from "styled-components";
+import { Text } from "src/design/Text";
 
 const MAX_WIDTH = 268;
 
@@ -154,9 +155,9 @@ export const SidebarTags = (props: Props) => {
 
   return (
     <CardContent>
-      <Typography gutterBottom variant="h5" component="h2">
+      <Text gutterBottom="small" variant="body1">
         Tags
-      </Typography>
+      </Text>
       <TagsBox>
         {state.tags.map((t, idx) => (
           <Field<Tag>

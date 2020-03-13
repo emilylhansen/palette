@@ -3,11 +3,11 @@ import { history } from "src/root/App";
 import React from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
-import styled, { css } from "styled-components";
+import { css } from "styled-components";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import { Text } from "src/design/Text";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
@@ -27,6 +27,7 @@ import {
   composeRoutes,
   makePaletteCreatorRoute,
 } from "src/root/root.routes";
+import { styled } from "src/root/root.theme";
 
 const ToolbarBox = styled.div`
   display: flex;
@@ -39,7 +40,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 
   ${props => css`
-    color: ${props.theme.palette.secondary.main};
+    color: ${props.theme.mui.palette.secondary.main};
   `}
 `;
 
@@ -94,7 +95,9 @@ export const Header = ({}: Props) => {
       <Toolbar>
         <ToolbarBox>
           <StyledLink to={makeHomeRoute()}>
-            <Typography variant="h6">Palette App</Typography>
+            <Text variant="h6" fontWeight={600}>
+              Palette App
+            </Text>
           </StyledLink>
           <AnchoredMenu toggleIcon="dehaze" menuItems={menuItems} />
         </ToolbarBox>

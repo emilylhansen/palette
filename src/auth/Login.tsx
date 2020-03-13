@@ -21,15 +21,15 @@ export const Login = ({}: Props) => {
   return (
     <Modal isOpen={true}>
       <LoginBox>
-        <Text fontSize={14}>Welcome back.</Text>
-        <Text fontSize={12}>
+        <Text variant="body1">Welcome back.</Text>
+        <Text variant="body2">
           Sign in to get personalized story recommendations, follow authors and
           topics you love, and interact with stories.
         </Text>
         <Button variant="outlined" startIcon={<Icon iconName="mail_outline" />}>
           Sign in with email
         </Button>
-        <Text fontSize={12}>
+        <Text variant="body2">
           No account? <a href="">Create one</a>.
         </Text>
       </LoginBox>

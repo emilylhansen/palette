@@ -1,31 +1,27 @@
 import React from "react";
-import styled, { css, FlattenSimpleInterpolation } from "styled-components";
-import { Icon, Props as IconProps } from "src/design/Icon";
 import {
   default as MaterialIconButton,
   IconButtonProps as MaterialIconButtonProps,
 } from "@material-ui/core/IconButton";
+import { Icon } from "@material-ui/core";
+import { FlattenSimpleInterpolation, css } from "styled-components";
+import { styled } from "src/root/root.theme";
 
-const MaterialIconButtonBox = styled.div<{ css: FlattenSimpleInterpolation }>`
-  ${({ css: css_ }) =>
-    css`
-      ${css_}
-    `}
+const StyledIconButton = styled(MaterialIconButton)<
+  Pick<Props, "cssOverrides">
+>`
+  ${props => css`
+    ${props.cssOverrides}
+  `}
 `;
 
-type Props = Pick<IconProps, "iconName"> &
-  MaterialIconButtonProps & { css?: FlattenSimpleInterpolation };
-
-export const IconButton = ({
-  iconName,
-  css: css_,
-  ...materialIconButtonProps
-}: Props) => {
-  return (
-    <MaterialIconButtonBox css={css_}>
-      <MaterialIconButton color="secondary" {...materialIconButtonProps}>
-        <Icon iconName={iconName} />
-      </MaterialIconButton>
-    </MaterialIconButtonBox>
-  );
+type Props = MaterialIconButtonProps & {
+  iconName: string;
+  cssOverrides?: FlattenSimpleInterpolation;
 };
+
+export const IconButton = ({ iconName, ...materialIconButtonProps }: Props) => (
+  <StyledIconButton color="secondary" {...materialIconButtonProps}>
+    <Icon>{iconName}</Icon>
+  </StyledIconButton>
+);

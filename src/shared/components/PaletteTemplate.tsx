@@ -7,14 +7,18 @@ import { isNil } from "src/shared/shared.typeGuards";
 import { IconButton } from "src/design/IconButton";
 import { ColorPicker } from "src/shared/components/ColorPicker";
 
-const PaletteTemplateBox = styled.div<{ css?: FlattenSimpleInterpolation }>`
+const PaletteTemplateBox = styled.div<{
+  cssOverrides?: FlattenSimpleInterpolation;
+}>`
   display: flex;
   flex: 1;
   height: 100%;
+  border-radius: 6px;
+  overflow: hidden;
 
-  ${({ css: css_ }) =>
+  ${({ cssOverrides }) =>
     css`
-      ${css_}
+      ${cssOverrides}
     `}
 `;
 
@@ -82,8 +86,10 @@ const ColorBlock = ({
   >
     {enableColorDetails && (
       <>
-        <Text fontSize={12}>{color.name}</Text>
-        <Text fontSize={10}>{`#${color.hex}`}</Text>
+        <Text variant="subtitle2" align="center">
+          {color.name}
+        </Text>
+        <Text variant="subtitle2">{`#${color.hex}`}</Text>
       </>
     )}
     {!isNil(actions) && (
@@ -112,7 +118,7 @@ export type ColorAction = {
 type Props = {
   colors: Array<Color>;
   enableColorDetails?: boolean;
-  css?: FlattenSimpleInterpolation;
+  cssOverrides?: FlattenSimpleInterpolation;
   actions?: Array<ColorAction>;
   handleColor?: ({ key, hex }: { key: string; hex: string }) => void;
 };
@@ -127,7 +133,7 @@ export const PaletteTemplate = (props: Props) => {
   const state = usePaletteTemplate(props);
 
   return (
-    <PaletteTemplateBox css={props.css}>
+    <PaletteTemplateBox cssOverrides={props.cssOverrides}>
       {props.colors.map((color: Color, idx: number) =>
         state.isColorPickerEnabled ? (
           <ColorPickerBox key={`${color.key}-${idx}`}>

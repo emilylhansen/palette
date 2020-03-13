@@ -1,60 +1,69 @@
 import React, { ReactNode } from "react";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import { isNil } from "src/shared/shared.typeGuards";
+import Typography, { TypographyProps } from "@material-ui/core/Typography";
 
-const GUTTER_SIZE = 16;
+type GutterSize = "small" | "medium" | "large";
 
-const TextBox = styled.div<Omit<TextProps, "children">>`
+const gutterSizes: Record<GutterSize, number> = {
+  small: 4,
+  medium: 8,
+  large: 16,
+};
+
+type StyledTypographyProps = Omit<TextProps, "children" | "gutterBottom"> & {
+  gutterBottom_: TextProps["gutterBottom"];
+};
+
+const StyledTypography = styled(Typography)<StyledTypographyProps>`
   ${({
-    fontSize,
     fontWeight,
-    css: css_,
+    cssOverrides,
     gutterTop,
-    gutterBottom,
+    gutterBottom_,
     gutterRight,
     gutterLeft,
   }) => css`
-    font-size: ${fontSize}px;
     font-weight: ${isNil(fontWeight) ? 400 : fontWeight};
-    margin: ${`${isNil(gutterTop) ? 0 : GUTTER_SIZE}px ${
-      isNil(gutterRight) ? 0 : GUTTER_SIZE
-    }px ${isNil(gutterBottom) ? 0 : GUTTER_SIZE}px ${
-      isNil(gutterLeft) ? 0 : GUTTER_SIZE
+    margin: ${`${isNil(gutterTop) ? 0 : gutterSizes[gutterTop]}px ${
+      isNil(gutterRight) ? 0 : gutterSizes[gutterRight]
+    }px ${isNil(gutterBottom_) ? 0 : gutterSizes[gutterBottom_]}px ${
+      isNil(gutterLeft) ? 0 : gutterSizes[gutterLeft]
     }px `};
-    ${css_}
+
+    ${cssOverrides}
   `}
 `;
 
 type TextProps = {
   children: ReactNode;
-  fontSize: number;
   fontWeight?: number;
-  css?: FlattenSimpleInterpolation;
-  gutterTop?: boolean;
-  gutterRight?: boolean;
-  gutterBottom?: boolean;
-  gutterLeft?: boolean;
-};
+  cssOverrides?: FlattenSimpleInterpolation;
+  gutterTop?: GutterSize;
+  gutterRight?: GutterSize;
+  gutterBottom?: GutterSize;
+  gutterLeft?: GutterSize;
+} & Omit<TypographyProps, "gutterBottom">;
 
 export const Text = ({
   children,
-  fontSize,
   fontWeight,
-  css: css_,
+  cssOverrides,
   gutterTop,
   gutterBottom,
   gutterRight,
   gutterLeft,
+  ...typographyProps
 }: TextProps) => (
-  <TextBox
-    fontSize={fontSize}
+  <StyledTypography
     fontWeight={fontWeight}
-    css={css_}
+    cssOverrides={cssOverrides}
     gutterTop={gutterTop}
     gutterRight={gutterRight}
-    gutterBottom={gutterBottom}
+    gutterBottom_={gutterBottom}
     gutterLeft={gutterLeft}
+    {...typographyProps}
   >
     {children}
-  </TextBox>
+  </StyledTypography>
 );

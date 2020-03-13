@@ -60,7 +60,7 @@ export const PaletteCreatorSidebar = (props: Props) => {
     <PaletteCreatorSidebarBox>
       <Card>
         <CardContent>
-          <Text fontSize={16} gutterBottom>
+          <Text variant="body1" gutterBottom={"small"}>
             Details
           </Text>
           <SectionBox>
@@ -107,9 +107,9 @@ export const PaletteCreatorSidebar = (props: Props) => {
                   <IconButton
                     iconName={state.privateIcon}
                     onClick={() => input.onChange(!input.value)}
-                    css={overrides.privateButton}
+                    cssOverrides={overrides.privateButton}
                   />
-                  <Text fontSize={14}>{state.privateLabel}</Text>
+                  <Text variant="body1">{state.privateLabel}</Text>
                 </PrivateBox>
               )}
             </Field>

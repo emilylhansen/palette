@@ -1,44 +1,20 @@
-import React from "react";
-import {
-  connect,
-  ConnectedProps,
-  Provider,
-  useDispatch,
-  useSelector,
-} from "react-redux";
-import { createStore, Dispatch } from "redux";
-import styled, { css } from "styled-components";
-import { Text } from "src/design/Text";
-import { Palette } from "src/shared/shared.types";
-import { Icon } from "src/design/Icon";
-import {
-  PaletteTemplate,
-  ColorAction,
-} from "src/shared/components/PaletteTemplate";
-import { IconButton } from "src/design/IconButton";
 import Chip from "@material-ui/core/Chip";
-import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
-import {
-  makeHomeRoute,
-  makeAboutRoute,
-  makeEditRoute,
-  makeSettingsRoute,
-} from "src/root/root.routes";
-import { history } from "src/root/App";
-import {
-  getPalettesById,
-  getColorsById,
-  getUsersById,
-} from "src/shared/shared.selectors";
-import { lookup } from "fp-ts/lib/Record";
+import { getOrElse, map } from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
-import { fold, map, getOrElse } from "fp-ts/lib/Option";
-
-const overrides = {
-  favorite: css`
-    margin-right: 4px;
-  `,
-};
+import { lookup } from "fp-ts/lib/Record";
+import React from "react";
+import { useSelector } from "react-redux";
+import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
+import { IconButton } from "src/design/IconButton";
+import { Text } from "src/design/Text";
+import { history } from "src/root/App";
+import { makeEditRoute } from "src/root/root.routes";
+import { styled } from "src/root/root.theme";
+import { FavoriteButton } from "src/shared/components/FavoriteButton";
+import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
+import { getUsersById } from "src/shared/shared.selectors";
+import { Palette } from "src/shared/shared.types";
+import { css } from "styled-components";
 
 const PaletteOverviewCardBox = styled.div`
   padding: 0 24px 24px;
@@ -69,13 +45,16 @@ const TagsBox = styled.div`
 const FavoriteBox = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 12px;
 `;
 
 const FeaturesBoxLeft = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
+
+  > * {
+    margin-right: 16px;
+  }
 `;
 
 const FeaturesBoxRight = styled.div`
@@ -93,13 +72,10 @@ const Favorite = ({
   count: number;
 }) => (
   <FavoriteBox>
-    <IconButton
-      color="secondary"
-      size="small"
-      iconName={isFavorited ? "favorite" : "favorite_border"}
-      css={overrides.favorite}
-    />
-    <Text fontSize={12}>{count}</Text>
+    <FavoriteButton isFavorited={isFavorited} />
+    <Text variant="body2" gutterLeft="small">
+      {count}
+    </Text>
   </FavoriteBox>
 );
 
@@ -134,8 +110,8 @@ export const PaletteOverviewCard = ({ palette }: Props) => {
 
   return (
     <PaletteOverviewCardBox>
-      <Text fontSize={24}>{palette.name}</Text>
-      <Text fontSize={12}>
+      <Text variant="h6">{palette.name}</Text>
+      <Text variant="body2">
         {pipe(
           author,
           map(author_ => author_.name),
@@ -150,14 +126,15 @@ export const PaletteOverviewCard = ({ palette }: Props) => {
             size="small"
             iconName={palette.private ? "lock" : "lock_open"}
           />
+          <IconButton color="secondary" size="small" iconName={"file_copy"} />
         </FeaturesBoxLeft>
-        <FeaturesBoxRight>
+        {/* <FeaturesBoxRight>
           <AnchoredMenu
             toggleIcon="more_vert"
             menuItems={menuItems}
             size="small"
           />
-        </FeaturesBoxRight>
+        </FeaturesBoxRight> */}
       </FeaturesBox>
       <TagsBox>
         {palette.tags.map(tag => (
