@@ -7,8 +7,14 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { IconButton } from "src/design/IconButton";
 import { Icon } from "src/design/Icon";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { IconButtonProps as MaterialIconButtonProps } from "@material-ui/core/IconButton";
+
+const cssOverrides = {
+  iconButton: css`
+    color: #ffffff;
+  `,
+};
 
 const AnchoredMenuBox = styled.div``;
 
@@ -74,6 +80,7 @@ export const AnchoredMenu = ({ menuItems, toggleIcon, size }: Props) => {
         onClick={handleClick}
         iconName={toggleIcon}
         size={size}
+        cssOverrides={cssOverrides.iconButton}
       />
       <StyledMenu
         id="customized-menu"

@@ -26,6 +26,7 @@ import {
   makeSettingsRoute,
   composeRoutes,
   makePaletteCreatorRoute,
+  makeNewRoute,
 } from "src/root/root.routes";
 import { styled } from "src/root/root.theme";
 
@@ -40,16 +41,16 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 
   ${props => css`
-    color: ${props.theme.mui.palette.secondary.main};
+    color: #ffffff;
   `}
 `;
 
 const menuItems: Array<MenuItem> = [
   {
     icon: "add",
-    label: "create",
+    label: "CREATE",
     onClick: (e, cb) => {
-      history.push(makePaletteCreatorRoute());
+      history.push(composeRoutes([makePaletteCreatorRoute(), makeNewRoute()]));
       cb();
     },
   },
@@ -95,7 +96,7 @@ export const Header = ({}: Props) => {
       <Toolbar>
         <ToolbarBox>
           <StyledLink to={makeHomeRoute()}>
-            <Text variant="h6" fontWeight={600}>
+            <Text variant="h6" fontWeight={700}>
               Palette App
             </Text>
           </StyledLink>

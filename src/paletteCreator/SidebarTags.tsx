@@ -12,8 +12,10 @@ import { fieldNames } from "src/paletteCreator/paletteCreator.constants";
 import { makeNewTag } from "src/paletteCreator/paletteCreator.helpers";
 import { Values } from "src/paletteCreator/paletteCreator.types";
 import { Tag } from "src/shared/shared.types";
-import styled, { css } from "styled-components";
+import { css } from "styled-components";
 import { Text } from "src/design/Text";
+import { SectionHeader } from "src/paletteCreator/paletteCreator.styles";
+import { styled } from "src/root/root.theme";
 
 const MAX_WIDTH = 268;
 
@@ -73,7 +75,6 @@ const TagInputFormBox = styled.form<{ width: number }>`
 
 const ChipBox = styled.div<{ width: number }>`
   color: #fff;
-  background-color: #3f51b5;
   border: none;
   cursor: default;
   height: 32px;
@@ -81,8 +82,9 @@ const ChipBox = styled.div<{ width: number }>`
   max-width: ${MAX_WIDTH}px;
   position: relative;
 
-  ${({ width }) =>
+  ${({ width, theme }) =>
     css`
+      background-color: ${theme.mui.palette.primary.main};
       width: ${width}px;
     `}
 `;
@@ -155,9 +157,8 @@ export const SidebarTags = (props: Props) => {
 
   return (
     <CardContent>
-      <Text gutterBottom="small" variant="body1">
-        Tags
-      </Text>
+      <SectionHeader>Tags</SectionHeader>
+
       <TagsBox>
         {state.tags.map((t, idx) => (
           <Field<Tag>
@@ -191,8 +192,8 @@ export const SidebarTags = (props: Props) => {
                 <IconButton
                   key={"add-button"}
                   color="secondary"
-                  iconName={"add"}
                   size="small"
+                  iconName={"add"}
                   onClick={() => input.onChange(state.initializeNewTag())}
                 />
               ))

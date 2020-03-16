@@ -13,8 +13,8 @@ import { styled } from "src/root/root.theme";
 import { FavoriteButton } from "src/shared/components/FavoriteButton";
 import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
 import { getUsersById } from "src/shared/shared.selectors";
-import { Palette } from "src/shared/shared.types";
-import { css } from "styled-components";
+import { Palette, Color } from "src/shared/shared.types";
+import { CopyButton } from "src/shared/components/CopyButton";
 
 const PaletteOverviewCardBox = styled.div`
   padding: 0 24px 24px;
@@ -23,12 +23,14 @@ const PaletteOverviewCardBox = styled.div`
   flex: 1;
 `;
 
+const FeaturesItemBox = styled.div``;
+
 const FeaturesBox = styled.div`
   display: flex;
   align-items: center;
   margin: 8px 0;
 
-  > div:not(:last-child) {
+  > ${FeaturesItemBox}:not(:last-child) {
     margin-right: 16px;
   }
 `;
@@ -42,111 +44,51 @@ const TagsBox = styled.div`
   }
 `;
 
-const FavoriteBox = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const FeaturesBoxLeft = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-
-  > * {
-    margin-right: 16px;
-  }
-`;
-
-const FeaturesBoxRight = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  justify-content: flex-end;
-`;
-
-const Favorite = ({
-  isFavorited,
-  count,
-}: {
-  isFavorited: boolean;
-  count: number;
-}) => (
-  <FavoriteBox>
-    <FavoriteButton isFavorited={isFavorited} />
-    <Text variant="body2" gutterLeft="small">
-      {count}
-    </Text>
-  </FavoriteBox>
-);
-
-const menuItems: Array<MenuItem> = [
-  {
-    icon: "file_copy",
-    label: "copy",
-    onClick: () => null,
-  },
-  {
-    icon: "share",
-    label: "share",
-    onClick: () => null,
-  },
-  {
-    icon: "edit",
-    label: "edit",
-    onClick: () => history.push(makeEditRoute()),
-  },
-  {
-    icon: "trash",
-    label: "delete",
-    onClick: () => null,
-  },
-];
-
 type Props = { palette: Palette };
 
-export const PaletteOverviewCard = ({ palette }: Props) => {
+const usePaletteOverviewCard = (props: Props) => {
   const usersById = useSelector(getUsersById);
-  const author = lookup(palette.authorId, usersById);
+
+  const author = lookup(props.palette.authorId, usersById);
+
+  const copyValue = props.palette.colors.map(c => c.hex).join(", ");
+
+  return { usersById, author, copyValue };
+};
+
+export const PaletteOverviewCard = (props: Props) => {
+  const state = usePaletteOverviewCard(props);
 
   return (
     <PaletteOverviewCardBox>
-      <Text variant="h6">{palette.name}</Text>
-      <Text variant="body2">
+      <Text variant="h6">{props.palette.name}</Text>
+      <Text variant="subtitle2">
         {pipe(
-          author,
+          state.author,
           map(author_ => author_.name),
           getOrElse(() => "N/A")
         )}
       </Text>
       <FeaturesBox>
-        <FeaturesBoxLeft>
-          <Favorite isFavorited={false} count={12} />
+        <FeaturesItemBox>
+          <FavoriteButton isFavorited={false} count={12} />
+        </FeaturesItemBox>
+        <FeaturesItemBox>
           <IconButton
             color="secondary"
-            size="small"
-            iconName={palette.private ? "lock" : "lock_open"}
+            iconName={props.palette.private ? "lock" : "lock_open"}
           />
-          <IconButton color="secondary" size="small" iconName={"file_copy"} />
-        </FeaturesBoxLeft>
-        {/* <FeaturesBoxRight>
-          <AnchoredMenu
-            toggleIcon="more_vert"
-            menuItems={menuItems}
-            size="small"
-          />
-        </FeaturesBoxRight> */}
+        </FeaturesItemBox>
+        <FeaturesItemBox>
+          <CopyButton value={state.copyValue} />
+        </FeaturesItemBox>
       </FeaturesBox>
       <TagsBox>
-        {palette.tags.map(tag => (
-          <Chip
-            key={tag.key}
-            label={tag.value}
-            size="small"
-            color="secondary"
-          />
+        {props.palette.tags.map(tag => (
+          <Chip key={tag.key} label={tag.value} size="small" color="primary" />
         ))}
       </TagsBox>
-      <PaletteTemplate colors={palette.colors} enableColorDetails />
+      <PaletteTemplate colors={props.palette.colors} enableColorDetails />
     </PaletteOverviewCardBox>
   );
 };

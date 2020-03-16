@@ -1,4 +1,4 @@
-import Button from "@material-ui/core/Button";
+import { Button } from "src/design/Button";
 import React, { useEffect } from "react";
 import { withTypes } from "react-final-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,7 @@ import { mockPaletteIds } from "src/shared/mockData";
 import { lookup } from "fp-ts/lib/Record";
 import { pipe } from "fp-ts/lib/pipeable";
 import { map, getOrElse, chain, fromNullable } from "fp-ts/lib/Option";
+import { GutterSize, Gutters, makeGutters } from "src/design/design.helpers";
 
 const PaletteCreatorBox = styled.div`
   display: flex;
@@ -90,8 +91,15 @@ export const PaletteCreator = (props: Props) => {
           <ContentBox>
             <PaletteCreatorPalette />
             <FooterBox>
-              <Button>cancel</Button>
-              <Button type="submit" onClick={handleSubmit}>
+              <Button color="secondary" gutterRight={GutterSize.Medium}>
+                cancel
+              </Button>
+              <Button
+                type="submit"
+                onClick={handleSubmit}
+                color="primary"
+                variant="contained"
+              >
                 {state.submitLabel}
               </Button>
             </FooterBox>

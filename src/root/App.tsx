@@ -33,6 +33,13 @@ const logger = createLogger();
 
 export const localStorage = window.localStorage;
 
+const ContentBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+`;
+
 const BodyBox = styled.div`
   flex: 1;
   overflow-y: scroll;
@@ -69,10 +76,12 @@ export const App = () => (
         <StylesProvider injectFirst>
           <MuiThemeProvider theme={theme.mui}>
             <ThemeProvider theme={theme}>
-              <Header />
-              <BodyBox>
-                <RootRoutes />
-              </BodyBox>
+              <ContentBox>
+                <Header />
+                <BodyBox>
+                  <RootRoutes />
+                </BodyBox>
+              </ContentBox>
             </ThemeProvider>
           </MuiThemeProvider>
         </StylesProvider>

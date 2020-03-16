@@ -63,7 +63,7 @@ const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
     }
 
     ${PaletteTemplateBox} {
-      opacity: 0.5;
+      opacity: 0.2;
     }
   }
 `;

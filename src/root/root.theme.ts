@@ -33,11 +33,13 @@ export const muiTheme = createMuiTheme({
       main: "#77a6f7",
       dark: "#5374ac",
       light: "#92b7f8",
+      contrastText: "#fff",
     },
     secondary: {
       main: "#008874",
       dark: "#005f51",
       light: "#339f8f",
+      contrastText: "#fff",
     },
     // error: { main: "#f13c20" },
     // warning: { main: "#f13c20" },

@@ -3,6 +3,7 @@ import { css, FlattenSimpleInterpolation } from "styled-components";
 import { styled } from "src/root/root.theme";
 import { IconButton } from "src/design/IconButton";
 import { IconButtonProps as MaterialIconButtonProps } from "@material-ui/core/IconButton";
+import { isNil } from "src/shared/shared.typeGuards";
 
 const StyledIconButton = styled(IconButton)`
   ${props =>
@@ -14,18 +15,19 @@ const StyledIconButton = styled(IconButton)`
 type Props = {
   isFavorited: boolean;
   cssOverrides?: FlattenSimpleInterpolation;
+  count?: number;
 } & MaterialIconButtonProps;
 
 export const FavoriteButton = ({
   isFavorited,
   cssOverrides,
+  count,
   ...materialIconButtonProps
 }: Props) => (
   <StyledIconButton
-    color="secondary"
-    size="small"
     iconName={isFavorited ? "favorite" : "favorite_border"}
     cssOverrides={cssOverrides}
+    label={isNil(count) ? undefined : count.toString()}
     {...materialIconButtonProps}
   />
 );

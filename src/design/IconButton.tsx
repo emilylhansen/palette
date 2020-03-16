@@ -1,27 +1,68 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import {
-  default as MaterialIconButton,
+  default as MUIIconButton,
   IconButtonProps as MaterialIconButtonProps,
 } from "@material-ui/core/IconButton";
 import { Icon } from "@material-ui/core";
 import { FlattenSimpleInterpolation, css } from "styled-components";
 import { styled } from "src/root/root.theme";
+import { makeStyles } from "@material-ui/core/styles";
+import { Text } from "src/design/Text";
+import { isNil } from "src/shared/shared.typeGuards";
+import { GutterSize, Gutters, makeGutters } from "src/design/design.helpers";
 
-const StyledIconButton = styled(MaterialIconButton)<
-  Pick<Props, "cssOverrides">
+const IconButtonBox = styled.div<
+  {
+    cssOverrides: Props["cssOverrides"];
+  } & Gutters
 >`
-  ${props => css`
-    ${props.cssOverrides}
-  `}
+  display: flex;
+  align-items: center;
+
+  ${({ cssOverrides, gutterTop, gutterBottom, gutterRight, gutterLeft }) =>
+    css`
+      margin: ${makeGutters({
+        gutterTop,
+        gutterBottom,
+        gutterRight,
+        gutterLeft,
+      })};
+
+      ${cssOverrides};
+    `}
 `;
 
-type Props = MaterialIconButtonProps & {
+type Props = {
   iconName: string;
+  label?: string;
   cssOverrides?: FlattenSimpleInterpolation;
-};
+} & Gutters &
+  MaterialIconButtonProps;
 
-export const IconButton = ({ iconName, ...materialIconButtonProps }: Props) => (
-  <StyledIconButton color="secondary" {...materialIconButtonProps}>
-    <Icon>{iconName}</Icon>
-  </StyledIconButton>
+export const IconButton = ({
+  iconName,
+  label,
+  cssOverrides,
+  gutterTop,
+  gutterBottom,
+  gutterRight,
+  gutterLeft,
+  ...materialIconButtonProps
+}: Props) => (
+  <IconButtonBox
+    cssOverrides={cssOverrides}
+    gutterTop={gutterTop}
+    gutterBottom={gutterBottom}
+    gutterRight={gutterRight}
+    gutterLeft={gutterLeft}
+  >
+    <MUIIconButton color="secondary" {...materialIconButtonProps}>
+      <Icon>{iconName}</Icon>
+    </MUIIconButton>
+    {!isNil(label) && (
+      <Text gutterLeft={GutterSize.Small} variant="body2">
+        {label}
+      </Text>
+    )}
+  </IconButtonBox>
 );

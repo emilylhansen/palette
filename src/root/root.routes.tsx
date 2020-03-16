@@ -21,13 +21,20 @@ export const RootRoutes = () => {
   console.log({
     new: composeRoutes([makePaletteCreatorRoute(), makeNewRoute()]),
     edit: composeRoutes([makePaletteCreatorRoute(), makeEditRoute()]),
+    n:
+      composeRoutes([makePaletteCreatorRoute(), makeNewRoute()]) ===
+      "/palette-creator/new",
+    e:
+      composeRoutes([makePaletteCreatorRoute(), makeEditRoute()]) ===
+      "/palette-creator/:id",
   });
   return (
     <Route component={Container}>
       <Switch>
         <Route
           exact
-          path="/palette-creator/new"
+          path={composeRoutes([makePaletteCreatorRoute(), makeNewRoute()])}
+          // path="/palette-creator/new"
           component={() => <PaletteCreatorLoader />}
         />
         <Route

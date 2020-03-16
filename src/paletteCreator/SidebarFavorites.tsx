@@ -1,6 +1,6 @@
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+import React, { useEffect } from "react";
 import { Field, useField } from "react-final-form";
 import { useSelector } from "react-redux";
 import { IconButton } from "src/design/IconButton";
@@ -10,8 +10,9 @@ import { getFavoriteColorsById } from "src/paletteCreator/paletteCreator.selecto
 import { Color } from "src/shared/shared.types";
 import styled, { css } from "styled-components";
 import { Text } from "src/design/Text";
+import { SectionHeader } from "src/paletteCreator/paletteCreator.styles";
 
-const overrides = {
+const cssOverrides = {
   add: css`
     display: none;
   `,
@@ -23,8 +24,8 @@ const FavoritesBox = styled.div`
 `;
 
 const ColorBox = styled.div<{ hex: string }>`
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   margin: auto 8px 8px 0;
   display: flex;
@@ -61,9 +62,7 @@ export const SidebarFavorites = (props: Props) => {
 
   return (
     <CardContent>
-      <Text gutterBottom="small" variant="h5">
-        Favorites
-      </Text>
+      <SectionHeader>Favorite Colors</SectionHeader>
       <FavoritesBox>
         {Object.values(state.favoriteColorsByIds).map((f, idx) => (
           <Field<Color>
@@ -74,9 +73,9 @@ export const SidebarFavorites = (props: Props) => {
               <ColorBox hex={f.hex}>
                 <IconButton
                   iconName="add"
-                  cssOverrides={overrides.add}
-                  size="small"
+                  cssOverrides={cssOverrides.add}
                   color="default"
+                  size="small"
                   onClick={() => state.onAddColor(f.hex)}
                 />
               </ColorBox>
