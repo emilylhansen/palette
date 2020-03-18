@@ -15,6 +15,7 @@ import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
 import { getUsersById } from "src/shared/shared.selectors";
 import { Palette, Color } from "src/shared/shared.types";
 import { CopyButton } from "src/shared/components/CopyButton";
+import { makeCopyValue } from "src/shared/shared.helpers";
 
 const PaletteOverviewCardBox = styled.div`
   padding: 0 24px 24px;
@@ -51,7 +52,7 @@ const usePaletteOverviewCard = (props: Props) => {
 
   const author = lookup(props.palette.authorId, usersById);
 
-  const copyValue = props.palette.colors.map(c => c.hex).join(", ");
+  const copyValue = makeCopyValue(props.palette.colors);
 
   return { usersById, author, copyValue };
 };

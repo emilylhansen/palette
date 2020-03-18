@@ -55,7 +55,18 @@ export const muiTheme = createMuiTheme({
   },
 });
 
-export type Theme = { main: MainTheme; mui: MuiTheme };
-export const theme: Theme = { main: mainTheme, mui: muiTheme };
+const defaultMuiTheme: MuiTheme = createMuiTheme();
+
+export type Theme = {
+  main: MainTheme;
+  mui: MuiTheme;
+  defaultMui: MuiTheme;
+};
+
+export const theme: Theme = {
+  main: mainTheme,
+  mui: muiTheme,
+  defaultMui: defaultMuiTheme,
+};
 
 export const styled = baseStyled as ThemedStyledInterface<Theme>;

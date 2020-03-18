@@ -24,45 +24,49 @@ const PaletteTemplateBox = styled.div<{
     `}
 `;
 
-const colorBlockStyles = css`
+const ColorBlockBox = styled.div<{ enableColorDetails?: boolean }>`
   flex: 1;
+  position: relative;
+
+  ${({ enableColorDetails }) => css`
+    ${!isNil(enableColorDetails) &&
+      css`
+        :hover {
+          ${ColorDetailsBox} {
+            opacity: 1;
+          }
+
+          ${ColorBox} {
+            opacity: 0.2;
+          }
+        }
+      `};
+  `}
+`;
+
+const ColorDetailsBox = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
   justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.5s;
 `;
 
-const ColorBlockErrorBox = styled.div`
-  ${colorBlockStyles}
-`;
-
-const ColorBlockBox = styled.div<{
-  rgbaSheer: string;
-  rgbaOpaque: string;
-  enableColorDetails?: boolean;
+const ColorBox = styled.div<{
   hex: string;
 }>`
-  flex: 1;
-  ${colorBlockStyles}
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: opacity 0.5s;
+  opacity: 1;
 
-  ${({ rgbaSheer, rgbaOpaque, enableColorDetails, hex }) => css`
+  ${({ hex }) => css`
     background: #${hex};
-
-    ${!isNil(enableColorDetails) &&
-      css`
-        transition: background 0.3s, opacity 0.3s;
-
-        * {
-          opacity: 0;
-        }
-
-        :hover {
-          * {
-            opacity: 1;
-          }
-        }
-      `};
   `}
 `;
 
@@ -86,19 +90,11 @@ const ColorBlock = ({
   actions?: Array<ColorAction>;
   onClick?: () => void;
 }) => {
-  const rgbaSheer = convertHexToRGBA({ hex: color.hex, opacity: 0.2 });
-  const rgbaOpaque = convertHexToRGBA({ hex: color.hex, opacity: 1 });
-
-  return isSome(rgbaSheer) && isSome(rgbaOpaque) ? (
-    <ColorBlockBox
-      hex={color.hex}
-      rgbaSheer={rgbaSheer.value}
-      rgbaOpaque={rgbaOpaque.value}
-      enableColorDetails={enableColorDetails}
-      onClick={onClick}
-    >
+  return (
+    <ColorBlockBox onClick={onClick} enableColorDetails={enableColorDetails}>
+      <ColorBox hex={color.hex} />
       {!isNil(enableColorDetails) && (
-        <>
+        <ColorDetailsBox>
           {/* <Text variant="subtitle2" align="center">
           {color.name}
         </Text> */}
@@ -115,14 +111,9 @@ const ColorBlock = ({
               ))}
             </ActionsBox>
           )}
-        </>
+        </ColorDetailsBox>
       )}
     </ColorBlockBox>
-  ) : (
-    <ColorBlockErrorBox>
-      {/** this should throw up an error instead of displaying this text */}
-      <Text variant="subtitle2">Unable to find color :(</Text>
-    </ColorBlockErrorBox>
   );
 };
 

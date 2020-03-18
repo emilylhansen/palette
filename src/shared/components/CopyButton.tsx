@@ -16,7 +16,11 @@ const useCopyButton = (props: Props) => {
     setCopySuccess(none);
   }, [props.value]);
 
-  const copyToClipboard = () => {
+  const copyToClipboard = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+
     navigator.clipboard.writeText(props.value).then(
       () => {
         setCopySuccess(some(true));

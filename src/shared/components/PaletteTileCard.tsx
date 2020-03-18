@@ -6,6 +6,8 @@ import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
 import { IconButton } from "src/design/IconButton";
 import { styled } from "src/root/root.theme";
 import { FavoriteButton } from "src/shared/components/FavoriteButton";
+import { CopyButton } from "src/shared/components/CopyButton";
+import { makeCopyValue } from "src/shared/shared.helpers";
 
 const cssOverrides = {
   favoriteButton: css`
@@ -20,6 +22,8 @@ const DetailsBox = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.5s;
 `;
 
 const FeaturesBox = styled.div`
@@ -34,7 +38,7 @@ const PaletteTemplateBox = styled.div`
   bottom: 0;
   position: absolute;
   opacity: 1;
-  transition: opacity 0.3s;
+  transition: opacity 0.5s;
 `;
 
 const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
@@ -47,19 +51,9 @@ const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
   align-items: center;
   display: flex;
 
-  > button {
-    position: absolute;
-    top: -24px;
-    left: -24px;
-  }
-
-  ${DetailsBox}, button {
-    display: none;
-  }
-
   :hover {
-    ${DetailsBox}, button {
-      display: inline-flex;
+    ${DetailsBox} {
+      opacity: 1;
     }
 
     ${PaletteTemplateBox} {
@@ -70,22 +64,30 @@ const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
 
 type Props = { palette: Palette; onClick: () => void };
 
-export const PaletteTileCard = ({ palette, onClick }: Props) => {
+const usePaletteTileCard = (props: Props) => {
+  const copyValue = makeCopyValue(props.palette.colors);
+
+  return { copyValue };
+};
+
+export const PaletteTileCard = (props: Props) => {
+  const state = usePaletteTileCard(props);
+
   return (
-    <PaletteTileCardBox onClick={onClick}>
+    <PaletteTileCardBox onClick={props.onClick}>
       <PaletteTemplateBox>
-        <PaletteTemplate colors={palette.colors} />
+        <PaletteTemplate colors={props.palette.colors} />
       </PaletteTemplateBox>
       <DetailsBox>
         <Text variant="body1" align="center">
-          {palette.name}
+          {props.palette.name}
         </Text>
         <FeaturesBox>
           <FavoriteButton
             isFavorited={true}
             cssOverrides={cssOverrides.favoriteButton}
           />
-          <IconButton iconName={"file_copy"} />
+          <CopyButton value={state.copyValue} />
         </FeaturesBox>
       </DetailsBox>
     </PaletteTileCardBox>

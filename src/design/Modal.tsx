@@ -1,39 +1,50 @@
-import React, { ReactNode, useState, useEffect } from "react";
+import Button from "@material-ui/core/Button";
+import { default as MUIModal } from "@material-ui/core/Modal";
+import Paper from "@material-ui/core/Paper";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { range } from "fp-ts/lib/Array";
+import { isSome, map, none, Option, some } from "fp-ts/lib/Option";
+import React, { ReactNode, useEffect, useState } from "react";
 import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
-import styled, { keyframes } from "styled-components";
+import { Icon } from "src/design/Icon";
+import { Overlay } from "src/design/Overlay";
+import { Text } from "src/design/Text";
+import { Theme } from "src/root/root.theme";
 import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
 import { PaletteTileCard } from "src/shared/components/PaletteTileCard";
-import { range } from "fp-ts/lib/Array";
 import { mockPalettes } from "src/shared/mockData";
-import { Overlay } from "src/design/Overlay";
-import { Icon } from "src/design/Icon";
-import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
-import { Palette } from "src/shared/shared.types";
-import { Text } from "src/design/Text";
-import Button from "@material-ui/core/Button";
-import { IconButton } from "./IconButton";
 import { isNil } from "src/shared/shared.typeGuards";
+import { Palette } from "src/shared/shared.types";
+import styled, { keyframes } from "styled-components";
 
-const ModalBox = styled.div`
-  width: 800px;
-  height: 500px;
-  border-radius: 3px;
-  background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 10px;
-  display: flex;
-  flex-direction: column;
-`;
+import { IconButton } from "./IconButton";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      position: "absolute",
+      width: 800,
+      height: 500,
+      backgroundColor: "#FFF",
+      boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 10px",
+      outline: 0,
+      display: "flex",
+      flexDirection: "column",
+      top: "50%",
+      left: "50%",
+      transform: `translate(-50%, -50%)`,
+    },
+    modalRoot: {
+      backgroundColor: "red",
+    },
+  })
+);
 
 const CloseBox = styled.div`
   display: flex;
   justify-content: flex-end;
   margin: 24px;
-`;
-
-const ContentBox = styled.div`
-  flex: 1;
-  display: flex;
 `;
 
 type PassedProps = {
@@ -58,18 +69,25 @@ export const Modal = ({ children, isOpen: isOpen_, onClose }: Props) => {
     !isNil(onClose) && onClose();
   };
 
+  const classes = useStyles();
+  console.log(classes.modalRoot);
+
   return (
-    <Overlay isOpen={isOpen} onClose={handleOnClose}>
-      <ModalBox
-        onClick={e => {
-          e.stopPropagation();
-        }}
-      >
+    <MUIModal
+      open={isOpen}
+      onClose={handleOnClose}
+      // BackdropProps={{
+      //   classes: {
+      //     root: classes.modalRoot,
+      //   },
+      // }}
+    >
+      <Paper className={classes.paper}>
         <CloseBox>
           <IconButton iconName="close" onClick={handleOnClose} size="small" />
         </CloseBox>
-        <ContentBox>{children}</ContentBox>
-      </ModalBox>
-    </Overlay>
+        {children}
+      </Paper>
+    </MUIModal>
   );
 };
