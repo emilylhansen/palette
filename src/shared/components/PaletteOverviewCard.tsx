@@ -3,7 +3,7 @@ import { getOrElse, map } from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
 import { lookup } from "fp-ts/lib/Record";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
 import { IconButton } from "src/design/IconButton";
 import { Text } from "src/design/Text";
@@ -11,8 +11,30 @@ import { history } from "src/root/App";
 import { makeEditRoute } from "src/root/root.routes";
 import { styled } from "src/root/root.theme";
 import { FavoriteButton } from "src/shared/components/FavoriteButton";
-import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
-import { getUsersById } from "src/shared/shared.selectors";
+import {
+  PaletteTemplate,
+  ColorAction,
+} from "src/shared/components/PaletteTemplate";
+import {
+  getColorPaletteInfo,
+  getColorPalettesList,
+  getColors,
+  getFavoriteColorIds as getFavoriteColorIdsAction,
+  getFavoritePaletteIds as getFavoritePaletteIdsAction,
+  getObjectColors,
+  getPalettes,
+  getRandomObject,
+  getUsers,
+  handleOnFavorite,
+} from "src/shared/shared.actions";
+import {
+  getColorsById,
+  getFavoriteColorIds as getFavoriteColorIdsSelector,
+  getFavoritePaletteIds as getFavoritePaletteIdsSelector,
+  getPalettesById,
+  getUsersById,
+  isPaletteFavorited,
+} from "src/shared/shared.selectors";
 import { Palette, Color } from "src/shared/shared.types";
 import { CopyButton } from "src/shared/components/CopyButton";
 import { makeCopyValue } from "src/shared/shared.helpers";
@@ -45,16 +67,33 @@ const TagsBox = styled.div`
   }
 `;
 
+const makeActions = ({
+  onChange,
+  value,
+}: {
+  onChange: (colors: Array<Color>) => void;
+  value: Array<Color>;
+}): Array<ColorAction> => [
+  {
+    custom: ({ onClick }) => <FavoriteButton isFavorited={false} count={12} />,
+  },
+];
+
 type Props = { palette: Palette };
 
-const usePaletteOverviewCard = (props: Props) => {
+const usePaletteOverviewCard = ({ palette }: Props) => {
+  const dispatch = useDispatch();
+
   const usersById = useSelector(getUsersById);
+  const favoritePaletteIds = useSelector(getFavoritePaletteIdsSelector);
 
-  const author = lookup(props.palette.authorId, usersById);
+  const isFavorited = useSelector(isPaletteFavorited(palette.key));
 
-  const copyValue = makeCopyValue(props.palette.colors);
+  const author = lookup(palette.authorId, usersById);
 
-  return { usersById, author, copyValue };
+  const copyValue = makeCopyValue(palette.colors);
+
+  return { usersById, author, copyValue, isFavorited };
 };
 
 export const PaletteOverviewCard = (props: Props) => {
@@ -72,7 +111,16 @@ export const PaletteOverviewCard = (props: Props) => {
       </Text>
       <FeaturesBox>
         <FeaturesItemBox>
-          <FavoriteButton isFavorited={false} count={12} />
+          <FavoriteButton
+            isFavorited={state.isFavorited}
+            count={12}
+            onClick={() =>
+              handleOnFavorite({
+                isFavorited: state.isFavorited,
+                paletteKey: props.palette.key,
+              })
+            }
+          />
         </FeaturesItemBox>
         <FeaturesItemBox>
           <IconButton

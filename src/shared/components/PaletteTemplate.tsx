@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode, ReactType, ElementType } from "react";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import { Text } from "src/design/Text";
 import { Color } from "src/shared/shared.types";
@@ -101,14 +101,18 @@ const ColorBlock = ({
           <Text variant="subtitle2">{`#${color.hex}`}</Text>
           {!isNil(actions) && (
             <ActionsBox>
-              {actions.map((action, i) => (
-                <IconButton
-                  key={i}
-                  iconName={action.iconName}
-                  onClick={e => action.onClick(e, color)}
-                  size="small"
-                />
-              ))}
+              {actions.map((action, i) =>
+                isColorActionCustom(action) ? (
+                  action.custom
+                ) : (
+                  <IconButton
+                    key={i}
+                    iconName={action.iconName}
+                    onClick={e => action.onClick(e, color)}
+                    size="small"
+                  />
+                )
+              )}
             </ActionsBox>
           )}
         </ColorDetailsBox>
@@ -117,13 +121,26 @@ const ColorBlock = ({
   );
 };
 
-export type ColorAction = {
-  iconName: string;
+type ColorActionOnClick = {
   onClick: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     color: Color
   ) => void;
 };
+
+const isColorActionCustom = (
+  action: ColorAction
+): action is ColorActionCustom => "custom" in action;
+
+export type ColorActionStandard = {
+  iconName: string;
+} & ColorActionOnClick;
+
+export type ColorActionCustom = {
+  custom: (props: ColorActionOnClick) => ReactNode;
+};
+
+export type ColorAction = ColorActionStandard | ColorActionCustom;
 
 type Props = {
   colors: Array<Color>;

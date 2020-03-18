@@ -1,13 +1,19 @@
 import React from "react";
-import { css } from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 import { Text } from "src/design/Text";
-import { Palette } from "src/shared/shared.types";
-import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
-import { IconButton } from "src/design/IconButton";
 import { styled } from "src/root/root.theme";
-import { FavoriteButton } from "src/shared/components/FavoriteButton";
 import { CopyButton } from "src/shared/components/CopyButton";
+import { FavoriteButton } from "src/shared/components/FavoriteButton";
+import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
+import {
+  favoritePalette,
+  unfavoritePalette,
+  handleOnFavorite,
+} from "src/shared/shared.actions";
 import { makeCopyValue } from "src/shared/shared.helpers";
+import { isPaletteFavorited } from "src/shared/shared.selectors";
+import { Palette } from "src/shared/shared.types";
+import { css } from "styled-components";
 
 const cssOverrides = {
   favoriteButton: css`
@@ -64,10 +70,14 @@ const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
 
 type Props = { palette: Palette; onClick: () => void };
 
-const usePaletteTileCard = (props: Props) => {
-  const copyValue = makeCopyValue(props.palette.colors);
+const usePaletteTileCard = ({ palette }: Props) => {
+  const dispatch = useDispatch();
 
-  return { copyValue };
+  const isFavorited = useSelector(isPaletteFavorited(palette.key));
+
+  const copyValue = makeCopyValue(palette.colors);
+
+  return { copyValue, handleOnFavorite, isFavorited };
 };
 
 export const PaletteTileCard = (props: Props) => {
@@ -84,8 +94,14 @@ export const PaletteTileCard = (props: Props) => {
         </Text>
         <FeaturesBox>
           <FavoriteButton
-            isFavorited={true}
+            isFavorited={state.isFavorited}
             cssOverrides={cssOverrides.favoriteButton}
+            onClick={() =>
+              handleOnFavorite({
+                isFavorited: state.isFavorited,
+                paletteKey: props.palette.key,
+              })
+            }
           />
           <CopyButton value={state.copyValue} />
         </FeaturesBox>

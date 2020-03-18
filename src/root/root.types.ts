@@ -1,15 +1,15 @@
 import {
-  AuthState,
   initialState as authInitialState,
+  AuthState,
 } from "src/auth/auth.types";
 import {
-  SharedState,
-  initialState as sharedInitialState,
-} from "src/shared/shared.types";
-import {
-  PaletteCreatorState,
   initialState as paletteCreatorInitialState,
+  PaletteCreatorState,
 } from "src/paletteCreator/paletteCreator.types";
+import {
+  initialState as sharedInitialState,
+  SharedState,
+} from "src/shared/shared.types";
 
 export type RootState = {
   auth: AuthState;
@@ -22,3 +22,5 @@ export const initialState: RootState = {
   shared: sharedInitialState,
   paletteCreator: paletteCreatorInitialState,
 };
+
+export type ValueOf<T> = T[keyof T];

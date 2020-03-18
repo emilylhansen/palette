@@ -1,15 +1,15 @@
+import faker from "faker";
+import { lookup as lookupArray, range, takeLeft } from "fp-ts/lib/Array";
+import { fold, getOrElse, map } from "fp-ts/lib/Option";
+import { pipe } from "fp-ts/lib/pipeable";
+import { lookup as lookupRecord } from "fp-ts/lib/Record";
 import {
-  Palette,
   Color,
+  Palette,
+  SharedState,
   Tag,
   User,
-  SharedState,
 } from "src/shared/shared.types";
-import faker from "faker";
-import { range, lookup as lookupArray, takeLeft } from "fp-ts/lib/Array";
-import { lookup as lookupRecord } from "fp-ts/lib/Record";
-import { fold, map, getOrElse } from "fp-ts/lib/Option";
-import { pipe } from "fp-ts/lib/pipeable";
 
 export const COUNT = 50;
 
@@ -114,6 +114,7 @@ const mockColorIds = range(0, 100).map(faker.random.uuid);
 const mockHexColors = range(0, mockColorIds.length).map(generateRandomColor);
 const mockUserIds = range(0, 100).map(faker.random.uuid);
 export const mockFavoriteColorIds = takeLeft(10)(mockColorIds);
+export const mockFavoritePaletteIds = takeLeft(10)(mockPaletteIds);
 
 const hexByColorId = mockColorIds.reduce<Record<string, string>>(
   (acc, cur, idx) => ({ ...acc, [cur]: mockHexColors[idx] }),

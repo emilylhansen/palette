@@ -17,6 +17,19 @@ import { lookup } from "fp-ts/lib/Record";
 import { favoriteColorIdsLens, colorsByIdLens } from "../shared/shared.lenses";
 import { pipe } from "fp-ts/lib/pipeable";
 import { map, getOrElse } from "fp-ts/lib/Option";
+import {
+  failure,
+  fold,
+  initial,
+  pending,
+  RemoteData,
+  success,
+  exists,
+  RemoteFailure,
+  RemoteInitial,
+  RemotePending,
+  RemoteSuccess,
+} from "@devexperts/remote-data-ts";
 
 export const getPaletteCreator = (state: RootState) =>
   paletteCreatorStateLens.get(state);
@@ -42,15 +55,32 @@ export const getPaletteCreator = (state: RootState) =>
 export const getFavoriteColorsById = createSelector(
   getFavoriteColorIds,
   getColorsById,
-  (favoriteColorIds, colorsById): Record<string, Color> => {
-    return favoriteColorIds.reduce<Record<string, Color>>(
-      (acc, cur) =>
-        pipe(
-          lookup(cur, colorsById),
-          map(c => ({ ...acc, [cur]: c })),
-          getOrElse(() => acc)
-        ),
-      {}
-    );
+  (favoriteColorIds, colorsById): RemoteData<string, Record<string, Color>> => {
+    const favoriteColorsById = fold<
+      string,
+      Array<string>,
+      RemoteData<string, Record<string, Color>>
+    >(
+      () => initial,
+      () => pending,
+      () => failure("unable to retrieve favorites colors"),
+      favoriteColorIds_ => {
+        const favoriteColorsById = favoriteColorIds_.reduce<
+          Record<string, Color>
+        >(
+          (acc, cur) =>
+            pipe(
+              lookup(cur, colorsById),
+              map(c => ({ ...acc, [cur]: c })),
+              getOrElse(() => acc)
+            ),
+          {}
+        );
+
+        return success(favoriteColorsById);
+      }
+    )(favoriteColorIds);
+
+    return favoriteColorsById;
   }
 );

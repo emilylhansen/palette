@@ -1,4 +1,15 @@
-import React, { useState, useEffect } from "react";
+import {
+  failure,
+  fold,
+  initial,
+  pending,
+  RemoteData,
+  success,
+  exists,
+} from "@devexperts/remote-data-ts";
+import { range } from "fp-ts/lib/Array";
+import { isSome, map, none, Option, some } from "fp-ts/lib/Option";
+import React, { useEffect, useState } from "react";
 import {
   connect,
   ConnectedProps,
@@ -7,34 +18,35 @@ import {
   useSelector,
 } from "react-redux";
 import { createStore, Dispatch } from "redux";
-import styled from "styled-components";
-import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
-import { PaletteTileCard } from "src/shared/components/PaletteTileCard";
-import { range } from "fp-ts/lib/Array";
-import { mockPalettes } from "src/shared/mockData";
-import { Overlay } from "src/design/Overlay";
-import { Option, none, some, isSome, map } from "fp-ts/lib/Option";
+import { authenticate } from "src/auth/auth.actions";
 import { Login } from "src/auth/Login";
 import { Modal } from "src/design/Modal";
-import {
-  getColors,
-  getPalettes,
-  getUsers,
-  getFavoriteColorIds,
-  getRandomObject,
-  getObjectColors,
-  getColorPalettesList,
-  getColorPaletteInfo,
-} from "src/shared/shared.actions";
-import { authenticate } from "src/auth/auth.actions";
-import { Palette } from "src/shared/shared.types";
+import { Overlay } from "src/design/Overlay";
+import { ScrollToTop } from "src/design/ScrollToTop";
 import { RootState } from "src/root/root.types";
+import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
+import { PaletteTileCard } from "src/shared/components/PaletteTileCard";
+import { mockPalettes } from "src/shared/mockData";
 import {
-  getPalettesById,
+  getColorPaletteInfo,
+  getColorPalettesList,
+  getColors,
+  getFavoriteColorIds as getFavoriteColorIdsAction,
+  getFavoritePaletteIds as getFavoritePaletteIdsAction,
+  getObjectColors,
+  getPalettes,
+  getRandomObject,
+  getUsers,
+} from "src/shared/shared.actions";
+import {
   getColorsById,
+  getFavoriteColorIds as getFavoriteColorIdsSelector,
+  getFavoritePaletteIds as getFavoritePaletteIdsSelector,
+  getPalettesById,
   getUsersById,
 } from "src/shared/shared.selectors";
-import { ScrollToTop } from "src/design/ScrollToTop";
+import { Palette } from "src/shared/shared.types";
+import styled from "styled-components";
 
 const HomepageBox = styled.div`
   flex: 1;
@@ -56,36 +68,31 @@ type Props = PassedProps & InjectedProps;
 export const Homepage = ({}: Props) => {
   const [selectedPalette, setSelectedPalette] = useState<Option<Palette>>(none);
 
-  useEffect(() => {
-    /**
-     * - cooperhewitt.objects.getColors for random object
-     * - look up colors in cooperhewitt.colors.palettes.getInfo for name
-     * - cooperhewitt.colors.palettes.getList
-     * - cooperhewitt.colors.palettes.getInfo for each palette in list
-     * -
-     */
-
-    // dispatch(getPalettes());
-    dispatch(getUsers());
-    dispatch(getFavoriteColorIds());
-    dispatch(getPalettes());
-  }, []);
-
   const dispatch = useDispatch();
   const palettesById = useSelector(getPalettesById);
-  // const colorsById = useSelector(getColorsById);
   const usersById = useSelector(getUsersById);
+  const favoriteColorIds = useSelector(getFavoriteColorIdsSelector);
+  const favoritePaletteIds = useSelector(getFavoritePaletteIdsSelector);
+
+  useEffect(() => {
+    dispatch(getUsers());
+    dispatch(getPalettes());
+    dispatch(getFavoriteColorIdsAction());
+    dispatch(getFavoritePaletteIdsAction());
+  }, []);
 
   return (
     <ScrollToTop>
       <HomepageBox>
-        {Object.values(palettesById).map(palette => (
-          <PaletteTileCard
-            key={palette.key}
-            palette={palette}
-            onClick={() => setSelectedPalette(some(palette))}
-          />
-        ))}
+        {Object.values(palettesById).map(palette => {
+          return (
+            <PaletteTileCard
+              key={palette.key}
+              palette={palette}
+              onClick={() => setSelectedPalette(some(palette))}
+            />
+          );
+        })}
         <Modal
           isOpen={isSome(selectedPalette)}
           onClose={() => setSelectedPalette(none)}

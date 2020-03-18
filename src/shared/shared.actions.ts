@@ -1,36 +1,38 @@
+import { AxiosError, AxiosResponse } from "axios";
+import { range } from "fp-ts/lib/Array";
+import { Dispatch } from "react";
+import { DispatchProp, useDispatch } from "react-redux";
+import { ThunkAction } from "redux-thunk";
+import { Api, apiClient } from "src/root/root.api";
 import {
-  GET_COLOR,
-  GET_FAVORITE_COLOR_IDS,
-  GET_FAVORITE_PALETTE_IDS,
-  GET_PALLETE,
-  GET_USER,
-  GET_USERS,
-  GET_COLORS,
-  GET_PALETTES,
+  Error,
+  GetColorPaletteInfoResponse,
+  GetColorPalettesListResponse,
+  GetObjectColorsResponse,
+  GetRandomObjectResponse,
+  Object,
+} from "src/root/root.api.types";
+import { COUNT } from "src/shared/mockData";
+import {
   FAVORITE_COLOR,
   FAVORITE_PALETTE,
-  GET_RANDOM_OBJECT,
-  GET_COLOR_PALETTES_LIST,
+  GET_COLOR,
   GET_COLOR_PALETTE_INFO,
+  GET_COLOR_PALETTES_LIST,
+  GET_COLORS,
+  GET_FAVORITE_COLOR_IDS,
+  GET_FAVORITE_PALETTE_IDS,
   GET_OBJECT_COLORS,
+  GET_PALETTES,
+  GET_PALLETE,
+  GET_RANDOM_OBJECT,
+  GET_USER,
+  GET_USERS,
+  UNFAVORITE_COLOR,
+  UNFAVORITE_PALETTE,
 } from "src/shared/shared.constants";
-import { apiClient, Api } from "src/root/root.api";
-import {
-  Object,
-  Error,
-  GetRandomObjectResponse,
-  GetObjectColorsResponse,
-  GetColorPalettesListResponse,
-  GetColorPaletteInfoResponse,
-} from "src/root/root.api.types";
-import { AxiosError, AxiosResponse } from "axios";
-import { COUNT } from "src/shared/mockData";
-import { range } from "fp-ts/lib/Array";
-import { useDispatch, DispatchProp } from "react-redux";
-import { Dispatch } from "react";
-import { ThunkAction } from "redux-thunk";
-import { SharedState, PayloadAction } from "src/shared/shared.types";
 import { isNil } from "src/shared/shared.typeGuards";
+import { PayloadAction, SharedState } from "src/shared/shared.types";
 
 export type GetColor = {
   type: GET_COLOR;
@@ -175,6 +177,17 @@ export const favoriteColor = (key: string): FavoriteColor => {
   };
 };
 
+export type UnfavoriteColor = {
+  type: UNFAVORITE_COLOR;
+  payload: { key: string };
+};
+export const unfavoriteColor = (key: string): UnfavoriteColor => {
+  return {
+    type: UNFAVORITE_COLOR,
+    payload: { key },
+  };
+};
+
 export type FavoritePalette = {
   type: FAVORITE_PALETTE;
   payload: { key: string };
@@ -182,6 +195,17 @@ export type FavoritePalette = {
 export const favoritePalette = (key: string): FavoritePalette => {
   return {
     type: FAVORITE_PALETTE,
+    payload: { key },
+  };
+};
+
+export type UnfavoritePalette = {
+  type: UNFAVORITE_PALETTE;
+  payload: { key: string };
+};
+export const unfavoritePalette = (key: string): UnfavoritePalette => {
+  return {
+    type: UNFAVORITE_PALETTE,
     payload: { key },
   };
 };
@@ -242,6 +266,17 @@ export const getColorPaletteInfo = (id: string): GetColorPaletteInfo => {
   };
 };
 
+export const handleOnFavorite = ({
+  isFavorited,
+  paletteKey,
+}: {
+  isFavorited: boolean;
+  paletteKey: string;
+}): ThunkAction<{}, SharedState, undefined, SharedAction> => dispatch =>
+  isFavorited
+    ? dispatch(unfavoritePalette(paletteKey))
+    : dispatch(favoritePalette(paletteKey));
+
 export enum SharedActionType {
   GetColor = "GET_COLOR",
   GetColors = "GET_COLORS",
@@ -254,6 +289,10 @@ export enum SharedActionType {
   GetObjectColors = "GET_OBJECT_COLORS",
   GetColorPalettesList = "GET_COLOR_PALETTES_LIST",
   GetColorPaletteInfo = "GET_COLOR_PALETTE_INFO",
+  FavoritePalette = "FAVORITE_PALETTE",
+  UnfavoritePalette = "UNFAVORITE_PALETTE",
+  FavoriteColor = "FAVORITE_COLOR",
+  UnfavoriteColor = "UNFAVORITE_COLOR",
 }
 
 export type SharedAction =
@@ -267,4 +306,6 @@ export type SharedAction =
   | GetRandomObject
   | GetObjectColors
   | GetColorPalettesList
-  | GetColorPaletteInfo;
+  | GetColorPaletteInfo
+  | FavoritePalette
+  | UnfavoritePalette;

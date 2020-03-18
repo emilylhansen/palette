@@ -11,6 +11,16 @@ import {
   colorsByPaletteIdLens,
 } from "src/shared/shared.lenses";
 import { sharedStateLens } from "src/root/root.lenses";
+import { createSelector } from "reselect";
+import {
+  failure,
+  fold,
+  initial,
+  pending,
+  RemoteData,
+  success,
+  exists,
+} from "@devexperts/remote-data-ts";
 
 export const getSharedState = (state: RootState) => sharedStateLens.get(state);
 
@@ -40,3 +50,10 @@ export const getAvailablePalettes = (state: RootState) =>
 
 export const getColorsByPaletteId = (state: RootState) =>
   colorsByPaletteIdLens.get(sharedStateLens.get(state));
+
+export const isPaletteFavorited = (paletteKey: string) =>
+  createSelector(getFavoritePaletteIds, (favoritePaletteIds): boolean =>
+    exists<Array<string>>(favoritePaletteIds_ =>
+      favoritePaletteIds_.includes(paletteKey)
+    )(favoritePaletteIds)
+  );
