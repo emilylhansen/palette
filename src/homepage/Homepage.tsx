@@ -26,7 +26,7 @@ import { ScrollToTop } from "src/design/ScrollToTop";
 import { RootState } from "src/root/root.types";
 import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
 import { PaletteTileCard } from "src/shared/components/PaletteTileCard";
-import { mockPalettes } from "src/shared/mockData";
+import { mockPalettes, mockCurrentUser } from "src/shared/mockData";
 import {
   getColorPaletteInfo,
   getColorPalettesList,
@@ -75,6 +75,7 @@ export const Homepage = ({}: Props) => {
   const favoritePaletteIds = useSelector(getFavoritePaletteIdsSelector);
 
   useEffect(() => {
+    dispatch(authenticate({ user: mockCurrentUser }));
     dispatch(getUsers());
     dispatch(getPalettes());
     dispatch(getFavoriteColorIdsAction());

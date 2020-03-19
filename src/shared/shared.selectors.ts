@@ -19,8 +19,13 @@ import {
   pending,
   RemoteData,
   success,
-  exists,
+  exists as remoteExists,
 } from "@devexperts/remote-data-ts";
+import { getCurrentUser } from "src/auth/auth.selectors";
+import { lookup } from "fp-ts/lib/ReadonlyRecord";
+import { Palette, User } from "src/shared/shared.types";
+import { exists as optionExists, Option, none, None } from "fp-ts/lib/Option";
+import { pipe } from "fp-ts/lib/pipeable";
 
 export const getSharedState = (state: RootState) => sharedStateLens.get(state);
 
@@ -53,7 +58,38 @@ export const getColorsByPaletteId = (state: RootState) =>
 
 export const isPaletteFavorited = (paletteKey: string) =>
   createSelector(getFavoritePaletteIds, (favoritePaletteIds): boolean =>
-    exists<Array<string>>(favoritePaletteIds_ =>
+    remoteExists<Array<string>>(favoritePaletteIds_ =>
       favoritePaletteIds_.includes(paletteKey)
     )(favoritePaletteIds)
+  );
+
+export const isColorFavorited = (colorKey: string) =>
+  createSelector(getFavoriteColorIds, (favoriteColorIds): boolean =>
+    remoteExists<Array<string>>(favoriteColorIds_ =>
+      favoriteColorIds_.includes(colorKey)
+    )(favoriteColorIds)
+  );
+
+export const isCurrentUsersPalette = (paletteKey: string) =>
+  createSelector(
+    getPalettesById,
+    getCurrentUser,
+    (palettesById, currentUser): boolean => {
+      const currentUserOption = fold<string, Option<User>, Option<User>>(
+        () => none,
+        () => none,
+        () => none,
+        currentUser_ => currentUser_
+      )(currentUser);
+
+      const palette = lookup(paletteKey, palettesById);
+
+      return optionExists<Palette>(palette_ =>
+        optionExists<User>(
+          currentUserOption_ =>
+            palette_.key === paletteKey &&
+            palette_.authorId === currentUserOption_.key
+        )(currentUserOption)
+      )(palette);
+    }
   );

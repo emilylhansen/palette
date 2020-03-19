@@ -3,41 +3,39 @@ import { getOrElse, map } from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
 import { lookup } from "fp-ts/lib/Record";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
+import { useDispatch, useSelector } from "react-redux";
 import { IconButton } from "src/design/IconButton";
 import { Text } from "src/design/Text";
-import { history } from "src/root/App";
-import { makeEditRoute } from "src/root/root.routes";
 import { styled } from "src/root/root.theme";
+import { CopyButton } from "src/shared/components/CopyButton";
 import { FavoriteButton } from "src/shared/components/FavoriteButton";
 import {
-  PaletteTemplate,
   ColorAction,
+  PaletteTemplate,
 } from "src/shared/components/PaletteTemplate";
 import {
-  getColorPaletteInfo,
-  getColorPalettesList,
-  getColors,
-  getFavoriteColorIds as getFavoriteColorIdsAction,
-  getFavoritePaletteIds as getFavoritePaletteIdsAction,
-  getObjectColors,
-  getPalettes,
-  getRandomObject,
-  getUsers,
-  handleOnFavorite,
+  handleOnFavoriteColor as handleOnFavoriteColorAction,
+  handleOnFavoritePalette as handleOnFavoritePaletteAction,
+  privatePalette,
 } from "src/shared/shared.actions";
-import {
-  getColorsById,
-  getFavoriteColorIds as getFavoriteColorIdsSelector,
-  getFavoritePaletteIds as getFavoritePaletteIdsSelector,
-  getPalettesById,
-  getUsersById,
-  isPaletteFavorited,
-} from "src/shared/shared.selectors";
-import { Palette, Color } from "src/shared/shared.types";
-import { CopyButton } from "src/shared/components/CopyButton";
 import { makeCopyValue } from "src/shared/shared.helpers";
+import {
+  getUsersById,
+  isColorFavorited as isColorFavoritedSelector,
+  isCurrentUsersPalette as isCurrentUsersPaletteSelector,
+  isPaletteFavorited as isPaletteFavoritedSelector,
+  getFavoriteColorIds,
+} from "src/shared/shared.selectors";
+import { Palette } from "src/shared/shared.types";
+import {
+  failure,
+  fold,
+  initial,
+  pending,
+  RemoteData,
+  success,
+  exists as remoteExists,
+} from "@devexperts/remote-data-ts";
 
 const PaletteOverviewCardBox = styled.div`
   padding: 0 24px 24px;
@@ -68,14 +66,22 @@ const TagsBox = styled.div`
 `;
 
 const makeActions = ({
-  onChange,
-  value,
+  handleOnFavoriteColor,
+  isColorFavorited,
 }: {
-  onChange: (colors: Array<Color>) => void;
-  value: Array<Color>;
+  handleOnFavoriteColor: (colorKey: string) => void;
+  isColorFavorited: (colorKey: string) => boolean;
 }): Array<ColorAction> => [
   {
-    custom: ({ onClick }) => <FavoriteButton isFavorited={false} count={12} />,
+    custom: ({ color }) => (
+      <FavoriteButton
+        isFavorited={isColorFavorited(color.key)}
+        onClick={() => handleOnFavoriteColor(color.key)}
+      />
+    ),
+  },
+  {
+    custom: ({ color }) => <CopyButton value={color.hex} />,
   },
 ];
 
@@ -85,15 +91,61 @@ const usePaletteOverviewCard = ({ palette }: Props) => {
   const dispatch = useDispatch();
 
   const usersById = useSelector(getUsersById);
-  const favoritePaletteIds = useSelector(getFavoritePaletteIdsSelector);
+  const isPaletteFavorited = useSelector(
+    isPaletteFavoritedSelector(palette.key)
+  );
+  const favoriteColorIds = useSelector(getFavoriteColorIds);
 
-  const isFavorited = useSelector(isPaletteFavorited(palette.key));
+  const isCurrentUsersPalette = useSelector(isCurrentUsersPaletteSelector);
 
   const author = lookup(palette.authorId, usersById);
 
   const copyValue = makeCopyValue(palette.colors);
 
-  return { usersById, author, copyValue, isFavorited };
+  const handleOnFavoritePalette = () =>
+    dispatch(
+      handleOnFavoritePaletteAction({
+        isFavorited: isPaletteFavorited,
+        paletteKey: palette.key,
+      })
+    );
+
+  const isColorFavorited = (colorKey: string) =>
+    remoteExists<Array<string>>(favoriteColorIds_ =>
+      favoriteColorIds_.includes(colorKey)
+    )(favoriteColorIds);
+
+  const handleOnFavoriteColor = (colorKey: string) => {
+    dispatch(
+      handleOnFavoriteColorAction({
+        isFavorited: isColorFavorited(colorKey),
+        colorKey,
+      })
+    );
+  };
+
+  const handleOnPrivatePalette = () =>
+    dispatch(
+      privatePalette({ isPrivate: !palette.private, paletteKey: palette.key })
+    );
+
+  const privateIconName = palette.private ? "lock" : "lock_open";
+
+  const paletteTemplateActions = makeActions({
+    handleOnFavoriteColor,
+    isColorFavorited,
+  });
+
+  return {
+    isPaletteFavorited,
+    isCurrentUsersPalette,
+    author,
+    copyValue,
+    handleOnFavoritePalette,
+    handleOnPrivatePalette,
+    privateIconName,
+    paletteTemplateActions,
+  };
 };
 
 export const PaletteOverviewCard = (props: Props) => {
@@ -110,22 +162,20 @@ export const PaletteOverviewCard = (props: Props) => {
         )}
       </Text>
       <FeaturesBox>
-        <FeaturesItemBox>
-          <FavoriteButton
-            isFavorited={state.isFavorited}
-            count={12}
-            onClick={() =>
-              handleOnFavorite({
-                isFavorited: state.isFavorited,
-                paletteKey: props.palette.key,
-              })
-            }
-          />
-        </FeaturesItemBox>
+        {state.isCurrentUsersPalette && (
+          <FeaturesItemBox>
+            <FavoriteButton
+              isFavorited={state.isPaletteFavorited}
+              // count={12}
+              onClick={state.handleOnFavoritePalette}
+            />
+          </FeaturesItemBox>
+        )}
         <FeaturesItemBox>
           <IconButton
             color="secondary"
-            iconName={props.palette.private ? "lock" : "lock_open"}
+            iconName={state.privateIconName}
+            onClick={state.handleOnPrivatePalette}
           />
         </FeaturesItemBox>
         <FeaturesItemBox>
@@ -137,7 +187,11 @@ export const PaletteOverviewCard = (props: Props) => {
           <Chip key={tag.key} label={tag.value} size="small" color="primary" />
         ))}
       </TagsBox>
-      <PaletteTemplate colors={props.palette.colors} enableColorDetails />
+      <PaletteTemplate
+        colors={props.palette.colors}
+        enableColorDetails
+        actions={state.paletteTemplateActions}
+      />
     </PaletteOverviewCardBox>
   );
 };

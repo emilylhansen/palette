@@ -1,15 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Text } from "src/design/Text";
 import { styled } from "src/root/root.theme";
 import { CopyButton } from "src/shared/components/CopyButton";
 import { FavoriteButton } from "src/shared/components/FavoriteButton";
 import { PaletteTemplate } from "src/shared/components/PaletteTemplate";
-import {
-  favoritePalette,
-  unfavoritePalette,
-  handleOnFavorite,
-} from "src/shared/shared.actions";
+import { handleOnFavoritePalette as handleOnFavoritePaletteAction } from "src/shared/shared.actions";
 import { makeCopyValue } from "src/shared/shared.helpers";
 import { isPaletteFavorited } from "src/shared/shared.selectors";
 import { Palette } from "src/shared/shared.types";
@@ -77,7 +73,15 @@ const usePaletteTileCard = ({ palette }: Props) => {
 
   const copyValue = makeCopyValue(palette.colors);
 
-  return { copyValue, handleOnFavorite, isFavorited };
+  const handleOnFavoritePalette = () =>
+    dispatch(
+      handleOnFavoritePaletteAction({
+        isFavorited: isFavorited,
+        paletteKey: palette.key,
+      })
+    );
+
+  return { isFavorited, copyValue, handleOnFavoritePalette };
 };
 
 export const PaletteTileCard = (props: Props) => {
@@ -96,12 +100,11 @@ export const PaletteTileCard = (props: Props) => {
           <FavoriteButton
             isFavorited={state.isFavorited}
             cssOverrides={cssOverrides.favoriteButton}
-            onClick={() =>
-              handleOnFavorite({
-                isFavorited: state.isFavorited,
-                paletteKey: props.palette.key,
-              })
-            }
+            onClick={e => {
+              e.stopPropagation();
+
+              state.handleOnFavoritePalette();
+            }}
           />
           <CopyButton value={state.copyValue} />
         </FeaturesBox>

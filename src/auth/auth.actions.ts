@@ -2,16 +2,29 @@ import { ThunkDispatch as Dispatch } from "redux-thunk";
 import { AUTHENTICATE, UNAUTHENTICATE } from "src/auth/auth.constants";
 import { AuthState } from "src/auth/auth.types";
 import { Action } from "redux";
+import { User } from "src/shared/shared.types";
+import { Action as ReduxPackAction } from "redux-pack";
+import { makePackAction } from "src/root/root.helpers";
+import { PackAction } from "src/root/root.types";
 
 export type Authenticate = {
   type: AUTHENTICATE;
-  payload: { key: string };
+  payload: { user: User };
 };
-export const authenticate = ({ key }: { key: string }): Authenticate => {
-  return {
+
+export const authenticate = ({
+  user,
+}: {
+  user: User;
+}): PackAction<Authenticate["type"], Authenticate["payload"], undefined> => {
+  return makePackAction<
+    Authenticate["type"],
+    Authenticate["payload"],
+    undefined
+  >({
     type: AUTHENTICATE,
-    payload: { key },
-  };
+    payload: { user },
+  });
 };
 
 export type Unauthenticate = {

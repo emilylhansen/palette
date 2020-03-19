@@ -24,3 +24,10 @@ export const initialState: RootState = {
 };
 
 export type ValueOf<T> = T[keyof T];
+
+export type PackAction<T, P, M> = {
+  type: T;
+  promise: Promise<P>;
+  payload: P;
+  meta?: M;
+};

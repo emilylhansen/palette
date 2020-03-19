@@ -138,6 +138,8 @@ export const mockUsersById: SharedState["usersById"] = mockUserIds.reduce<
   SharedState["usersById"]
 >((acc, cur) => ({ ...acc, [cur]: makeMockUser(cur) }), {});
 
+export const mockCurrentUser = Object.values(mockUsersById)[0];
+
 export const mockPalettesById: SharedState["palettesById"] = mockPalettes.reduce<
   SharedState["palettesById"]
 >((acc, cur) => ({ ...acc, [cur.key]: cur }), {});

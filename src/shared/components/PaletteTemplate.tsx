@@ -103,7 +103,7 @@ const ColorBlock = ({
             <ActionsBox>
               {actions.map((action, i) =>
                 isColorActionCustom(action) ? (
-                  action.custom
+                  action.custom({ color })
                 ) : (
                   <IconButton
                     key={i}
@@ -121,23 +121,20 @@ const ColorBlock = ({
   );
 };
 
-type ColorActionOnClick = {
-  onClick: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    color: Color
-  ) => void;
-};
-
 const isColorActionCustom = (
   action: ColorAction
 ): action is ColorActionCustom => "custom" in action;
 
 export type ColorActionStandard = {
   iconName: string;
-} & ColorActionOnClick;
+  onClick: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    color: Color
+  ) => void;
+};
 
 export type ColorActionCustom = {
-  custom: (props: ColorActionOnClick) => ReactNode;
+  custom: ({ color }: { color: Color }) => ReactNode;
 };
 
 export type ColorAction = ColorActionStandard | ColorActionCustom;

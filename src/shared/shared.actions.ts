@@ -30,9 +30,12 @@ import {
   GET_USERS,
   UNFAVORITE_COLOR,
   UNFAVORITE_PALETTE,
+  PRIVATE_PALETTE,
 } from "src/shared/shared.constants";
 import { isNil } from "src/shared/shared.typeGuards";
 import { PayloadAction, SharedState } from "src/shared/shared.types";
+import { makePackAction } from "src/root/root.helpers";
+import { PackAction } from "src/root/root.types";
 
 export type GetColor = {
   type: GET_COLOR;
@@ -137,22 +140,38 @@ export type GetFavoriteColorIds = {
   type: GET_FAVORITE_COLOR_IDS;
   payload: {};
 };
-export const getFavoriteColorIds = (): GetFavoriteColorIds => {
-  return {
+export const getFavoriteColorIds = (): PackAction<
+  GetFavoriteColorIds["type"],
+  GetFavoriteColorIds["payload"],
+  undefined
+> => {
+  return makePackAction<
+    GetFavoriteColorIds["type"],
+    GetFavoriteColorIds["payload"],
+    undefined
+  >({
     type: GET_FAVORITE_COLOR_IDS,
     payload: {},
-  };
+  });
 };
 
 export type GetFavoritePaletteIds = {
   type: GET_FAVORITE_PALETTE_IDS;
   payload: {};
 };
-export const getFavoritePaletteIds = (): GetFavoritePaletteIds => {
-  return {
+export const getFavoritePaletteIds = (): PackAction<
+  GetFavoritePaletteIds["type"],
+  GetFavoritePaletteIds["payload"],
+  undefined
+> => {
+  return makePackAction<
+    GetFavoritePaletteIds["type"],
+    GetFavoritePaletteIds["payload"],
+    undefined
+  >({
     type: GET_FAVORITE_PALETTE_IDS,
     payload: {},
-  };
+  });
 };
 
 export type GetUsers = {
@@ -170,44 +189,80 @@ export type FavoriteColor = {
   type: FAVORITE_COLOR;
   payload: { key: string };
 };
-export const favoriteColor = (key: string): FavoriteColor => {
-  return {
+export const favoriteColor = (
+  key: string
+): PackAction<FavoriteColor["type"], FavoriteColor["payload"], undefined> => {
+  return makePackAction<
+    FavoriteColor["type"],
+    FavoriteColor["payload"],
+    undefined
+  >({
     type: FAVORITE_COLOR,
     payload: { key },
-  };
+  });
 };
 
 export type UnfavoriteColor = {
   type: UNFAVORITE_COLOR;
   payload: { key: string };
 };
-export const unfavoriteColor = (key: string): UnfavoriteColor => {
-  return {
+export const unfavoriteColor = (
+  key: string
+): PackAction<
+  UnfavoriteColor["type"],
+  UnfavoriteColor["payload"],
+  undefined
+> => {
+  return makePackAction<
+    UnfavoriteColor["type"],
+    UnfavoriteColor["payload"],
+    undefined
+  >({
     type: UNFAVORITE_COLOR,
     payload: { key },
-  };
+  });
 };
 
 export type FavoritePalette = {
   type: FAVORITE_PALETTE;
   payload: { key: string };
 };
-export const favoritePalette = (key: string): FavoritePalette => {
-  return {
+export const favoritePalette = (
+  key: string
+): PackAction<
+  FavoritePalette["type"],
+  FavoritePalette["payload"],
+  undefined
+> => {
+  return makePackAction<
+    FavoritePalette["type"],
+    FavoritePalette["payload"],
+    undefined
+  >({
     type: FAVORITE_PALETTE,
     payload: { key },
-  };
+  });
 };
 
 export type UnfavoritePalette = {
   type: UNFAVORITE_PALETTE;
   payload: { key: string };
 };
-export const unfavoritePalette = (key: string): UnfavoritePalette => {
-  return {
+export const unfavoritePalette = (
+  key: string
+): PackAction<
+  UnfavoritePalette["type"],
+  UnfavoritePalette["payload"],
+  undefined
+> => {
+  return makePackAction<
+    UnfavoritePalette["type"],
+    UnfavoritePalette["payload"],
+    undefined
+  >({
     type: UNFAVORITE_PALETTE,
     payload: { key },
-  };
+  });
 };
 
 export type GetRandomObjectPayload = PayloadAction<
@@ -266,7 +321,32 @@ export const getColorPaletteInfo = (id: string): GetColorPaletteInfo => {
   };
 };
 
-export const handleOnFavorite = ({
+export type PrivatePalette = {
+  type: PRIVATE_PALETTE;
+  payload: { isPrivate: boolean; paletteKey: string };
+};
+export const privatePalette = ({
+  isPrivate,
+  paletteKey,
+}: {
+  isPrivate: boolean;
+  paletteKey: string;
+}): PackAction<
+  PrivatePalette["type"],
+  PrivatePalette["payload"],
+  undefined
+> => {
+  return makePackAction<
+    PrivatePalette["type"],
+    PrivatePalette["payload"],
+    undefined
+  >({
+    type: PRIVATE_PALETTE,
+    payload: { isPrivate, paletteKey },
+  });
+};
+
+export const handleOnFavoritePalette = ({
   isFavorited,
   paletteKey,
 }: {
@@ -276,6 +356,17 @@ export const handleOnFavorite = ({
   isFavorited
     ? dispatch(unfavoritePalette(paletteKey))
     : dispatch(favoritePalette(paletteKey));
+
+export const handleOnFavoriteColor = ({
+  isFavorited,
+  colorKey,
+}: {
+  isFavorited: boolean;
+  colorKey: string;
+}): ThunkAction<{}, SharedState, undefined, SharedAction> => dispatch =>
+  isFavorited
+    ? dispatch(unfavoriteColor(colorKey))
+    : dispatch(favoriteColor(colorKey));
 
 export enum SharedActionType {
   GetColor = "GET_COLOR",
@@ -293,6 +384,7 @@ export enum SharedActionType {
   UnfavoritePalette = "UNFAVORITE_PALETTE",
   FavoriteColor = "FAVORITE_COLOR",
   UnfavoriteColor = "UNFAVORITE_COLOR",
+  PrivatePalette = "PRIVATE_PALETTE",
 }
 
 export type SharedAction =
@@ -308,4 +400,7 @@ export type SharedAction =
   | GetColorPalettesList
   | GetColorPaletteInfo
   | FavoritePalette
-  | UnfavoritePalette;
+  | UnfavoritePalette
+  | FavoriteColor
+  | UnfavoriteColor
+  | PrivatePalette;
