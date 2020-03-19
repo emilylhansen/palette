@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { getOrElse, map, none, Option, some } from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
-import React from "react";
+import React, { useState } from "react";
 import { Field, useForm } from "react-final-form";
 import { IconButton } from "src/design/IconButton";
 import { fieldNames } from "src/paletteCreator/paletteCreator.constants";
@@ -16,6 +16,11 @@ import { css } from "styled-components";
 import { Text } from "src/design/Text";
 import { SectionHeader } from "src/paletteCreator/paletteCreator.styles";
 import { styled } from "src/root/root.theme";
+import {
+  isEmptyString,
+  isFalsy,
+  isEmptyOrBlankString,
+} from "src/shared/shared.typeGuards";
 
 const MAX_WIDTH = 268;
 
@@ -73,7 +78,7 @@ const TagInputFormBox = styled.form<{ width: number }>`
   }
 `;
 
-const ChipBox = styled.div<{ width: number }>`
+const ChipBox = styled.div<{ width: number; error?: boolean }>`
   color: #fff;
   border: none;
   cursor: default;
@@ -82,10 +87,15 @@ const ChipBox = styled.div<{ width: number }>`
   max-width: ${MAX_WIDTH}px;
   position: relative;
 
-  ${({ width, theme }) =>
+  ${({ width, error, theme }) =>
     css`
       background-color: ${theme.mui.palette.primary.main};
       width: ${width}px;
+
+      ${!isFalsy(error) &&
+        css`
+          border: 1px solid ${theme.defaultMui.palette.error.main};
+        `}
     `}
 `;
 
@@ -93,10 +103,16 @@ const TagInput = ({
   value,
   onAddTag,
   setTagValue,
+  onBlurTag,
+  hasError,
 }: {
   value: string;
   onAddTag: (e: React.FormEvent<HTMLFormElement>) => void;
   setTagValue: (value: string) => void;
+  onBlurTag: (
+    e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
+  hasError: boolean;
 }) => {
   const classes = useStyles();
 
@@ -107,7 +123,7 @@ const TagInput = ({
 
   return (
     <TagInputBox>
-      <ChipBox width={width}>
+      <ChipBox width={width} error={hasError}>
         <TagInputFormBox onSubmit={onAddTag} width={width}>
           <TextField
             id="standard-size-small"
@@ -116,6 +132,7 @@ const TagInput = ({
             onChange={e => setTagValue(e.target.value)}
             InputProps={{ classes }}
             autoFocus
+            onBlur={onBlurTag}
           />
         </TagInputFormBox>
       </ChipBox>
@@ -126,13 +143,24 @@ const TagInput = ({
 type Props = {};
 
 const useSidebarTags = ({}: Props) => {
+  const [hasError, setHasError] = useState<boolean>(false);
+
   const form = useForm();
   const formState = form.getState().values as Values;
   const tags = formState["tags"];
 
+  const resetNewTag = () => form.change(fieldNames.newTag, none);
+
   const onAddTag = (value: string) => {
-    form.change(fieldNames.tags, [...tags, makeNewTag(value)]);
-    form.change(fieldNames.newTag, none);
+    const isInvalidValue = isEmptyOrBlankString(value);
+
+    if (isInvalidValue) {
+      setHasError(true);
+    } else {
+      setHasError(false);
+      form.change(fieldNames.tags, [...tags, makeNewTag(value)]);
+      resetNewTag();
+    }
   };
 
   const onDeleteTag = (key: string) =>
@@ -141,13 +169,19 @@ const useSidebarTags = ({}: Props) => {
       tags.filter(t_ => t_.key !== key)
     );
 
+  const onBlurTag = (value: string) => {
+    isEmptyString(value) && resetNewTag();
+  };
+
   const initializeNewTag = () => some("");
 
   return {
+    hasError,
     tags,
     form,
     onAddTag,
     onDeleteTag,
+    onBlurTag,
     initializeNewTag,
   };
 };
@@ -185,6 +219,8 @@ export const SidebarTags = (props: Props) => {
                     value={value}
                     onAddTag={e => state.onAddTag(value)}
                     setTagValue={v => input.onChange(some(v))}
+                    onBlurTag={e => state.onBlurTag(value)}
+                    hasError={state.hasError}
                   />
                 );
               }),

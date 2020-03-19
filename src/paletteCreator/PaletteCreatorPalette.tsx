@@ -15,6 +15,7 @@ import {
 } from "src/shared/components/PaletteTemplate";
 import { Color } from "src/shared/shared.types";
 import styled, { css } from "styled-components";
+import { Text } from "src/design/Text";
 
 const PaletteCreatorPaletteBox = styled.div`
   flex: 1;
@@ -32,6 +33,10 @@ const PaletteTemplateBox = styled.div<{ hasError: boolean; isEmpty: boolean }>`
   border: 1px dashed;
   flex: 1;
   border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background: #fff;
 
   ${({ hasError, isEmpty }) => css`
     border: ${hasError ? "1px dashed red" : isEmpty ? "1px dashed" : "none"};
@@ -72,28 +77,36 @@ export const PaletteCreatorPalette = (props: Props) => {
     <PaletteCreatorPaletteBox>
       <Field<Array<Color>> name={fieldNames.colors} key={fieldNames.colors}>
         {({ input, meta }) => {
+          const isEmptyPalette = isEmptyArray(input.value);
+
           return (
             <PaletteTemplateBox
-              isEmpty={isEmptyArray(input.value)}
+              isEmpty={isEmptyPalette}
               hasError={meta.touched && meta.error !== ""}
             >
-              <PaletteTemplate
-                colors={input.value}
-                enableColorDetails
-                actions={makeActions({
-                  onChange: input.onChange,
-                  value: input.value,
-                })}
-                handleColor={({ hex, key }) =>
-                  input.onChange(
-                    setColorFormField({
-                      colors: input.value,
-                      key,
-                      hex,
-                    })
-                  )
-                }
-              />
+              {isEmptyPalette ? (
+                <Text variant="subtitle2">
+                  Add colors to your palette by using the + button.
+                </Text>
+              ) : (
+                <PaletteTemplate
+                  colors={input.value}
+                  enableColorDetails
+                  actions={makeActions({
+                    onChange: input.onChange,
+                    value: input.value,
+                  })}
+                  handleColor={({ hex, key }) =>
+                    input.onChange(
+                      setColorFormField({
+                        colors: input.value,
+                        key,
+                        hex,
+                      })
+                    )
+                  }
+                />
+              )}
             </PaletteTemplateBox>
           );
         }}
