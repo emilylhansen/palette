@@ -38,7 +38,7 @@ import {
 } from "@devexperts/remote-data-ts";
 
 const PaletteOverviewCardBox = styled.div`
-  padding: 0 24px 24px;
+  // padding: 0 24px 24px;
   display: flex;
   flex-direction: column;
   flex: 1;

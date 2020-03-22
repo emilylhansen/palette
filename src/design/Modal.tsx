@@ -17,15 +17,15 @@ import { mockPalettes } from "src/shared/mockData";
 import { isNil } from "src/shared/shared.typeGuards";
 import { Palette } from "src/shared/shared.types";
 import styled, { keyframes } from "styled-components";
-
-import { IconButton } from "./IconButton";
+import { Medias } from "src/root/root.styles";
+import { IconButton } from "src/design/IconButton";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       position: "absolute",
-      width: 800,
-      height: 500,
+      // width: 800,
+      // height: 500,
       backgroundColor: "#FFF",
       boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 10px",
       outline: 0,
@@ -34,6 +34,37 @@ const useStyles = makeStyles((theme: Theme) =>
       top: "50%",
       left: "50%",
       transform: `translate(-50%, -50%)`,
+      [`@media (max-width: ${Medias.EXTRA_SMALL.maxWidth}px)`]: {
+        // margin: `${Medias.EXTRA_SMALL.margins}px`,
+        bottom: 0,
+        top: 0,
+        right: 0,
+        left: 0,
+        borderRadius: 0,
+        transform: "unset",
+      },
+      [`@media (min-width: ${Medias.SMALL.minWidth}px)`]: {
+        // margin: `${Medias.SMALL.margins}px`,
+        width: "400px",
+        height: "560px",
+      },
+
+      [`@media (min-width: ${Medias.MEDIUM.minWidth}px)`]: {
+        // margin: `${Medias.MEDIUM.margins}px`,
+        width: "512px",
+        height: "560px",
+      },
+
+      [`@media (min-width: ${Medias.LARGE.minWidth}px)`]: {
+        // margin: `${Medias.LARGE.margins}px`,
+        width: "662px",
+        height: "560px",
+      },
+      [`@media (min-width: ${Medias.EXTRA_LARGE.minWidth}px)`]: {
+        // margin: `${Medias.EXTRA_LARGE.margins}px`,
+        width: "800px",
+        height: "560px",
+      },
     },
     modalRoot: {
       backgroundColor: "red",
@@ -44,7 +75,64 @@ const useStyles = makeStyles((theme: Theme) =>
 const CloseBox = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin: 24px;
+
+  @media (max-width: ${Medias.EXTRA_SMALL.maxWidth}px) {
+    margin: 0 0 ${Medias.EXTRA_SMALL.margins / 2}px 0;
+  }
+
+  @media (min-width: ${Medias.SMALL.minWidth}px) {
+    margin: 0 0 ${Medias.SMALL.margins / 2}px 0;
+  }
+
+  @media (min-width: ${Medias.MEDIUM.minWidth}px) {
+    margin: 0 0 ${Medias.MEDIUM.margins / 2}px 0;
+  }
+
+  @media (min-width: ${Medias.LARGE.minWidth}px) {
+    margin: 0 0 ${Medias.LARGE.margins / 2}px 0;
+  }
+
+  @media (min-width: ${Medias.EXTRA_LARGE.minWidth}px) {
+    margin: 0 0 ${Medias.EXTRA_LARGE.margins / 2}px 0;
+  }
+`;
+
+const PaperContent = styled.div`
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  // width: 100%;
+  height: 100%;
+
+  @media (max-width: ${Medias.EXTRA_SMALL.maxWidth}px) {
+    margin: ${Medias.EXTRA_SMALL.margins}px;
+    // width: 100%;
+    // height: 100%;
+  }
+
+  @media (min-width: ${Medias.SMALL.minWidth}px) {
+    margin: ${Medias.SMALL.margins}px;
+    // width: 400px;
+    // height: 560px;
+  }
+
+  @media (min-width: ${Medias.MEDIUM.minWidth}px) {
+    margin: ${Medias.MEDIUM.margins}px;
+    // width: 512px;
+    // height: 560px;
+  }
+
+  @media (min-width: ${Medias.LARGE.minWidth}px) {
+    margin: ${Medias.LARGE.margins}px;
+    // width: 662px;
+    // height: 560px;
+  }
+
+  @media (min-width: ${Medias.EXTRA_LARGE.minWidth}px) {
+    margin: ${Medias.EXTRA_LARGE.margins}px;
+    // width: 800px;
+    // height: 560px;
+  }
 `;
 
 type PassedProps = {
@@ -83,10 +171,12 @@ export const Modal = ({ children, isOpen: isOpen_, onClose }: Props) => {
       // }}
     >
       <Paper className={classes.paper}>
-        <CloseBox>
-          <IconButton iconName="close" onClick={handleOnClose} size="small" />
-        </CloseBox>
-        {children}
+        <PaperContent>
+          <CloseBox>
+            <IconButton iconName="close" onClick={handleOnClose} size="small" />
+          </CloseBox>
+          {children}
+        </PaperContent>
       </Paper>
     </MUIModal>
   );
