@@ -6,6 +6,7 @@ import { UnfavoritePaletteHandlers } from "src/shared/handlers/UnfavoritePalette
 import { FavoriteColorHandlers } from "src/shared/handlers/FavoriteColorHandlers";
 import { UnfavoriteColorHandlers } from "src/shared/handlers/UnfavoriteColorHandlers";
 import { PrivatePaletteHandlers } from "src/shared/handlers/PrivatePaletteHandlers";
+import { CreatePaletteHandlers } from "src/shared/handlers/CreatePaletteHandlers";
 import {
   mockColorsById,
   mockFavoriteColorIds,
@@ -43,6 +44,8 @@ export const sharedReducer = (
       return UnfavoriteColorHandlers({ state, action });
     case SharedActionType.PrivatePalette:
       return PrivatePaletteHandlers({ state, action });
+    case SharedActionType.CreatePalette:
+      return CreatePaletteHandlers({ state, action });
     default:
       return state;
   }

@@ -30,7 +30,7 @@ const usePaletteCreatorLoader = (props: Props) => {
     dispatch(getUsers());
     dispatch(getFavoriteColorIds());
     // dispatch(authenticate({ key: "" }));
-  }, []);
+  }, [dispatch]);
 
   return { id };
 };

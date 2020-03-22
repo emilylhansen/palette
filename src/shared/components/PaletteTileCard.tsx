@@ -11,6 +11,10 @@ import { isPaletteFavorited } from "src/shared/shared.selectors";
 import { Palette } from "src/shared/shared.types";
 import { css } from "styled-components";
 
+export const MIN_WIDTH = 280;
+
+export const MIN_HEIGHT = 280;
+
 const cssOverrides = {
   favoriteButton: css`
     margin-right: 8px;
@@ -44,14 +48,18 @@ const PaletteTemplateBox = styled.div`
 `;
 
 const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
-  width: 300px;
-  height: 200px;
-  padding: 32px;
+  // width: 300px;
+  // height: 200px;
+  // padding: 32px;
   position: relative;
   cursor: pointer;
   justify-content: center;
   align-items: center;
   display: flex;
+  min-width: ${MIN_WIDTH}px;
+  width: 100%;
+  min-height: ${MIN_HEIGHT}px;
+  height: 100%;
 
   :hover {
     ${DetailsBox} {

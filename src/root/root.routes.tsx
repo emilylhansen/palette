@@ -4,9 +4,11 @@ import { Route, Switch } from "react-router-dom";
 import { Protected } from "src/auth/Protected";
 import { Container } from "src/root/App";
 import { Homepage } from "src/homepage/Homepage";
+import { HomepageLoader } from "src/homepage/HomepageLoader";
 import { PaletteCreator } from "src/paletteCreator/PaletteCreator";
 import { PaletteCreatorLoader } from "src/paletteCreator/PaletteCreatorLoader";
 import { mockPaletteIds } from "src/shared/mockData";
+import { Grid } from "src/root/root.styles";
 
 export const makeHomeRoute = () => "/";
 export const makePaletteCreatorRoute = () => "/palette-creator";
@@ -41,7 +43,8 @@ export const RootRoutes = () => {
           path="/palette-creator/:id"
           component={() => <PaletteCreatorLoader />}
         />
-        <Route path="/" exact component={Homepage} />
+        <Route path="/grid" component={() => <Grid />} />
+        <Route path="/" exact component={HomepageLoader} />
         <Redirect from="*" to="/" />
       </Switch>
     </Route>

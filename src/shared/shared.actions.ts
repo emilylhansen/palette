@@ -31,9 +31,11 @@ import {
   UNFAVORITE_COLOR,
   UNFAVORITE_PALETTE,
   PRIVATE_PALETTE,
+  CREATE_PALETTE,
+  UPDATE_PALETTE,
 } from "src/shared/shared.constants";
 import { isNil } from "src/shared/shared.typeGuards";
-import { PayloadAction, SharedState } from "src/shared/shared.types";
+import { PayloadAction, SharedState, Palette } from "src/shared/shared.types";
 import { makePackAction } from "src/root/root.helpers";
 import { PackAction } from "src/root/root.types";
 
@@ -368,6 +370,44 @@ export const handleOnFavoriteColor = ({
     ? dispatch(unfavoriteColor(colorKey))
     : dispatch(favoriteColor(colorKey));
 
+export type CreatePalette = {
+  type: CREATE_PALETTE;
+  payload: { palette: Palette };
+};
+export const createPalette = ({
+  palette,
+}: {
+  palette: Palette;
+}): PackAction<CreatePalette["type"], CreatePalette["payload"], undefined> => {
+  return makePackAction<
+    CreatePalette["type"],
+    CreatePalette["payload"],
+    undefined
+  >({
+    type: CREATE_PALETTE,
+    payload: { palette },
+  });
+};
+
+export type UpdatePalette = {
+  type: UPDATE_PALETTE;
+  payload: { palette: Palette };
+};
+export const updatePalette = ({
+  palette,
+}: {
+  palette: Palette;
+}): PackAction<UpdatePalette["type"], UpdatePalette["payload"], undefined> => {
+  return makePackAction<
+    UpdatePalette["type"],
+    UpdatePalette["payload"],
+    undefined
+  >({
+    type: UPDATE_PALETTE,
+    payload: { palette },
+  });
+};
+
 export enum SharedActionType {
   GetColor = "GET_COLOR",
   GetColors = "GET_COLORS",
@@ -385,6 +425,8 @@ export enum SharedActionType {
   FavoriteColor = "FAVORITE_COLOR",
   UnfavoriteColor = "UNFAVORITE_COLOR",
   PrivatePalette = "PRIVATE_PALETTE",
+  CreatePalette = "CREATE_PALETTE",
+  UpdatePalette = "UPDATE_PALETTE",
 }
 
 export type SharedAction =
@@ -403,4 +445,6 @@ export type SharedAction =
   | UnfavoritePalette
   | FavoriteColor
   | UnfavoriteColor
-  | PrivatePalette;
+  | PrivatePalette
+  | CreatePalette
+  | UpdatePalette;

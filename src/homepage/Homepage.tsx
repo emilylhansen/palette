@@ -47,18 +47,49 @@ import {
 } from "src/shared/shared.selectors";
 import { Palette } from "src/shared/shared.types";
 import styled from "styled-components";
+import { Medias } from "src/root/root.styles";
 
 const HomepageBox = styled.div`
   flex: 1;
-  padding: 48px;
-  // overflow: auto;
   display: grid;
-  grid-column-gap: 32px;
-  grid-row-gap: 32px;
-  justify-content: center;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  justify-content: stretch;
   align-items: center;
   justify-items: center;
+
+  @media (max-width: ${Medias.EXTRA_SMALL.maxWidth}px) {
+    grid-column-gap: ${Medias.EXTRA_SMALL.gutters}px;
+    grid-row-gap: ${Medias.EXTRA_SMALL.gutters}px;
+    margin: ${Medias.EXTRA_SMALL.margins}px;
+    grid-template-columns: repeat(${Medias.EXTRA_SMALL.columns / 4}, 1fr);
+  }
+
+  @media (min-width: ${Medias.SMALL.minWidth}px) {
+    grid-column-gap: ${Medias.SMALL.gutters}px;
+    grid-row-gap: ${Medias.SMALL.gutters}px;
+    margin: ${Medias.SMALL.margins}px;
+    grid-template-columns: repeat(${Medias.SMALL.columns / 4}, 1fr);
+  }
+
+  @media (min-width: ${Medias.MEDIUM.minWidth}px) {
+    grid-column-gap: ${Medias.MEDIUM.gutters}px;
+    grid-row-gap: ${Medias.MEDIUM.gutters}px;
+    margin: ${Medias.MEDIUM.margins}px;
+    grid-template-columns: repeat(${Medias.MEDIUM.columns / 4}, 1fr);
+  }
+
+  @media (min-width: ${Medias.LARGE.minWidth}px) {
+    grid-column-gap: ${Medias.LARGE.gutters}px;
+    grid-row-gap: ${Medias.LARGE.gutters}px;
+    margin: ${Medias.LARGE.margins}px;
+    grid-template-columns: repeat(${Medias.LARGE.columns / 4}, 1fr);
+  }
+
+  @media (min-width: ${Medias.EXTRA_LARGE.minWidth}px) {
+    grid-column-gap: ${Medias.EXTRA_LARGE.gutters}px;
+    grid-row-gap: ${Medias.EXTRA_LARGE.gutters}px;
+    margin: ${Medias.EXTRA_LARGE.margins}px;
+    grid-template-columns: repeat(${Medias.EXTRA_LARGE.columns / 4}, 1fr);
+  }
 `;
 
 type PassedProps = {};
@@ -68,19 +99,19 @@ type Props = PassedProps & InjectedProps;
 export const Homepage = ({}: Props) => {
   const [selectedPalette, setSelectedPalette] = useState<Option<Palette>>(none);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const palettesById = useSelector(getPalettesById);
-  const usersById = useSelector(getUsersById);
-  const favoriteColorIds = useSelector(getFavoriteColorIdsSelector);
-  const favoritePaletteIds = useSelector(getFavoritePaletteIdsSelector);
+  // const usersById = useSelector(getUsersById);
+  // const favoriteColorIds = useSelector(getFavoriteColorIdsSelector);
+  // const favoritePaletteIds = useSelector(getFavoritePaletteIdsSelector);
 
-  useEffect(() => {
-    dispatch(authenticate({ user: mockCurrentUser }));
-    dispatch(getUsers());
-    dispatch(getPalettes());
-    dispatch(getFavoriteColorIdsAction());
-    dispatch(getFavoritePaletteIdsAction());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(authenticate({ user: mockCurrentUser }));
+  //   dispatch(getUsers());
+  //   dispatch(getPalettes());
+  //   dispatch(getFavoriteColorIdsAction());
+  //   dispatch(getFavoritePaletteIdsAction());
+  // }, [dispatch]);
 
   return (
     <ScrollToTop>

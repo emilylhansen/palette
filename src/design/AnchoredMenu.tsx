@@ -9,6 +9,16 @@ import { IconButton } from "src/design/IconButton";
 import { Icon } from "src/design/Icon";
 import styled, { css } from "styled-components";
 import { IconButtonProps as MaterialIconButtonProps } from "@material-ui/core/IconButton";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { Theme } from "src/root/root.theme";
+
+const useStyles = makeStyles((theme: Theme["mui"]) => {
+  return createStyles({
+    root: {
+      color: theme.palette.primary.contrastText,
+    },
+  });
+});
 
 const cssOverrides = {
   iconButton: css`
@@ -72,6 +82,8 @@ export const AnchoredMenu = ({ menuItems, toggleIcon, size }: Props) => {
     setAnchorEl(null);
   };
 
+  const classes = useStyles();
+
   return (
     <AnchoredMenuBox>
       <IconButton
@@ -80,7 +92,7 @@ export const AnchoredMenu = ({ menuItems, toggleIcon, size }: Props) => {
         onClick={handleClick}
         iconName={toggleIcon}
         size={size}
-        cssOverrides={cssOverrides.iconButton}
+        classes={{ root: classes.root }}
       />
       <StyledMenu
         id="customized-menu"

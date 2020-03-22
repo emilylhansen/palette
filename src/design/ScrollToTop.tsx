@@ -1,9 +1,21 @@
 import React, { useRef, useState, useEffect, ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
 import { IconButton } from "src/design/IconButton";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { Theme } from "src/root/root.theme";
+import { Medias } from "src/root/root.styles";
+
+const useStyles = makeStyles((theme: Theme["mui"]) => {
+  return createStyles({
+    root: {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.secondary.contrastText,
+    },
+  });
+});
 
 const Shimmie = keyframes`
- 20% {
+    20% {
       transform: translateY(6px);
     }
     40% {
@@ -34,8 +46,31 @@ const ScrollContentBox = styled.div`
 
 const IconButtonBox = styled.div`
   position: absolute;
-  bottom: 24px;
-  right: 24px;
+
+  @media (max-width: ${Medias.EXTRA_SMALL.maxWidth}px) {
+    bottom: ${Medias.EXTRA_SMALL.margins}px;
+    right: ${Medias.EXTRA_SMALL.margins}px;
+  }
+
+  @media (min-width: ${Medias.SMALL.minWidth}px) {
+    bottom: ${Medias.SMALL.margins}px;
+    right: ${Medias.SMALL.margins}px;
+  }
+
+  @media (min-width: ${Medias.MEDIUM.minWidth}px) {
+    bottom: ${Medias.MEDIUM.margins}px;
+    right: ${Medias.MEDIUM.margins}px;
+  }
+
+  @media (min-width: ${Medias.LARGE.minWidth}px) {
+    bottom: ${Medias.LARGE.margins}px;
+    right: ${Medias.LARGE.margins}px;
+  }
+
+  @media (min-width: ${Medias.EXTRA_LARGE.minWidth}px) {
+    bottom: ${Medias.EXTRA_LARGE.margins}px;
+    right: ${Medias.EXTRA_LARGE.margins}px;
+  }
 
   &:hover {
     animation: ${Shimmie} 1s ease;
@@ -48,6 +83,7 @@ type Props = { children: ReactNode };
 const useScrollToTop = (props: Props) => {
   const [displayButton, setDisplayButton] = useState<boolean>(false);
   const scrollEl = useRef<HTMLDivElement>(null);
+  const classes = useStyles();
 
   useEffect(() => {
     scrollEl.current.addEventListener("scroll", onScroll);
@@ -65,7 +101,7 @@ const useScrollToTop = (props: Props) => {
       behavior: "smooth",
     });
 
-  return { scrollEl, displayButton, scrollToTop };
+  return { scrollEl, classes, displayButton, scrollToTop };
 };
 
 export const ScrollToTop = (props: Props) => {
@@ -76,7 +112,11 @@ export const ScrollToTop = (props: Props) => {
       <ScrollContentBox ref={state.scrollEl}>{props.children}</ScrollContentBox>
       {state.displayButton && (
         <IconButtonBox onClick={state.scrollToTop}>
-          <IconButton iconName="arrow_upward" onClick={state.scrollToTop} />
+          <IconButton
+            iconName="arrow_upward"
+            onClick={state.scrollToTop}
+            classes={{ root: state.classes.root }}
+          />
         </IconButtonBox>
       )}
     </ScrollToTopBox>
