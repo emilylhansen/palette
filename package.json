@@ -5,6 +5,7 @@
   "author": "Emily Hansen",
   "license": "MIT",
   "private": false,
+  "homepage": "http://emilylhansen.github.io/palette",
   "jest": {
     "verbose": true,
     "moduleFileExtensions": [
@@ -49,6 +50,7 @@
     "faker": "^4.1.0",
     "final-form": "^4.18.7",
     "fp-ts": "^2.4.3",
+    "gh-pages": "^2.2.0",
     "history": "^4.10.1",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.9.0",
@@ -80,7 +82,9 @@
   "scripts": {
     "start": "webpack-dev-server --hot --open",
     "build": "webpack --config webpack.config.js --mode production",
-    "lint": "standard src/**/*.tsx src/**/*.ts src/**/*.jsx src/**/*.js"
+    "lint": "standard src/**/*.tsx src/**/*.ts src/**/*.jsx src/**/*.js",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "standard": {
     "parser": "@typescript-eslint/parser",

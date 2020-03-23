@@ -81,7 +81,7 @@ export const Header = (props: Props) => {
         <ToolbarBox>
           <StyledLink to={makeHomeRoute()}>
             <Text variant="h6" fontWeight={700}>
-              Palette App
+              Meld
             </Text>
           </StyledLink>
           <AnchoredMenu toggleIcon="dehaze" menuItems={menuItems} />
