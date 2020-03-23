@@ -1,7 +1,6 @@
 import convert from "color-convert";
 import { isNil } from "src/shared/shared.typeGuards";
 import { lookup } from "fp-ts/lib/Array";
-import { pipe } from "fp-ts/lib/pipeable";
 import { Option, some, none, isSome } from "fp-ts/lib/Option";
 import { Color } from "src/shared/shared.types";
 
@@ -14,7 +13,6 @@ export const convertHexToRGBA = ({
 }): Option<string> => {
   const rgbList = convert.hex.rgb(hex);
 
-  /** don't do this */
   const r = lookup(0, rgbList);
   const g = lookup(1, rgbList);
   const b = lookup(2, rgbList);

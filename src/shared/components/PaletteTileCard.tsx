@@ -48,9 +48,6 @@ const PaletteTemplateBox = styled.div`
 `;
 
 const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
-  // width: 300px;
-  // height: 200px;
-  // padding: 32px;
   position: relative;
   cursor: pointer;
   justify-content: center;

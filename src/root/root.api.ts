@@ -1,15 +1,12 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import {
-  Object,
   GetRandomObjectResponse,
   GetObjectColorsResponse,
   GetColorPalettesListResponse,
   GetColorPaletteInfoResponse,
-  Error,
 } from "src/root/root.api.types";
-import { RemoteData, success, failure } from "@devexperts/remote-data-ts";
 
-const ACCESS_TOKEN = "e9eb4e1e47b9410361316e611216c1ee";
+const ACCESS_TOKEN = "4a8efcf02e8c9b1d5f45f05f538b9136";
 
 export const apiClient = axios.create({
   baseURL: "https://api.collection.cooperhewitt.org/rest/",

@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
 const PaletteCreatorPaletteBox = styled.div`
   flex: 1;
   display: flex;
-  // margin: 56px 32px;
 `;
 
 const AddBox = styled.div`
@@ -41,16 +40,7 @@ const AddBox = styled.div`
   margin-left: 16px;
 `;
 
-const PaletteTemplateBox = styled.div<{ hasError: boolean; isEmpty: boolean }>`
-  // border: 1px dashed;
-  flex: 1;
-  border-radius: 6px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  height: 100%;
-  box-sizing: border-box;
-
+const EmptyTemplateBox = styled.div`
   @media (max-width: ${Medias.EXTRA_SMALL.maxWidth}px) {
     padding: ${Medias.EXTRA_SMALL.margins}px;
   }
@@ -70,6 +60,16 @@ const PaletteTemplateBox = styled.div<{ hasError: boolean; isEmpty: boolean }>`
   @media (min-width: ${Medias.EXTRA_LARGE.minWidth}px) {
     padding: ${Medias.EXTRA_LARGE.margins}px;
   }
+`;
+
+const PaletteTemplateBox = styled.div<{ hasError: boolean; isEmpty: boolean }>`
+  flex: 1;
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 100%;
+  box-sizing: border-box;
 
   ${({ hasError, isEmpty }) => css`
     border: ${hasError ? "1px dashed red" : isEmpty ? "1px dashed" : "none"};
@@ -122,9 +122,11 @@ export const PaletteCreatorPalette = (props: Props) => {
                 hasError={meta.touched && meta.error !== ""}
               >
                 {isEmptyPalette ? (
-                  <Text variant="subtitle2" align="center">
-                    Add colors to your palette by using the + button.
-                  </Text>
+                  <EmptyTemplateBox>
+                    <Text variant="subtitle2" align="center">
+                      Add colors to your palette by using the + button.
+                    </Text>
+                  </EmptyTemplateBox>
                 ) : (
                   <PaletteTemplate
                     colors={input.value}

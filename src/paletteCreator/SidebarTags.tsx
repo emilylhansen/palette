@@ -2,7 +2,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import { getOrElse, map, none, Option, some } from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
 import React, { useState } from "react";
@@ -13,7 +12,6 @@ import { makeNewTag } from "src/paletteCreator/paletteCreator.helpers";
 import { Values } from "src/paletteCreator/paletteCreator.types";
 import { Tag } from "src/shared/shared.types";
 import { css } from "styled-components";
-import { Text } from "src/design/Text";
 import { SectionHeader } from "src/paletteCreator/paletteCreator.styles";
 import { styled } from "src/root/root.theme";
 import {
@@ -116,6 +114,7 @@ const TagInput = ({
 }) => {
   const classes = useStyles();
 
+  /** TODO: this needs work */
   const width =
     value.length > CHAR_MIN
       ? (value.length - CHAR_MIN) * PX_PER_CHAR + CHIP_MIN_WIDTH

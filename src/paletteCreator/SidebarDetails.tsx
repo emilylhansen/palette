@@ -12,6 +12,7 @@ import {
   SectionBox,
 } from "src/paletteCreator/paletteCreator.styles";
 import { GutterSize, Gutters, makeGutters } from "src/design/design.helpers";
+import { isFalsy } from "src/shared/shared.typeGuards";
 
 type Props = {};
 
@@ -47,7 +48,7 @@ export const SidebarDetails = (props: Props) => {
                   onChange={e => input.onChange(e.target.value)}
                   size="small"
                   helperText={meta.touched ? meta.error : ""}
-                  error={meta.touched && meta.error !== ""}
+                  error={meta.touched && !isFalsy(meta.error)}
                   fullWidth
                 />
               );
@@ -59,20 +60,22 @@ export const SidebarDetails = (props: Props) => {
             name={fieldNames.description}
             key={fieldNames.description}
           >
-            {({ input, meta }) => (
-              <TextField
-                label="Description"
-                variant="outlined"
-                multiline
-                rows="3"
-                value={input.value}
-                onChange={e => input.onChange(e.target.value)}
-                size="small"
-                helperText={meta.touched ? meta.error : ""}
-                error={meta.touched && meta.error !== ""}
-                fullWidth
-              />
-            )}
+            {({ input, meta }) => {
+              return (
+                <TextField
+                  label="Description"
+                  variant="outlined"
+                  multiline
+                  rows="3"
+                  value={input.value}
+                  onChange={e => input.onChange(e.target.value)}
+                  size="small"
+                  helperText={meta.touched ? meta.error : ""}
+                  error={meta.touched && !isFalsy(meta.error)}
+                  fullWidth
+                />
+              );
+            }}
           </Field>
         </SubSectionBox>
         <SubSectionBox>

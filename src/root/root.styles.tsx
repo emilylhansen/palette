@@ -1,7 +1,3 @@
-import React from "react";
-import { css } from "styled-components";
-import { styled } from "src/root/root.theme";
-
 enum MediaSize {
   ExtraSmall = "EXTRA_SMALL",
   Small = "SMALL",
@@ -49,29 +45,4 @@ export const Medias: Record<MediaSize, MediaLayout> = {
     gutters: 24,
     margins: 24,
   },
-};
-
-const GridBox = styled.div`
-  display: grid;
-  border: 1px solid green;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 64px 1fr;
-  grid-column-gap: 16px;
-  justify-content: stretch;
-  align-content: stretch;
-  width: 100%;
-  grid-template-areas: "header header header header header header header header header header header header ";
-`;
-
-const Header = styled.div`
-  grid-area: header;
-  border: 1px solid red;
-`;
-
-export const Grid = () => {
-  return (
-    <GridBox>
-      <Header>this is the header</Header>
-    </GridBox>
-  );
 };

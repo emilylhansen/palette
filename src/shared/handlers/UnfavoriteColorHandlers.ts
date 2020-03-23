@@ -9,7 +9,6 @@ import {
   fold,
   RemoteData,
 } from "@devexperts/remote-data-ts";
-import { Lens } from "monocle-ts";
 
 export const UnfavoriteColorHandlers = ({
   state,
@@ -19,18 +18,6 @@ export const UnfavoriteColorHandlers = ({
   action: UnfavoriteColor;
 }) => {
   return handle(state, action, {
-    // start: (prevState, newAction) => {
-    //   return {
-    //     ...prevState,
-    //     favoriteColorIds: pending,
-    //   };
-    // },
-    // failure: (prevState, newAction) => {
-    //   return {
-    //     ...prevState,
-    //     favoriteColorIds: failure("could not unfavorite color"),
-    //   };
-    // },
     success: (prevState, newAction) => {
       const favoriteColorIds = fold<
         string,

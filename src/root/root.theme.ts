@@ -41,14 +41,11 @@ export const muiTheme = createMuiTheme({
       light: "#339f8f",
       contrastText: "#fff",
     },
-    // error: { main: "#f13c20" },
-    // warning: { main: "#f13c20" },
     info: {
       main: "#f13c20",
       dark: "#a82a16",
       light: "#f3634c",
     },
-    // success: { main: "#f13c20" },
   },
   typography: {
     fontFamily: '"Montserrat" ,sans-serif',

@@ -21,24 +21,14 @@ import {
 import { makeCopyValue } from "src/shared/shared.helpers";
 import {
   getUsersById,
-  isColorFavorited as isColorFavoritedSelector,
   isCurrentUsersPalette as isCurrentUsersPaletteSelector,
   isPaletteFavorited as isPaletteFavoritedSelector,
   getFavoriteColorIds,
 } from "src/shared/shared.selectors";
 import { Palette } from "src/shared/shared.types";
-import {
-  failure,
-  fold,
-  initial,
-  pending,
-  RemoteData,
-  success,
-  exists as remoteExists,
-} from "@devexperts/remote-data-ts";
+import { exists as remoteExists } from "@devexperts/remote-data-ts";
 
 const PaletteOverviewCardBox = styled.div`
-  // padding: 0 24px 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -166,7 +156,6 @@ export const PaletteOverviewCard = (props: Props) => {
           <FeaturesItemBox>
             <FavoriteButton
               isFavorited={state.isPaletteFavorited}
-              // count={12}
               onClick={state.handleOnFavoritePalette}
             />
           </FeaturesItemBox>

@@ -9,7 +9,6 @@ import {
   fold,
   RemoteData,
 } from "@devexperts/remote-data-ts";
-import { Lens } from "monocle-ts";
 
 export const FavoriteColorHandlers = ({
   state,
@@ -19,18 +18,6 @@ export const FavoriteColorHandlers = ({
   action: FavoriteColor;
 }) => {
   return handle(state, action, {
-    // start: (prevState, newAction) => {
-    //   return {
-    //     ...prevState,
-    //     favoriteColorIds: pending,
-    //   };
-    // },
-    // failure: (prevState, newAction) => {
-    //   return {
-    //     ...prevState,
-    //     favoriteColorIds: failure("could not fetch favorite colors"),
-    //   };
-    // },
     success: (prevState, newAction) => {
       const favoriteColorIds = fold<
         string,

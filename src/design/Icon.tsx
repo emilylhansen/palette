@@ -3,9 +3,7 @@ import { connect, ConnectedProps, Provider } from "react-redux";
 import { createStore, Dispatch } from "redux";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 
-type PassedProps = { iconName: string; css?: FlattenSimpleInterpolation };
-type InjectedProps = {};
-export type Props = PassedProps & InjectedProps;
+export type Props = { iconName: string; css?: FlattenSimpleInterpolation };
 
 const StyledIcon = styled.i<Pick<Props, "css">>`
   ${({ css: css_ }) => css`

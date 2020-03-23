@@ -14,7 +14,7 @@ const useCopyButton = (props: Props) => {
 
   useEffect(() => {
     setCopySuccess(none);
-  }, [props.value]);
+  }, [setCopySuccess, props.value]);
 
   const copyToClipboard = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

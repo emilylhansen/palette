@@ -1,88 +1,71 @@
-import {
-  failure,
-  fold,
-  initial,
-  pending,
-  RemoteData,
-  success,
-  exists,
-} from "@devexperts/remote-data-ts";
-import { range } from "fp-ts/lib/Array";
-import { isSome, map, none, Option, some } from "fp-ts/lib/Option";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
-import {
-  connect,
-  ConnectedProps,
-  Provider,
-  useDispatch,
-  useSelector,
-} from "react-redux";
-import { createStore, Dispatch } from "redux";
+import { useDispatch } from "react-redux";
 import { authenticate } from "src/auth/auth.actions";
-import { Login } from "src/auth/Login";
-import { Modal } from "src/design/Modal";
-import { Overlay } from "src/design/Overlay";
-import { ScrollToTop } from "src/design/ScrollToTop";
-import { RootState } from "src/root/root.types";
-import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
-import { PaletteTileCard } from "src/shared/components/PaletteTileCard";
-import { mockPalettes, mockCurrentUser } from "src/shared/mockData";
+import { mockCurrentUser, COUNT } from "src/shared/mockData";
 import {
-  getColorPaletteInfo,
-  getColorPalettesList,
-  getColors,
   getFavoriteColorIds as getFavoriteColorIdsAction,
   getFavoritePaletteIds as getFavoritePaletteIdsAction,
-  getObjectColors,
   getPalettes,
-  getRandomObject,
   getUsers,
+  getRandomObject,
 } from "src/shared/shared.actions";
-import {
-  getColorsById,
-  getFavoriteColorIds as getFavoriteColorIdsSelector,
-  getFavoritePaletteIds as getFavoritePaletteIdsSelector,
-  getPalettesById,
-  getUsersById,
-} from "src/shared/shared.selectors";
-import { Palette } from "src/shared/shared.types";
-import styled from "styled-components";
-import Loader from "react-loaders";
-import { Homepage } from "./Homepage";
+import { Homepage } from "src/homepage/Homepage";
+import { range } from "fp-ts/lib/Array";
 
-const HomepageBox = styled.div`
-  flex: 1;
-  padding: 48px;
-  // overflow: auto;
-  display: grid;
-  grid-column-gap: 32px;
-  grid-row-gap: 32px;
-  justify-content: center;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  align-items: center;
-  justify-items: center;
-`;
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      margin: "auto",
+    },
+  })
+);
 
 type Props = {};
 
-export const HomepageLoader = ({}: Props) => {
+const useHomepageLoader = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
+  const classes = useStyles();
+
   useEffect(() => {
-    setIsLoading(true);
+    const fetchData = async () => {
+      setIsLoading(true);
 
-    dispatch(authenticate({ user: mockCurrentUser }));
-    dispatch(getUsers());
-    dispatch(getPalettes());
-    dispatch(getFavoriteColorIdsAction());
-    dispatch(getFavoritePaletteIdsAction());
+      dispatch(authenticate({ user: mockCurrentUser }));
+      /** fetch users to show authors for each palette */
+      dispatch(getUsers());
+      dispatch(getPalettes());
+      /** fetch favorite color and palette ids to display favorited content */
+      dispatch(getFavoriteColorIdsAction());
+      dispatch(getFavoritePaletteIdsAction());
 
-    setIsLoading(false);
-  }, [dispatch]);
+      const getRandomObjectPromises = range(0, COUNT).map(i =>
+        dispatch(getRandomObject())
+      );
+      await Promise.all(getRandomObjectPromises);
 
-  return <Homepage />;
-  //   return <Loader type="ball-pulse-sync" active />;
-  //   return isLoading ? <Loader type="ball-pulse-sync" active /> : <Homepage />;
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [dispatch, setIsLoading]);
+
+  return { isLoading, classes };
+};
+
+export const HomepageLoader = (props: Props) => {
+  const state = useHomepageLoader(props);
+
+  return state.isLoading ? (
+    <CircularProgress
+      color="secondary"
+      classes={{ root: state.classes.root }}
+    />
+  ) : (
+    <Homepage />
+  );
 };

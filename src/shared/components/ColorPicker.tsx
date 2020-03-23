@@ -1,11 +1,4 @@
-import {
-  fromNullable,
-  getOrElse,
-  map,
-  Option,
-  some,
-  toUndefined,
-} from "fp-ts/lib/Option";
+import { fromNullable, getOrElse } from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
 import React, { ReactNode, useState } from "react";
 import { ChromePicker } from "react-color";
@@ -55,7 +48,7 @@ const useColorPicker = (props: Props) => {
 
   const handleOnClose = () => {
     setIsOpen(false);
-    props.handleColor(selectedColor.replace(/#/g, ""));
+    props.handleColor(selectedColor);
   };
 
   return { isOpen, setIsOpen, selectedColor, setColor, handleOnClose };

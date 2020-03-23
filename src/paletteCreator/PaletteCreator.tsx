@@ -1,7 +1,12 @@
-import { Button } from "src/design/Button";
-import React, { useEffect } from "react";
+import { chain, fold, fromNullable, getOrElse, map } from "fp-ts/lib/Option";
+import { pipe } from "fp-ts/lib/pipeable";
+import { lookup } from "fp-ts/lib/Record";
+import React from "react";
 import { withTypes } from "react-final-form";
 import { useDispatch, useSelector } from "react-redux";
+import { getCurrentUserId } from "src/auth/auth.selectors";
+import { Button } from "src/design/Button";
+import { GutterSize } from "src/design/design.helpers";
 import { validate } from "src/paletteCreator/paletteCreator.helpers";
 import {
   makeInitialValuesCreate,
@@ -10,36 +15,14 @@ import {
 } from "src/paletteCreator/paletteCreator.types";
 import { PaletteCreatorPalette } from "src/paletteCreator/PaletteCreatorPalette";
 import { PaletteCreatorSidebar } from "src/paletteCreator/PaletteCreatorSidebar";
-import {
-  getColors,
-  getFavoriteColorIds,
-  getPalettes,
-  getUsers,
-  createPalette,
-} from "src/shared/shared.actions";
-import { getPalettesById } from "src/shared/shared.selectors";
-import styled from "styled-components";
-import { mockPaletteIds } from "src/shared/mockData";
-import { lookup } from "fp-ts/lib/Record";
-import { pipe } from "fp-ts/lib/pipeable";
-import { map, getOrElse, chain, fromNullable, fold } from "fp-ts/lib/Option";
-import { GutterSize, Gutters, makeGutters } from "src/design/design.helpers";
-import { Palette } from "src/shared/shared.types";
-import { v5 as uuidv5 } from "uuid";
-import { getCurrentUserId } from "src/auth/auth.selectors";
-import { some } from "fp-ts/lib/ReadonlyRecord";
-// import { RemoteDataLoader } from "src/root/root.helpers";
 import { history } from "src/root/App";
-import {
-  makeHomeRoute,
-  makeAboutRoute,
-  makeEditRoute,
-  makeSettingsRoute,
-  composeRoutes,
-  makePaletteCreatorRoute,
-  makeNewRoute,
-} from "src/root/root.routes";
+import { makeHomeRoute } from "src/root/root.routes";
 import { Medias } from "src/root/root.styles";
+import { createPalette } from "src/shared/shared.actions";
+import { getPalettesById } from "src/shared/shared.selectors";
+import { Palette } from "src/shared/shared.types";
+import styled from "styled-components";
+import { v5 as uuidv5 } from "uuid";
 
 const PaletteCreatorBox = styled.div`
   display: flex;
@@ -177,6 +160,7 @@ const usePaletteCreator = (props: Props) => {
           });
 
           dispatch(createPalette({ palette: formattedValues }));
+          history.push(makeHomeRoute());
         }
       )
     );
@@ -190,41 +174,11 @@ const usePaletteCreator = (props: Props) => {
 
   const onCancel = () => history.push(makeHomeRoute());
 
-  const loaded = (
-    <Form
-      onSubmit={onSubmit}
-      validate={validate}
-      initialValues={initialValues}
-      render={({ handleSubmit, form }) => (
-        <PaletteCreatorBox>
-          <PaletteCreatorSidebar />
-          <ContentBox>
-            <PaletteCreatorPalette />
-            <FooterBox>
-              <Button color="secondary" gutterRight={GutterSize.Medium}>
-                cancel
-              </Button>
-              <Button
-                type="submit"
-                onClick={handleSubmit}
-                color="primary"
-                variant="contained"
-              >
-                {submitLabel}
-              </Button>
-            </FooterBox>
-          </ContentBox>
-        </PaletteCreatorBox>
-      )}
-    ></Form>
-  );
-
   return {
     onSubmit,
     initialValues,
     submitLabel,
     onCancel,
-    loaded,
   };
 };
 

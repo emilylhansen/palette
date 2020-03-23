@@ -1,28 +1,11 @@
-import { AuthState } from "src/auth/auth.types";
-import { currentUserLens } from "src/auth/auth.lenses";
-import { createSelector } from "reselect";
-import {
-  Option,
-  none,
-  isNone,
-  isSome,
-  None,
-  map,
-  chain,
-  getOrElse,
-  some,
-} from "fp-ts/lib/Option";
+import { exists, fold } from "@devexperts/remote-data-ts";
+import { chain, isSome, none, Option, some } from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
-import { RootState } from "src/root/root.types";
+import { createSelector } from "reselect";
+import { currentUserLens } from "src/auth/auth.lenses";
 import { authStateLens } from "src/root/root.lenses";
+import { RootState } from "src/root/root.types";
 import { User } from "src/shared/shared.types";
-import {
-  failure,
-  pending,
-  success,
-  exists,
-  fold,
-} from "@devexperts/remote-data-ts";
 
 export const getCurrentUser = (state: RootState) =>
   currentUserLens.get(authStateLens.get(state));

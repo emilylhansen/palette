@@ -1,69 +1,26 @@
 import { createSelector } from "reselect";
-import { RootState } from "src/root/root.types";
 import { Color } from "src/shared/shared.types";
-import // paletteLens,
-// colorsLens,
-// nameLens,
-// tagsLens,
-// descriptionLens,
-// privateLens,
-"src/paletteCreator/paletteCreator.lenses";
-import { paletteCreatorStateLens } from "src/root/root.lenses";
 import {
   getFavoriteColorIds,
   getColorsById,
 } from "src/shared/shared.selectors";
 import { lookup } from "fp-ts/lib/Record";
-import { favoriteColorIdsLens, colorsByIdLens } from "../shared/shared.lenses";
 import { pipe } from "fp-ts/lib/pipeable";
 import { map, getOrElse } from "fp-ts/lib/Option";
-import {
-  failure,
-  fold,
-  initial,
-  pending,
-  RemoteData,
-  success,
-  exists,
-  RemoteFailure,
-  RemoteInitial,
-  RemotePending,
-  RemoteSuccess,
-} from "@devexperts/remote-data-ts";
-
-export const getPaletteCreator = (state: RootState) =>
-  paletteCreatorStateLens.get(state);
-
-// export const getPalette = (state: RootState) =>
-//   paletteLens.get(paletteCreatorStateLens.get(state));
-
-// export const getColors = (state: RootState) =>
-//   colorsLens.get(paletteCreatorStateLens.get(state));
-
-// export const getTags = (state: RootState) =>
-//   tagsLens.get(paletteCreatorStateLens.get(state));
-
-// export const getName = (state: RootState) =>
-//   nameLens.get(paletteCreatorStateLens.get(state));
-
-// export const getDescription = (state: RootState) =>
-//   descriptionLens.get(paletteCreatorStateLens.get(state));
-
-// export const getPrivate = (state: RootState) =>
-//   privateLens.get(paletteCreatorStateLens.get(state));
+import { fold } from "@devexperts/remote-data-ts";
 
 export const getFavoriteColorsById = createSelector(
   getFavoriteColorIds,
   getColorsById,
-  (favoriteColorIds, colorsById): RemoteData<string, Record<string, Color>> => {
+  (favoriteColorIds, colorsById): Record<string, Color> => {
     const favoriteColorsById = fold<
       string,
       Array<string>,
-      RemoteData<string, Record<string, Color>>
+      Record<string, Color>
     >(
-      () => initial,
-      () => pending,
-      () => failure("unable to retrieve favorites colors"),
+      () => ({}),
+      () => ({}),
+      () => ({}),
       favoriteColorIds_ => {
         const favoriteColorsById = favoriteColorIds_.reduce<
           Record<string, Color>
@@ -77,7 +34,7 @@ export const getFavoriteColorsById = createSelector(
           {}
         );
 
-        return success(favoriteColorsById);
+        return favoriteColorsById;
       }
     )(favoriteColorIds);
 

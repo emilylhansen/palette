@@ -1,6 +1,6 @@
 import { default as MUIButton, ButtonProps } from "@material-ui/core/Button";
 import React from "react";
-import { GutterSize, Gutters, makeGutters } from "src/design/design.helpers";
+import { Gutters, makeGutters } from "src/design/design.helpers";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles<Props>({

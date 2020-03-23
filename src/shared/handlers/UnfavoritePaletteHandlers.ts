@@ -9,7 +9,6 @@ import {
   fold,
   RemoteData,
 } from "@devexperts/remote-data-ts";
-import { Lens } from "monocle-ts";
 
 export const UnfavoritePaletteHandlers = ({
   state,
@@ -19,18 +18,6 @@ export const UnfavoritePaletteHandlers = ({
   action: UnfavoritePalette;
 }) => {
   return handle(state, action, {
-    // start: (prevState, newAction) => {
-    //   return {
-    //     ...prevState,
-    //     favoritePaletteIds: pending,
-    //   };
-    // },
-    // failure: (prevState, newAction) => {
-    //   return {
-    //     ...prevState,
-    //     favoritePaletteIds: failure("could not unfavorite palette"),
-    //   };
-    // },
     success: (prevState, newAction) => {
       const favoritePaletteIds = fold<
         string,

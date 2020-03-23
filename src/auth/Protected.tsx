@@ -1,27 +1,17 @@
+import React from "react";
+import { useSelector } from "react-redux";
 import {
-  Route,
-  RouteProps,
-  RouteComponentProps,
   Redirect,
+  Route,
+  RouteComponentProps,
+  RouteProps,
 } from "react-router-dom";
 import { isAuthenticated as isAuthenticatedSelector } from "src/auth/auth.selectors";
-import React from "react";
-import { connect, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { RootState } from "src/root/root.types";
 import { makeHomeRoute } from "src/root/root.routes";
 
-type PassedProps = {};
-type InjectedProps = {
-  // isAuthenticated: boolean;
-};
-type Props = PassedProps & InjectedProps & RouteProps;
+type Props = {} & RouteProps;
 
-export const Protected = ({
-  // isAuthenticated,
-  component: Component,
-  ...otherProps
-}: Props) => {
+export const Protected = ({ component: Component, ...otherProps }: Props) => {
   const isAuthenticated = useSelector(isAuthenticatedSelector);
 
   return isAuthenticated ? (

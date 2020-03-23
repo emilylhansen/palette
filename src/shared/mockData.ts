@@ -11,7 +11,7 @@ import {
   User,
 } from "src/shared/shared.types";
 
-export const COUNT = 50;
+export const COUNT = 15;
 
 const makeMockColor = ({ hex, key }: { hex: string; key: string }): Color => ({
   name: faker.name.title(),
@@ -106,15 +106,28 @@ const makeMockUser = (key: string): User => ({
   createOn: faker.date.past(),
 });
 
-const generateRandomColor = () =>
+const generateRandomColor = (): string =>
   Math.floor(Math.random() * 16777215).toString(16);
 
 export const mockPaletteIds = range(0, 100).map(faker.random.uuid);
+
 const mockColorIds = range(0, 100).map(faker.random.uuid);
-const mockHexColors = range(0, mockColorIds.length).map(generateRandomColor);
+
+const mockHexColors = range(0, mockColorIds.length).map(() => {
+  const randomColor = generateRandomColor();
+
+  return `#${randomColor.length === 6 ? randomColor : "F09C9C"}`;
+});
+
 const mockUserIds = range(0, 100).map(faker.random.uuid);
-export const mockFavoriteColorIds = takeLeft(10)(mockColorIds);
-export const mockFavoritePaletteIds = takeLeft(10)(mockPaletteIds);
+
+export const mockFavoriteColorIds = takeLeft(Math.floor(COUNT / 3))(
+  mockColorIds
+);
+
+export const mockFavoritePaletteIds = takeLeft(Math.floor(COUNT / 3))(
+  mockPaletteIds
+);
 
 const hexByColorId = mockColorIds.reduce<Record<string, string>>(
   (acc, cur, idx) => ({ ...acc, [cur]: mockHexColors[idx] }),

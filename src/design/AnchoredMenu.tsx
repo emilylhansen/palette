@@ -1,4 +1,3 @@
-/** https://material-ui.com/components/menus/ */
 import React, { MouseEvent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
@@ -20,26 +19,6 @@ const useStyles = makeStyles((theme: Theme["mui"]) => {
   });
 });
 
-const cssOverrides = {
-  iconButton: css`
-    color: #ffffff;
-  `,
-};
-
-const AnchoredMenuBox = styled.div``;
-
-export type MenuItem = {
-  icon: string;
-  label: string;
-  onClick: (e: MouseEvent<HTMLElement>, cb: () => void) => void;
-};
-
-type Props = {
-  menuItems: Array<MenuItem>;
-  toggleIcon: string;
-  size?: MaterialIconButtonProps["size"];
-};
-
 const StyledMenu = withStyles({
   paper: {
     border: "1px solid #d3d4d5",
@@ -60,18 +39,32 @@ const StyledMenu = withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles(theme => ({
+const AnchoredMenuBox = styled.div``;
+
+export type MenuItem = {
+  icon: string;
+  label: string;
+  onClick: (e: MouseEvent<HTMLElement>, cb: () => void) => void;
+};
+
+type Props = {
+  menuItems: Array<MenuItem>;
+  toggleIcon: string;
+  size?: MaterialIconButtonProps["size"];
+};
+
+const StyledMenuItem = withStyles((theme: Theme["mui"]) => ({
   root: {
-    // "&:focus": {
-    //   backgroundColor: theme.palette.primary.main,
-    //   "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-    //     color: theme.palette.common.white,
-    //   },
-    // },
+    "&:focus": {
+      backgroundColor: theme.palette.primary.main,
+      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+        color: theme.palette.primary.contrastText,
+      },
+    },
   },
 }))(MenuItem);
 
-export const AnchoredMenu = ({ menuItems, toggleIcon, size }: Props) => {
+const useAnchoredMenu = (props: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -84,27 +77,35 @@ export const AnchoredMenu = ({ menuItems, toggleIcon, size }: Props) => {
 
   const classes = useStyles();
 
+  return {
+    anchorEl,
+    setAnchorEl,
+    handleClick,
+    handleClose,
+    classes,
+  };
+};
+
+export const AnchoredMenu = (props: Props) => {
+  const state = useAnchoredMenu(props);
+
   return (
     <AnchoredMenuBox>
       <IconButton
-        aria-controls="customized-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        iconName={toggleIcon}
-        size={size}
-        classes={{ root: classes.root }}
+        onClick={state.handleClick}
+        iconName={props.toggleIcon}
+        size={props.size}
+        classes={{ root: state.classes.root }}
       />
       <StyledMenu
-        id="customized-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
+        anchorEl={state.anchorEl}
+        open={Boolean(state.anchorEl)}
+        onClose={state.handleClose}
       >
-        {menuItems.map((item, idx) => (
+        {props.menuItems.map((item, idx) => (
           <StyledMenuItem
             key={`${item.label}-${idx}`}
-            onClick={e => item.onClick(e, () => handleClick(e))}
+            onClick={e => item.onClick(e, () => state.handleClick(e))}
           >
             <ListItemIcon>
               <Icon iconName={item.icon} />

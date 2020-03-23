@@ -3,7 +3,7 @@ export type CREATE_PALETTE = typeof CREATE_PALETTE;
 
 export const fieldNames = {
   name: "name",
-  description: "decription",
+  description: "description",
   colors: "colors",
   tags: "tags",
   tag: "tag",

@@ -82,61 +82,6 @@ export const getPalettes = (): GetPalettes => {
     payload: {},
   };
 };
-// export type GetPalettes = {
-//   type: GET_PALETTES;
-//   payload: {
-//     objects: Array<GetRandomObject>;
-//     objectColors: Array<GetObjectColors>;
-//     paletteList: GetColorPalettesList;
-//     colorPaletteInfo: Array<GetColorPaletteInfo>;
-//   };
-// };
-// export const getPalettes = (): ThunkAction<
-//   {},
-//   SharedState,
-//   undefined,
-//   SharedAction
-// > => {
-//   return async (dispatch): Promise<GetPalettes> => {
-//     /** fetch a bunch of random objects to create mock data */
-//     const objectsRes = await Promise.all(
-//       range(0, 10).map(async _ => {
-//         /** fetch a random object */
-//         return dispatch(getRandomObject());
-//       })
-//     );
-//     const objectColorsRes = await Promise.all(
-//       objectsRes.map(o => {
-//         const o_ = (o as unknown) as GetRandomObjectPayload;
-//         return dispatch(getObjectColors(o_.payload.data.object.id));
-//       })
-//     );
-
-//     /** fetch available color palettes */
-//     const palettesListRes = await dispatch(getColorPalettesList());
-//     const palettesListResData = (palettesListRes as unknown) as GetColorPalettesListPayload;
-//     /**
-//      * fetch the info for each palette, which will give us a list
-//      * of colors that we can use to look up the name of the object's
-//      * colors fetched above.
-//      */
-//     const colorPaletteInfoRes = await Promise.all(
-//       Object.keys(palettesListResData.payload.data.palettes).map(pKey =>
-//         dispatch(getColorPaletteInfo(pKey))
-//       )
-//     );
-
-//     return {
-//       type: GET_PALETTES,
-//       payload: {
-//         objects: objectsRes,
-//         objectColors: objectColorsRes,
-//         paletteList: palettesListRes,
-//         colorPaletteInfo: colorPaletteInfoRes,
-//       },
-//     };
-//   };
-// };
 
 export type GetFavoriteColorIds = {
   type: GET_FAVORITE_COLOR_IDS;

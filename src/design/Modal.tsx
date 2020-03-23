@@ -1,31 +1,17 @@
-import Button from "@material-ui/core/Button";
 import { default as MUIModal } from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { range } from "fp-ts/lib/Array";
-import { isSome, map, none, Option, some } from "fp-ts/lib/Option";
 import React, { ReactNode, useEffect, useState } from "react";
-import { connect, ConnectedProps, Provider } from "react-redux";
-import { createStore, Dispatch } from "redux";
-import { Icon } from "src/design/Icon";
-import { Overlay } from "src/design/Overlay";
-import { Text } from "src/design/Text";
-import { Theme } from "src/root/root.theme";
-import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
-import { PaletteTileCard } from "src/shared/components/PaletteTileCard";
-import { mockPalettes } from "src/shared/mockData";
-import { isNil } from "src/shared/shared.typeGuards";
-import { Palette } from "src/shared/shared.types";
-import styled, { keyframes } from "styled-components";
-import { Medias } from "src/root/root.styles";
 import { IconButton } from "src/design/IconButton";
+import { Medias } from "src/root/root.styles";
+import { Theme } from "src/root/root.theme";
+import { isNil } from "src/shared/shared.typeGuards";
+import styled from "styled-components";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       position: "absolute",
-      // width: 800,
-      // height: 500,
       backgroundColor: "#FFF",
       boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 10px",
       outline: 0,
@@ -35,7 +21,6 @@ const useStyles = makeStyles((theme: Theme) =>
       left: "50%",
       transform: `translate(-50%, -50%)`,
       [`@media (max-width: ${Medias.EXTRA_SMALL.maxWidth}px)`]: {
-        // margin: `${Medias.EXTRA_SMALL.margins}px`,
         bottom: 0,
         top: 0,
         right: 0,
@@ -44,29 +29,25 @@ const useStyles = makeStyles((theme: Theme) =>
         transform: "unset",
       },
       [`@media (min-width: ${Medias.SMALL.minWidth}px)`]: {
-        // margin: `${Medias.SMALL.margins}px`,
         width: "400px",
         height: "560px",
       },
 
       [`@media (min-width: ${Medias.MEDIUM.minWidth}px)`]: {
-        // margin: `${Medias.MEDIUM.margins}px`,
         width: "512px",
         height: "560px",
       },
 
       [`@media (min-width: ${Medias.LARGE.minWidth}px)`]: {
-        // margin: `${Medias.LARGE.margins}px`,
         width: "662px",
         height: "560px",
       },
       [`@media (min-width: ${Medias.EXTRA_LARGE.minWidth}px)`]: {
-        // margin: `${Medias.EXTRA_LARGE.margins}px`,
         width: "800px",
         height: "560px",
       },
     },
-    modalRoot: {
+    root: {
       backgroundColor: "red",
     },
   })
@@ -101,49 +82,36 @@ const PaperContent = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
-  // width: 100%;
   height: 100%;
 
   @media (max-width: ${Medias.EXTRA_SMALL.maxWidth}px) {
     margin: ${Medias.EXTRA_SMALL.margins}px;
-    // width: 100%;
-    // height: 100%;
   }
 
   @media (min-width: ${Medias.SMALL.minWidth}px) {
     margin: ${Medias.SMALL.margins}px;
-    // width: 400px;
-    // height: 560px;
   }
 
   @media (min-width: ${Medias.MEDIUM.minWidth}px) {
     margin: ${Medias.MEDIUM.margins}px;
-    // width: 512px;
-    // height: 560px;
   }
 
   @media (min-width: ${Medias.LARGE.minWidth}px) {
     margin: ${Medias.LARGE.margins}px;
-    // width: 662px;
-    // height: 560px;
   }
 
   @media (min-width: ${Medias.EXTRA_LARGE.minWidth}px) {
     margin: ${Medias.EXTRA_LARGE.margins}px;
-    // width: 800px;
-    // height: 560px;
   }
 `;
 
-type PassedProps = {
+type Props = {
   children: ReactNode;
   isOpen?: boolean;
   onClose?: () => void;
 };
-type InjectedProps = {};
-type Props = PassedProps & InjectedProps;
 
-export const Modal = ({ children, isOpen: isOpen_, onClose }: Props) => {
+const useModal = ({ isOpen: isOpen_, onClose }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(
     isNil(isOpen_) ? false : isOpen_
   );
@@ -158,24 +126,33 @@ export const Modal = ({ children, isOpen: isOpen_, onClose }: Props) => {
   };
 
   const classes = useStyles();
-  console.log(classes.modalRoot);
+
+  return { isOpen, setIsOpen, handleOnClose, classes };
+};
+
+export const Modal = (props: Props) => {
+  const state = useModal(props);
 
   return (
     <MUIModal
-      open={isOpen}
-      onClose={handleOnClose}
-      // BackdropProps={{
-      //   classes: {
-      //     root: classes.modalRoot,
-      //   },
-      // }}
+      open={state.isOpen}
+      onClose={state.handleOnClose}
+      BackdropProps={{
+        classes: {
+          root: state.classes.root,
+        },
+      }}
     >
-      <Paper className={classes.paper}>
+      <Paper className={state.classes.paper}>
         <PaperContent>
           <CloseBox>
-            <IconButton iconName="close" onClick={handleOnClose} size="small" />
+            <IconButton
+              iconName="close"
+              onClick={state.handleOnClose}
+              size="small"
+            />
           </CloseBox>
-          {children}
+          {props.children}
         </PaperContent>
       </Paper>
     </MUIModal>

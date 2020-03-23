@@ -5,6 +5,7 @@ import { colorHexLens } from "src/shared/shared.lenses";
 import { Values, Errors } from "src/paletteCreator/paletteCreator.types";
 import { Lens } from "monocle-ts";
 import { isEmpty as isEmptyArray } from "fp-ts/lib/Array";
+import { isEmptyOrBlankString, isNil } from "src/shared/shared.typeGuards";
 
 export const makeNewTag = (value: string): Tag => ({ value, key: uuidv4() });
 
@@ -13,9 +14,6 @@ export const makeNewColor = (hex: string): Color => ({
   key: uuidv4(),
   name: faker.name.title(),
 });
-
-export const isEmptyOrBlankString = (value: string): boolean =>
-  value === "" || value.split(" ").every(v => v === "");
 
 export const setColorFormField = ({
   colors,
@@ -51,7 +49,7 @@ export const removeColorFormField = ({
   key: string;
 }): Array<Color> => colors.filter(c => c.key !== key);
 
-export const validate = (values: Values) => {
+export const validate = (values: Partial<Values>) => {
   let errors: Errors = {
     name: "",
     description: "",
@@ -59,18 +57,18 @@ export const validate = (values: Values) => {
     tags: "",
     newTag: "",
   };
-
-  if (isEmptyOrBlankString(values.name)) {
+  /** check for nil values, since react-final-form drops the key from state if empty onChange */
+  if (isNil(values.name) || isEmptyOrBlankString(values.name)) {
     errors = Lens.fromProp<Errors>()("name").modify(_ => "Required")(errors);
   }
 
-  if (isEmptyOrBlankString(values.description)) {
+  if (isNil(values.description) || isEmptyOrBlankString(values.description)) {
     errors = Lens.fromProp<Errors>()("description").modify(_ => "Required")(
       errors
     );
   }
 
-  if (isEmptyArray(values.colors)) {
+  if (isNil(values.colors) || isEmptyArray(values.colors)) {
     errors = Lens.fromProp<Errors>()("colors").modify(
       _ => "Must contain at least one color"
     )(errors);

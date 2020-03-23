@@ -39,7 +39,7 @@ const ColorBox = styled.div<{ hex: string }>`
   }
 
   ${({ hex }) => css`
-    background-color: #${hex};
+    background-color: ${hex};
   `}
 `;
 

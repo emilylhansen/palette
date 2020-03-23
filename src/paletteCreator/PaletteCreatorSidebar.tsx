@@ -15,8 +15,6 @@ const useStyles = makeStyles((theme: Theme["mui"]) => {
       overflow: "auto",
       width: "100%",
       height: "100%",
-      // gridColumn: "1 / 4",
-      // gridRow: 'third-line / 4',
     },
   });
 });

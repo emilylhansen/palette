@@ -1,7 +1,7 @@
 import { handle } from "redux-pack";
 import { SharedState } from "src/shared/shared.types";
 import { GetRandomObject } from "src/shared/shared.actions";
-import { pending, failure, success } from "@devexperts/remote-data-ts";
+import { success } from "@devexperts/remote-data-ts";
 import { Lens } from "monocle-ts";
 
 export const GetRandomObjectHandlers = ({

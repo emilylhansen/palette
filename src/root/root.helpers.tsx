@@ -5,6 +5,13 @@ import { RemoteData, fold, RemoteSuccess } from "@devexperts/remote-data-ts";
 import React, { ReactNode } from "react";
 import { css } from "styled-components";
 
+/**
+ * redux-pack needs a 'promise' key or else it throws and error.
+ * However the 'payload' key is only present when we get the promise back.
+ * Since I'm using a lot of mock data, resolve the promise so it doesn't
+ * get stuck at the 'start' phase of the handler. Now we only have to handle
+ * the 'success' phase.
+ */
 export const makePackAction = <T, P, M>({
   type,
   payload,
@@ -16,7 +23,6 @@ export const makePackAction = <T, P, M>({
 }): PackAction<T, P, M> => ({
   type,
   promise: Promise.resolve(payload),
-  // promise: Promise.resolve(new Promise(() => payload)),
   payload,
   meta,
 });

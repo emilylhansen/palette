@@ -1,29 +1,13 @@
-/** https://material-ui.com/components/app-bar/ */
 import { history } from "src/root/App";
 import React from "react";
-import { connect, ConnectedProps, Provider } from "react-redux";
-import { createStore, Dispatch } from "redux";
 import { css } from "styled-components";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { Text } from "src/design/Text";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import { AnchoredMenu, MenuItem } from "src/design/AnchoredMenu";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   makeHomeRoute,
-  makeAboutRoute,
-  makeEditRoute,
-  makeSettingsRoute,
   composeRoutes,
   makePaletteCreatorRoute,
   makeNewRoute,
@@ -90,7 +74,7 @@ const menuItems: Array<MenuItem> = [
 
 type Props = {};
 
-export const Header = ({}: Props) => {
+export const Header = (props: Props) => {
   return (
     <AppBar position="static">
       <Toolbar>

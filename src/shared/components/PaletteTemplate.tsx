@@ -1,13 +1,10 @@
-import React, { ReactNode, ReactType, ElementType } from "react";
+import React, { ReactNode } from "react";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import { Text } from "src/design/Text";
 import { Color } from "src/shared/shared.types";
-import { convertHexToRGBA } from "src/shared/shared.helpers";
 import { isNil } from "src/shared/shared.typeGuards";
 import { IconButton } from "src/design/IconButton";
 import { ColorPicker } from "src/shared/components/ColorPicker";
-import { pipe } from "fp-ts/lib/pipeable";
-import { Option, some, none, isSome } from "fp-ts/lib/Option";
 
 const PaletteTemplateBox = styled.div<{
   cssOverrides?: FlattenSimpleInterpolation;
@@ -66,7 +63,7 @@ const ColorBox = styled.div<{
   opacity: 1;
 
   ${({ hex }) => css`
-    background: #${hex};
+    background: ${hex};
   `}
 `;
 
@@ -98,7 +95,7 @@ const ColorBlock = ({
           {/* <Text variant="subtitle2" align="center">
           {color.name}
         </Text> */}
-          <Text variant="subtitle2">{`#${color.hex}`}</Text>
+          <Text variant="subtitle2">{color.hex}</Text>
           {!isNil(actions) && (
             <ActionsBox>
               {actions.map((action, i) =>
@@ -165,6 +162,7 @@ export const PaletteTemplate = (props: Props) => {
               color={color.hex}
               toggle={({ onToggle, isOpen }) => (
                 <ColorBlock
+                  key={`${color.key}-${idx}`}
                   color={color}
                   enableColorDetails={props.enableColorDetails}
                   actions={props.actions}
