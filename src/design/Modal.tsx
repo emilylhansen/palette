@@ -48,7 +48,9 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     root: {
-      backgroundColor: "red",
+      "& > div:first-child": {
+        backgroundColor: "rgba(255, 255, 255, 0.95) !important",
+      },
     },
   })
 );
@@ -135,13 +137,11 @@ export const Modal = (props: Props) => {
 
   return (
     <MUIModal
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
       open={state.isOpen}
       onClose={state.handleOnClose}
-      BackdropProps={{
-        classes: {
-          root: state.classes.root,
-        },
-      }}
+      className={state.classes.root}
     >
       <Paper className={state.classes.paper}>
         <PaperContent>

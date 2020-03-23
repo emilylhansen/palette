@@ -80,11 +80,11 @@
     "webpack-dev-server": "^3.10.2"
   },
   "scripts": {
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -b master -d build",
     "start": "webpack-dev-server --hot --open",
     "build": "webpack --config webpack.config.js --mode production",
-    "lint": "standard src/**/*.tsx src/**/*.ts src/**/*.jsx src/**/*.js",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "lint": "standard src/**/*.tsx src/**/*.ts src/**/*.jsx src/**/*.js"
   },
   "standard": {
     "parser": "@typescript-eslint/parser",

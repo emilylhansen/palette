@@ -43,10 +43,10 @@ const useHomepageLoader = (props: Props) => {
       dispatch(getFavoriteColorIdsAction());
       dispatch(getFavoritePaletteIdsAction());
 
-      const getRandomObjectPromises = range(0, COUNT).map(i =>
-        dispatch(getRandomObject())
-      );
-      await Promise.all(getRandomObjectPromises);
+      // const getRandomObjectPromises = range(0, COUNT).map(i =>
+      //   dispatch(getRandomObject())
+      // );
+      // await Promise.all(getRandomObjectPromises);
 
       setIsLoading(false);
     };
