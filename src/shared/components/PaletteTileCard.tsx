@@ -51,6 +51,9 @@ const PaletteTemplateBox = styled.div`
   position: absolute;
   opacity: 1;
   transition: opacity 0.5s;
+  border: 16px solid #fff;
+  box-sizing: border-box;
+  border-radius: 6px;
 `;
 
 const PaletteTileCardBox = styled.div<{ onClick: () => void }>`

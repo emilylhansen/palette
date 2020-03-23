@@ -13,6 +13,14 @@ import {
   makeNewRoute,
 } from "src/root/root.routes";
 import { styled } from "src/root/root.theme";
+import { Icon } from "src/design/Icon";
+
+const cssOverrides = {
+  looks: css`
+    color: #fff;
+    margin-right: 8px;
+  `,
+};
 
 const ToolbarBox = styled.div`
   display: flex;
@@ -23,6 +31,8 @@ const ToolbarBox = styled.div`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  display: flex;
+  align-items: center;
 
   ${props => css`
     color: #ffffff;
@@ -80,6 +90,7 @@ export const Header = (props: Props) => {
       <Toolbar>
         <ToolbarBox>
           <StyledLink to={makeHomeRoute()}>
+            <Icon iconName="looks" css={cssOverrides.looks} />
             <Text variant="h6" fontWeight={700}>
               Meld
             </Text>
