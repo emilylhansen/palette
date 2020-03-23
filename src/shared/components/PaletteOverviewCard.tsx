@@ -42,7 +42,7 @@ const FeaturesBox = styled.div`
   margin: 8px 0;
 
   > ${FeaturesItemBox}:not(:last-child) {
-    margin-right: 16px;
+    margin-right: 8px;
   }
 `;
 
@@ -143,7 +143,9 @@ export const PaletteOverviewCard = (props: Props) => {
 
   return (
     <PaletteOverviewCardBox>
-      <Text variant="h6">{props.palette.name}</Text>
+      <Text variant="h6" fontWeight={500}>
+        {props.palette.name}
+      </Text>
       <Text variant="subtitle2">
         {pipe(
           state.author,

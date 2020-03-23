@@ -169,7 +169,9 @@ const useSidebarTags = ({}: Props) => {
     );
 
   const onBlurTag = (value: string) => {
-    isEmptyString(value) && resetNewTag();
+    const isInvalidValue = isEmptyOrBlankString(value);
+
+    isInvalidValue && resetNewTag();
   };
 
   const initializeNewTag = () => some("");
@@ -216,7 +218,10 @@ export const SidebarTags = (props: Props) => {
                 return (
                   <TagInput
                     value={value}
-                    onAddTag={e => state.onAddTag(value)}
+                    onAddTag={e => {
+                      e.preventDefault();
+                      state.onAddTag(value);
+                    }}
                     setTagValue={v => input.onChange(some(v))}
                     onBlurTag={e => state.onBlurTag(value)}
                     hasError={state.hasError}

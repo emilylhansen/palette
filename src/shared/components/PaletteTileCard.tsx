@@ -32,9 +32,15 @@ const DetailsBox = styled.div`
   transition: opacity 0.5s;
 `;
 
+const FeaturesItemBox = styled.div``;
+
 const FeaturesBox = styled.div`
   display: flex;
   margin-top: 8px;
+
+  > ${FeaturesItemBox}:not(:last-child) {
+    margin-right: 8px;
+  }
 `;
 
 const PaletteTemplateBox = styled.div`
@@ -57,6 +63,7 @@ const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
   width: 100%;
   min-height: ${MIN_HEIGHT}px;
   height: 100%;
+  border-radius: 6px;
 
   :hover {
     ${DetailsBox} {
@@ -67,6 +74,10 @@ const PaletteTileCardBox = styled.div<{ onClick: () => void }>`
       opacity: 0.2;
     }
   }
+
+  ${({ theme }) => css`
+    box-shadow: ${theme.defaultMui.shadows[2]};
+  `}
 `;
 
 type Props = { palette: Palette; onClick: () => void };
@@ -98,7 +109,7 @@ export const PaletteTileCard = (props: Props) => {
         <PaletteTemplate colors={props.palette.colors} />
       </PaletteTemplateBox>
       <DetailsBox>
-        <Text variant="body1" align="center">
+        <Text variant="subtitle2" align="center" fontWeight={500}>
           {props.palette.name}
         </Text>
         <FeaturesBox>

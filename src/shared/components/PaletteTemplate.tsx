@@ -67,9 +67,15 @@ const ColorBox = styled.div<{
   `}
 `;
 
+const ActionsItemBox = styled.div``;
+
 const ActionsBox = styled.div`
   display: flex;
   margin-top: 8px;
+
+  > ${ActionsItemBox}:not(:last-child) {
+    margin-right: 8px;
+  }
 `;
 
 const ColorPickerBox = styled.div`
@@ -95,21 +101,25 @@ const ColorBlock = ({
           {/* <Text variant="subtitle2" align="center">
           {color.name}
         </Text> */}
-          <Text variant="subtitle2">{color.hex}</Text>
+          <Text variant="subtitle2" fontWeight={500}>
+            {color.hex}
+          </Text>
           {!isNil(actions) && (
             <ActionsBox>
-              {actions.map((action, i) =>
-                isColorActionCustom(action) ? (
-                  action.custom({ color })
-                ) : (
-                  <IconButton
-                    key={i}
-                    iconName={action.iconName}
-                    onClick={e => action.onClick(e, color)}
-                    size="small"
-                  />
-                )
-              )}
+              {actions.map((action, i) => (
+                <ActionsItemBox>
+                  {isColorActionCustom(action) ? (
+                    action.custom({ color })
+                  ) : (
+                    <IconButton
+                      key={i}
+                      iconName={action.iconName}
+                      onClick={e => action.onClick(e, color)}
+                      size="small"
+                    />
+                  )}
+                </ActionsItemBox>
+              ))}
             </ActionsBox>
           )}
         </ColorDetailsBox>

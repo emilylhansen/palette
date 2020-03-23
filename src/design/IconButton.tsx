@@ -60,7 +60,7 @@ export const IconButton = ({
       <Icon>{iconName}</Icon>
     </MUIIconButton>
     {!isNil(label) && (
-      <Text gutterLeft={GutterSize.Small} variant="body2">
+      <Text gutterLeft={GutterSize.Small} variant="subtitle2" fontWeight={500}>
         {label}
       </Text>
     )}
