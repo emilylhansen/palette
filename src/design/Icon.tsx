@@ -1,6 +1,4 @@
 import React from "react";
-import { connect, ConnectedProps, Provider } from "react-redux";
-import { createStore, Dispatch } from "redux";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 
 export type Props = { iconName: string; css?: FlattenSimpleInterpolation };

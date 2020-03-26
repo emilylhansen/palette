@@ -8,7 +8,7 @@ import { PaletteOverviewCard } from "src/shared/components/PaletteOverviewCard";
 import { PaletteTileCard } from "src/shared/components/PaletteTileCard";
 import { getPalettesById } from "src/shared/shared.selectors";
 import { Palette } from "src/shared/shared.types";
-import styled from "styled-components";
+import { styled } from "src/root/root.theme";
 
 const HomepageBox = styled.div`
   flex: 1;

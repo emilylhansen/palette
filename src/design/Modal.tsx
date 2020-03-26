@@ -137,8 +137,6 @@ export const Modal = (props: Props) => {
 
   return (
     <MUIModal
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
       open={state.isOpen}
       onClose={state.handleOnClose}
       className={state.classes.root}

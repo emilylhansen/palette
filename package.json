@@ -81,7 +81,7 @@
   },
   "scripts": {
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -b master -d build",
+    "deploy": "gh-pages -b master -d dist",
     "start": "webpack-dev-server --hot --open",
     "build": "webpack --config webpack.config.js --mode production",
     "lint": "standard src/**/*.tsx src/**/*.ts src/**/*.jsx src/**/*.js"
