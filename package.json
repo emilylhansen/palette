@@ -1,7 +1,7 @@
 {
   "name": "palette-app",
   "version": "1.0.0",
-  "main": "index.tsx",
+  "main": "src/index.js",
   "author": "Emily Hansen",
   "license": "MIT",
   "private": false,
