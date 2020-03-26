@@ -13,6 +13,10 @@ This project is currently in development. Users can create new palettes, copy co
 
 ## Project Screen Shots
 
+![Image of Homepage](src/readme/homepage.png)
+![Image of Palette Creator](src/readme/palette-creator.png)
+![Image of Palette Overview](src/readme/palette-overview.png)
+
 ## Installation and Setup
 
 Clone down this repository. You will need `node` and `yarn` installed globally on your machine.

@@ -2,4 +2,5 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "src/root/App.tsx";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+/** Idk what's going on but this isn't correct. */
+// ReactDOM.render(<App />, document.getElementById("root"));
