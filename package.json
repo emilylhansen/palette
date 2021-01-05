@@ -44,7 +44,7 @@
     "@types/reselect": "^2.2.0",
     "@types/styled-components": "^4.4.2",
     "@types/uuid": "^7.0.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-loader": "^8.0.6",
     "color-convert": "^2.0.1",
     "faker": "^4.1.0",
